@@ -47,6 +47,8 @@ export interface CategoryWithChildren extends Category {
   children: Category[];
 }
 
+export type BackorderMode = "no" | "notify" | "yes";
+
 export interface Product {
   id: string;
   name: string;
@@ -59,6 +61,11 @@ export interface Product {
   image_url: string | null;
   gallery: string[] | null;
   stock_status: StockStatus;
+  manage_stock: boolean;
+  stock_quantity: number | null;
+  low_stock_threshold: number | null;
+  max_per_order: number | null;
+  allow_backorders: BackorderMode;
   is_active: boolean;
   is_featured: boolean;
   badge: string | null;
