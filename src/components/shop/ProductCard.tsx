@@ -2,7 +2,8 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import { Minus, Plus, ShoppingCart } from "lucide-react";
+import Link from "next/link";
+import { Minus, Plus, ShoppingCart, Eye } from "lucide-react";
 import { formatPrice } from "@/lib/utils";
 import { useCart } from "./CartProvider";
 import type { Product } from "@/lib/types";
@@ -12,9 +13,9 @@ interface ProductCardProps {
 }
 
 const stockLabels: Record<string, { text: string; className: string }> = {
-  in_stock: { text: "Skladem", className: "text-green-600" },
-  out_of_stock: { text: "Vyprodáno", className: "text-gray-400" },
-  on_order: { text: "Na objednávku", className: "text-orange-500" },
+  in_stock: { text: "Skladem", className: "bg-green-50 text-green-700" },
+  out_of_stock: { text: "Vyprodáno", className: "bg-gray-100 text-gray-400" },
+  on_order: { text: "Na objednávku", className: "bg-orange-50 text-orange-600" },
 };
 
 export function ProductCard({ product }: ProductCardProps) {
@@ -25,16 +26,31 @@ export function ProductCard({ product }: ProductCardProps) {
   const step = product.unit === "kg" ? 0.5 : 1;
   const min = product.unit === "kg" ? 0.5 : 1;
 
+  const stockMax =
+    product.manage_stock && product.stock_quantity !== null && product.allow_backorders === "no"
+      ? product.stock_quantity
+      : Infinity;
+  const orderMax = product.max_per_order ?? Infinity;
+  const maxQty = Math.min(stockMax, orderMax);
+
+  const isLowStock =
+    product.manage_stock &&
+    product.stock_quantity !== null &&
+    product.low_stock_threshold !== null &&
+    product.stock_quantity <= product.low_stock_threshold &&
+    product.stock_quantity > 0;
+
   return (
-    <div className="group flex h-full flex-col overflow-hidden rounded-2xl border border-gray-200 bg-white transition-all duration-200 hover:-translate-y-1 hover:border-gray-300 hover:shadow-lg">
-      <div className="relative aspect-square overflow-hidden bg-[linear-gradient(135deg,#f4f4f5,#d4d4d8)]">
+    <div className="group flex h-full flex-col overflow-hidden rounded-2xl border border-gray-200 bg-white transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
+      {/* Image with hover overlay (desktop) */}
+      <div className="relative aspect-[4/3] overflow-hidden bg-[linear-gradient(135deg,#f4f4f5,#d4d4d8)]">
         {product.image_url ? (
           <Image
             src={product.image_url}
             alt={product.name}
             fill
             sizes="(max-width: 768px) 50vw, 25vw"
-            className="object-cover transition-transform duration-300 group-hover:scale-105"
+            className="object-cover transition-transform duration-500 group-hover:scale-110"
           />
         ) : (
           <>
@@ -44,51 +60,86 @@ export function ProductCard({ product }: ProductCardProps) {
             </div>
           </>
         )}
+
+        {/* Badge */}
         {product.badge && (
-          <span className="absolute top-3 left-3 bg-primary text-white text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-sm">
+          <span className="absolute top-3 left-3 z-10 rounded-md bg-primary px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-white shadow-sm">
             {product.badge}
           </span>
         )}
+
+        {/* Stock tag */}
+        <span className={`absolute top-3 right-3 z-10 rounded-md px-2 py-0.5 text-[10px] font-semibold ${stock.className}`}>
+          {stock.text}
+        </span>
+
+        {/* Hover overlay — desktop only */}
+        {isAvailable && (
+          <div className="absolute inset-0 hidden items-center justify-center gap-3 bg-black/40 opacity-0 backdrop-blur-[2px] transition-opacity duration-300 group-hover:opacity-100 md:flex md:flex-col">
+            <button
+              onClick={(e) => {
+                e.preventDefault();
+                addToCart(product, qty);
+              }}
+              className="flex items-center gap-2 rounded-lg bg-white px-5 py-2.5 text-sm font-semibold text-black shadow-lg transition-transform hover:scale-105"
+            >
+              <ShoppingCart size={16} />
+              Do košíku
+            </button>
+            <Link
+              href={`/produkt/${product.slug}`}
+              className="flex items-center gap-1.5 text-sm font-medium text-white/90 transition-colors hover:text-white"
+            >
+              <Eye size={14} />
+              Detail
+            </Link>
+          </div>
+        )}
       </div>
-      <div className="p-4 flex flex-col flex-1">
-        <h3 className="font-display text-sm sm:text-base font-bold leading-snug mb-1 line-clamp-2 min-h-[2.5rem]">
-          {product.name}
-        </h3>
+
+      {/* Product info */}
+      <div className="flex flex-1 flex-col p-4">
+        <Link href={`/produkt/${product.slug}`}>
+          <h3 className="font-display text-sm font-bold leading-snug line-clamp-2 min-h-[2.5rem] transition-colors hover:text-primary sm:text-base">
+            {product.name}
+          </h3>
+        </Link>
 
         {product.weight_info && (
-          <p className="text-xs text-gray-400 mb-2">{product.weight_info}</p>
+          <p className="mt-1 text-xs text-gray-400">{product.weight_info}</p>
         )}
 
-        <div className="flex items-baseline gap-1.5 mb-2">
-          <span className="text-xl font-bold text-primary">
-            {formatPrice(product.price)}
-          </span>
-          <span className="text-xs text-gray-400">
-            /{product.unit}
-          </span>
+        <div className="mt-2 flex items-baseline gap-1.5">
+          <span className="text-xl font-bold text-primary">{formatPrice(product.price)}</span>
+          <span className="text-xs text-gray-400">/{product.unit}</span>
         </div>
 
-        <p className={`text-xs font-medium mb-3 ${stock.className}`}>
-          {stock.text}
-        </p>
+        {isLowStock && (
+          <p className="mt-1 text-[10px] text-amber-600">
+            Posledn{product.stock_quantity === 1 ? "í kus" : `ích ${Math.floor(product.stock_quantity!)} ${product.unit}`}
+          </p>
+        )}
+        {product.stock_status === "on_order" && product.allow_backorders === "notify" && (
+          <p className="mt-1 text-[10px] text-orange-500">Delší dodací lhůta</p>
+        )}
 
-        <div className="mt-auto">
+        {/* Mobile-only: always-visible add to cart */}
+        <div className="mt-auto pt-3 md:hidden">
           {isAvailable ? (
             <div className="flex items-center gap-2">
-              <div className="flex items-center border border-gray-200 rounded-sm">
+              <div className="flex items-center rounded-lg border border-gray-200">
                 <button
                   onClick={() => setQty(Math.max(min, qty - step))}
-                  className="w-8 h-9 flex items-center justify-center text-gray-500 hover:text-black transition-colors"
+                  className="flex h-9 w-8 items-center justify-center text-gray-500 transition-colors hover:text-black"
                   aria-label="Snížit množství"
                 >
                   <Minus size={14} />
                 </button>
-                <span className="w-10 text-center text-sm font-medium tabular-nums">
-                  {qty}
-                </span>
+                <span className="w-10 text-center text-sm font-medium tabular-nums">{qty}</span>
                 <button
-                  onClick={() => setQty(qty + step)}
-                  className="w-8 h-9 flex items-center justify-center text-gray-500 hover:text-black transition-colors"
+                  onClick={() => setQty(Math.min(maxQty, qty + step))}
+                  disabled={qty >= maxQty}
+                  className="flex h-9 w-8 items-center justify-center text-gray-500 transition-colors hover:text-black disabled:cursor-not-allowed disabled:opacity-30"
                   aria-label="Zvýšit množství"
                 >
                   <Plus size={14} />
@@ -96,7 +147,7 @@ export function ProductCard({ product }: ProductCardProps) {
               </div>
               <button
                 onClick={() => addToCart(product, qty)}
-                className="flex-1 flex items-center justify-center gap-1.5 rounded-md bg-black hover:bg-primary text-white text-xs font-medium uppercase tracking-wider h-9 px-3 transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+                className="flex h-9 flex-1 items-center justify-center gap-1.5 rounded-lg bg-black px-3 text-xs font-medium uppercase tracking-wider text-white transition-colors hover:bg-primary"
               >
                 <ShoppingCart size={14} />
                 Do košíku
@@ -105,7 +156,7 @@ export function ProductCard({ product }: ProductCardProps) {
           ) : (
             <button
               disabled
-              className="w-full flex items-center justify-center rounded-md bg-gray-100 text-gray-400 text-xs font-medium uppercase tracking-wider h-9 px-3 cursor-not-allowed"
+              className="flex h-9 w-full items-center justify-center rounded-lg bg-gray-100 px-3 text-xs font-medium uppercase tracking-wider text-gray-400 cursor-not-allowed"
             >
               Vyprodáno
             </button>
