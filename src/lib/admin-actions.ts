@@ -20,6 +20,34 @@ function generateSlug(name: string): string {
 
 // ── PRODUCTS ──
 
+function parseStockFields(formData: FormData) {
+  const manage_stock = formData.get("manage_stock") === "on";
+  const stock_quantity = manage_stock && formData.get("stock_quantity")
+    ? parseFloat(String(formData.get("stock_quantity")))
+    : null;
+  const low_stock_threshold = manage_stock && formData.get("low_stock_threshold")
+    ? parseInt(String(formData.get("low_stock_threshold")), 10)
+    : null;
+  const max_per_order = formData.get("max_per_order")
+    ? parseInt(String(formData.get("max_per_order")), 10)
+    : null;
+  const allow_backorders = manage_stock
+    ? String(formData.get("allow_backorders") || "no")
+    : "no";
+
+  // Auto-compute stock_status when managing stock
+  let stock_status = String(formData.get("stock_status") || "in_stock");
+  if (manage_stock && stock_quantity !== null) {
+    if (stock_quantity <= 0) {
+      stock_status = allow_backorders !== "no" ? "on_order" : "out_of_stock";
+    } else {
+      stock_status = "in_stock";
+    }
+  }
+
+  return { manage_stock, stock_quantity, low_stock_threshold, max_per_order, allow_backorders, stock_status };
+}
+
 export async function createProduct(formData: FormData) {
   const name = String(formData.get("name") || "");
   const slug = formData.get("slug") ? String(formData.get("slug")) : generateSlug(name);
@@ -28,7 +56,6 @@ export async function createProduct(formData: FormData) {
   const price = parseFloat(String(formData.get("price") || "0"));
   const unit = String(formData.get("unit") || "kg");
   const weight_info = formData.get("weight_info") ? String(formData.get("weight_info")) : null;
-  const stock_status = String(formData.get("stock_status") || "in_stock");
   const badge = formData.get("badge") ? String(formData.get("badge")) : null;
   const is_featured = formData.get("is_featured") === "on";
   const is_active = formData.get("is_active") !== "off";
@@ -37,9 +64,11 @@ export async function createProduct(formData: FormData) {
   const galleryRaw = formData.get("gallery") ? String(formData.get("gallery")) : null;
   const gallery = galleryRaw ? JSON.parse(galleryRaw) as string[] : null;
 
+  const stockFields = parseStockFields(formData);
+
   const { error } = await admin().from("products").insert({
     name, slug, description, category_id, price, unit, weight_info,
-    stock_status, badge, is_featured, is_active, sort_order: 0,
+    ...stockFields, badge, is_featured, is_active, sort_order: 0,
     image_url, gallery,
   });
 
@@ -57,7 +86,6 @@ export async function updateProduct(formData: FormData) {
   const price = parseFloat(String(formData.get("price") || "0"));
   const unit = String(formData.get("unit") || "kg");
   const weight_info = formData.get("weight_info") ? String(formData.get("weight_info")) : null;
-  const stock_status = String(formData.get("stock_status") || "in_stock");
   const badge = formData.get("badge") ? String(formData.get("badge")) : null;
   const is_featured = formData.get("is_featured") === "on";
   const is_active = formData.get("is_active") !== "off";
@@ -66,12 +94,36 @@ export async function updateProduct(formData: FormData) {
   const galleryRaw = formData.get("gallery") ? String(formData.get("gallery")) : null;
   const gallery = galleryRaw ? JSON.parse(galleryRaw) as string[] : null;
 
+  const stockFields = parseStockFields(formData);
+
   const { error } = await admin().from("products").update({
     name, slug, description, category_id, price, unit, weight_info,
-    stock_status, badge, is_featured, is_active,
+    ...stockFields, badge, is_featured, is_active,
     image_url, gallery,
   }).eq("id", id);
 
+  if (error) throw new Error(error.message);
+  revalidatePath("/admin/produkty");
+  revalidatePath("/");
+}
+
+export async function adjustStock(formData: FormData) {
+  const id = String(formData.get("id") || "");
+  const adjustment = parseFloat(String(formData.get("adjustment") || "0"));
+  if (!id || adjustment === 0) return;
+
+  const { data: product } = await admin().from("products").select("stock_quantity, manage_stock, allow_backorders").eq("id", id).single();
+  if (!product || !product.manage_stock) return;
+
+  const newQty = Math.max(0, (product.stock_quantity ?? 0) + adjustment);
+  let stock_status: string;
+  if (newQty <= 0) {
+    stock_status = product.allow_backorders !== "no" ? "on_order" : "out_of_stock";
+  } else {
+    stock_status = "in_stock";
+  }
+
+  const { error } = await admin().from("products").update({ stock_quantity: newQty, stock_status }).eq("id", id);
   if (error) throw new Error(error.message);
   revalidatePath("/admin/produkty");
   revalidatePath("/");

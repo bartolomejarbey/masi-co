@@ -17,6 +17,15 @@ const CartContext = createContext<CartContextType | null>(null);
 
 const STORAGE_KEY = "masi-co-cart";
 
+function getMaxQuantity(product: Product): number {
+  let max = Infinity;
+  if (product.max_per_order) max = Math.min(max, product.max_per_order);
+  if (product.manage_stock && product.stock_quantity !== null && product.allow_backorders === "no") {
+    max = Math.min(max, product.stock_quantity);
+  }
+  return max === Infinity ? 9999 : max;
+}
+
 function loadCart(): CartItem[] {
   if (typeof window === "undefined") return [];
   try {
@@ -50,14 +59,16 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   const addToCart = useCallback((product: Product, quantity: number) => {
     setItems((prev) => {
       const existing = prev.find((i) => i.product.id === product.id);
+      const maxQty = getMaxQuantity(product);
       if (existing) {
+        const newQty = Math.min(existing.quantity + quantity, maxQty);
         return prev.map((i) =>
           i.product.id === product.id
-            ? { ...i, quantity: i.quantity + quantity }
+            ? { ...i, quantity: newQty }
             : i
         );
       }
-      return [...prev, { product, quantity }];
+      return [...prev, { product, quantity: Math.min(quantity, maxQty) }];
     });
   }, []);
 
@@ -71,9 +82,11 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       return;
     }
     setItems((prev) =>
-      prev.map((i) =>
-        i.product.id === productId ? { ...i, quantity } : i
-      )
+      prev.map((i) => {
+        if (i.product.id !== productId) return i;
+        const maxQty = getMaxQuantity(i.product);
+        return { ...i, quantity: Math.min(quantity, maxQty) };
+      })
     );
   }, []);
 

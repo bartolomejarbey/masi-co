@@ -27,6 +27,7 @@ export function ProductModal({ product, categories, onClose, action }: Props) {
   const [imageUrl, setImageUrl] = useState<string | null>(product?.image_url ?? null);
   const [gallery, setGallery] = useState<string[]>(product?.gallery ?? []);
   const [uploadError, setUploadError] = useState<string | null>(null);
+  const [manageStock, setManageStock] = useState(product?.manage_stock ?? false);
 
   const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (slugRef.current && !product) {
@@ -183,12 +184,16 @@ export function ProductModal({ product, categories, onClose, action }: Props) {
               <select
                 name="stock_status"
                 defaultValue={product?.stock_status ?? "in_stock"}
-                className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-[#CC1939] focus:outline-none"
+                disabled={manageStock}
+                className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-[#CC1939] focus:outline-none disabled:bg-gray-100 disabled:text-gray-400"
               >
                 <option value="in_stock">Skladem</option>
                 <option value="out_of_stock">Vyprodáno</option>
                 <option value="on_order">Na objednávku</option>
               </select>
+              {manageStock && (
+                <p className="mt-1 text-xs text-gray-400">Stav se nastavuje automaticky podle množství</p>
+              )}
             </div>
             <div>
               <label className="mb-1 block text-sm font-medium text-gray-700">Hmotnost/info</label>
@@ -199,6 +204,73 @@ export function ProductModal({ product, categories, onClose, action }: Props) {
                 className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-[#CC1939] focus:outline-none"
               />
             </div>
+          </div>
+
+          {/* Správa skladu */}
+          <div className="rounded-lg border border-gray-200 bg-gray-50 p-4">
+            <label className="flex items-center gap-2 text-sm font-medium">
+              <input
+                type="checkbox"
+                name="manage_stock"
+                checked={manageStock}
+                onChange={(e) => setManageStock(e.target.checked)}
+                className="h-4 w-4 rounded border-gray-300 text-[#CC1939] focus:ring-[#CC1939]"
+              />
+              Sledovat stav skladu
+            </label>
+            <p className="mt-1 ml-6 text-xs text-gray-500">
+              Zapne sledování množství. Stav skladu se bude řídit automaticky podle počtu kusů.
+            </p>
+
+            {manageStock && (
+              <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+                <div>
+                  <label className="mb-1 block text-xs font-medium text-gray-600">Množství skladem</label>
+                  <input
+                    name="stock_quantity"
+                    type="number"
+                    step="0.001"
+                    defaultValue={product?.stock_quantity ?? ""}
+                    placeholder="0"
+                    className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-[#CC1939] focus:outline-none"
+                  />
+                </div>
+                <div>
+                  <label className="mb-1 block text-xs font-medium text-gray-600">Nízký stav (upozornění)</label>
+                  <input
+                    name="low_stock_threshold"
+                    type="number"
+                    step="1"
+                    defaultValue={product?.low_stock_threshold ?? 3}
+                    placeholder="3"
+                    className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-[#CC1939] focus:outline-none"
+                  />
+                </div>
+                <div>
+                  <label className="mb-1 block text-xs font-medium text-gray-600">Max na objednávku</label>
+                  <input
+                    name="max_per_order"
+                    type="number"
+                    step="1"
+                    defaultValue={product?.max_per_order ?? ""}
+                    placeholder="Bez limitu"
+                    className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-[#CC1939] focus:outline-none"
+                  />
+                </div>
+                <div>
+                  <label className="mb-1 block text-xs font-medium text-gray-600">Zpětné objednávky</label>
+                  <select
+                    name="allow_backorders"
+                    defaultValue={product?.allow_backorders ?? "no"}
+                    className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-[#CC1939] focus:outline-none"
+                  >
+                    <option value="no">Nepovolit</option>
+                    <option value="notify">Povolit (s upozorněním)</option>
+                    <option value="yes">Povolit</option>
+                  </select>
+                </div>
+              </div>
+            )}
           </div>
 
           <div className="grid gap-4 sm:grid-cols-2">

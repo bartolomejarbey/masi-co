@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { ProductModal } from "./ProductModal";
 import { formatPrice } from "@/lib/utils";
-import { Search, ImageOff } from "lucide-react";
+import { Search, ImageOff, AlertTriangle } from "lucide-react";
 import type { Product, Category } from "@/lib/types";
 
 type Props = {
@@ -36,16 +36,23 @@ export function ProductsClient({ products, categories, createAction, updateActio
 
   const catMap = Object.fromEntries(categories.map((c) => [c.id, c.name]));
 
+  const lowStockProducts = products.filter(
+    (p) => p.manage_stock && p.stock_quantity !== null && p.low_stock_threshold !== null && p.stock_quantity <= p.low_stock_threshold && p.stock_quantity > 0
+  );
+
   const stockCounts = {
     all: products.length,
     in_stock: products.filter((p) => p.stock_status === "in_stock").length,
     out_of_stock: products.filter((p) => p.stock_status === "out_of_stock").length,
     on_order: products.filter((p) => p.stock_status === "on_order").length,
+    low_stock: lowStockProducts.length,
   };
 
   const filtered = products.filter((p) => {
     if (filterCat && p.category_id !== filterCat) return false;
-    if (filterStock && p.stock_status !== filterStock) return false;
+    if (filterStock === "low_stock") {
+      if (!p.manage_stock || p.stock_quantity === null || p.low_stock_threshold === null || p.stock_quantity > p.low_stock_threshold || p.stock_quantity <= 0) return false;
+    } else if (filterStock && p.stock_status !== filterStock) return false;
     if (search && !p.name.toLowerCase().includes(search.toLowerCase())) return false;
     return true;
   });
@@ -104,6 +111,7 @@ export function ProductsClient({ products, categories, createAction, updateActio
           { key: "in_stock", label: "Skladem", count: stockCounts.in_stock },
           { key: "out_of_stock", label: "Vyprodáno", count: stockCounts.out_of_stock },
           { key: "on_order", label: "Na obj.", count: stockCounts.on_order },
+          { key: "low_stock", label: "Nízký stav", count: stockCounts.low_stock },
         ].map((btn) => (
           <button
             key={btn.key}
@@ -212,9 +220,27 @@ export function ProductsClient({ products, categories, createAction, updateActio
                   <td className="px-4 py-3 font-medium">{formatPrice(product.price)}</td>
                   <td className="px-4 py-3">{product.unit}</td>
                   <td className="px-4 py-3">
-                    <span className={`inline-block rounded-full px-2 py-0.5 text-xs font-medium ${stockColors[product.stock_status] ?? ""}`}>
-                      {stockLabels[product.stock_status] ?? product.stock_status}
-                    </span>
+                    <div className="flex flex-col gap-0.5">
+                      <span className={`inline-block w-fit rounded-full px-2 py-0.5 text-xs font-medium ${stockColors[product.stock_status] ?? ""}`}>
+                        {stockLabels[product.stock_status] ?? product.stock_status}
+                      </span>
+                      {product.manage_stock && (
+                        <div className="flex items-center gap-1">
+                          <span className="text-xs text-gray-500">
+                            {product.stock_quantity ?? 0} {product.unit}
+                          </span>
+                          {product.stock_quantity !== null &&
+                            product.low_stock_threshold !== null &&
+                            product.stock_quantity <= product.low_stock_threshold &&
+                            product.stock_quantity > 0 && (
+                              <AlertTriangle size={12} className="text-amber-500" />
+                          )}
+                        </div>
+                      )}
+                      {product.max_per_order && (
+                        <span className="text-[10px] text-gray-400">max {product.max_per_order}/{product.unit}</span>
+                      )}
+                    </div>
                   </td>
                   <td className="px-4 py-3">
                     {product.is_active ? (

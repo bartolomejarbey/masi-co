@@ -39,6 +39,11 @@ export function CartPageClient({ minOrderAmount }: CartPageClientProps) {
           const step = product.unit === "kg" ? 0.5 : 1;
           const min = product.unit === "kg" ? 0.5 : 1;
           const total = product.price * quantity;
+          const stockMax = product.manage_stock && product.stock_quantity !== null && product.allow_backorders === "no"
+            ? product.stock_quantity : Infinity;
+          const orderMax = product.max_per_order ?? Infinity;
+          const maxQty = Math.min(stockMax, orderMax);
+          const atMax = quantity >= maxQty;
 
           return (
             <div
@@ -81,7 +86,8 @@ export function CartPageClient({ minOrderAmount }: CartPageClientProps) {
                     <button
                       type="button"
                       onClick={() => updateQuantity(product.id, quantity + step)}
-                      className="flex h-10 w-10 items-center justify-center text-gray-500 transition-colors hover:text-black"
+                      disabled={atMax}
+                      className="flex h-10 w-10 items-center justify-center text-gray-500 transition-colors hover:text-black disabled:opacity-30 disabled:cursor-not-allowed"
                       aria-label="Zvýšit množství"
                     >
                       <Plus size={16} />

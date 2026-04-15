@@ -38,6 +38,12 @@ CREATE TABLE products (
   gallery           text[],
   stock_status      text NOT NULL DEFAULT 'in_stock'
                       CHECK (stock_status IN ('in_stock', 'out_of_stock', 'on_order')),
+  manage_stock      boolean NOT NULL DEFAULT false,
+  stock_quantity    decimal(10,3),
+  low_stock_threshold int DEFAULT 3,
+  max_per_order     int,
+  allow_backorders  text NOT NULL DEFAULT 'no'
+                      CHECK (allow_backorders IN ('no', 'notify', 'yes')),
   is_active         boolean NOT NULL DEFAULT true,
   is_featured       boolean NOT NULL DEFAULT false,
   badge             text,

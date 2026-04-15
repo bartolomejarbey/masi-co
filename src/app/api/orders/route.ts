@@ -85,7 +85,7 @@ export async function POST(request: Request) {
     const productIds = items.map((item) => item.product.id);
     const { data: currentProducts, error: productsError } = await adminSupabase
       .from("products")
-      .select("id, name, unit, price")
+      .select("id, name, unit, price, stock_status, manage_stock, stock_quantity, max_per_order, allow_backorders")
       .in("id", productIds)
       .eq("is_active", true);
 
@@ -98,6 +98,11 @@ export async function POST(request: Request) {
       name: string;
       unit: "kg" | "ks";
       price: number;
+      stock_status: string;
+      manage_stock: boolean;
+      stock_quantity: number | null;
+      max_per_order: number | null;
+      allow_backorders: string;
     }>;
     const productsById = new Map(typedProducts.map((product) => [product.id, product]));
     const normalizedItems = items.map((item) => {
@@ -107,6 +112,23 @@ export async function POST(request: Request) {
         throw new Error(`Produkt ${item.product.name} už není dostupný.`);
       }
 
+      // Check stock status
+      if (product.stock_status === "out_of_stock" && product.allow_backorders === "no") {
+        throw new Error(`Produkt "${product.name}" je vyprodaný.`);
+      }
+
+      // Check max per order
+      if (product.max_per_order && item.quantity > product.max_per_order) {
+        throw new Error(`Produkt "${product.name}" — max ${product.max_per_order} ${product.unit} na objednávku.`);
+      }
+
+      // Check stock quantity
+      if (product.manage_stock && product.stock_quantity !== null && product.allow_backorders === "no") {
+        if (item.quantity > product.stock_quantity) {
+          throw new Error(`Produkt "${product.name}" — skladem pouze ${product.stock_quantity} ${product.unit}.`);
+        }
+      }
+
       return {
         productId: product.id,
         productName: product.name,
@@ -114,6 +136,8 @@ export async function POST(request: Request) {
         unitPrice: product.price,
         quantity: item.quantity,
         estimatedTotal: product.price * item.quantity,
+        manageStock: product.manage_stock,
+        allowBackorders: product.allow_backorders,
       };
     });
 
@@ -193,6 +217,22 @@ export async function POST(request: Request) {
 
     if (itemsError) {
       return NextResponse.json({ error: itemsError.message }, { status: 500 });
+    }
+
+    // Deduct stock quantities for managed products
+    for (const item of normalizedItems) {
+      if (item.manageStock) {
+        const product = productsById.get(item.productId);
+        if (!product || product.stock_quantity === null) continue;
+        const newQty = Math.max(0, product.stock_quantity - item.quantity);
+        const newStatus = newQty <= 0
+          ? (item.allowBackorders !== "no" ? "on_order" : "out_of_stock")
+          : "in_stock";
+        await adminSupabase.from("products").update({
+          stock_quantity: newQty,
+          stock_status: newStatus,
+        }).eq("id", item.productId);
+      }
     }
 
     // Generate QR payment data for bank transfer

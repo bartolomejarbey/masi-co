@@ -17,8 +17,29 @@ export function ProductDetailActions({ product, isAvailable }: ProductDetailActi
   const step = product.unit === "kg" ? 0.5 : 1;
   const min = product.unit === "kg" ? 0.5 : 1;
 
+  const stockMax = product.manage_stock && product.stock_quantity !== null && product.allow_backorders === "no"
+    ? product.stock_quantity : Infinity;
+  const orderMax = product.max_per_order ?? Infinity;
+  const maxQty = Math.min(stockMax, orderMax);
+
+  const isLowStock = product.manage_stock && product.stock_quantity !== null
+    && product.low_stock_threshold !== null
+    && product.stock_quantity <= product.low_stock_threshold
+    && product.stock_quantity > 0;
+
   return (
     <div className="space-y-4">
+      {isLowStock && (
+        <p className="text-sm font-medium text-amber-600">
+          Posledn{product.stock_quantity === 1 ? "í kus" : `ích ${Math.floor(product.stock_quantity!)} ${product.unit}`} skladem
+        </p>
+      )}
+      {product.stock_status === "on_order" && product.allow_backorders === "notify" && (
+        <p className="text-sm text-orange-500">Tento produkt je momentálně na objednávku — dodací lhůta může být delší.</p>
+      )}
+      {maxQty < Infinity && (
+        <p className="text-xs text-gray-500">Max {maxQty} {product.unit} na objednávku</p>
+      )}
       <div>
         <p className="mb-2 text-sm font-medium text-gray-700">Množství</p>
         <div className="flex w-fit items-center rounded-md border border-gray-200">
@@ -35,8 +56,9 @@ export function ProductDetailActions({ product, isAvailable }: ProductDetailActi
           </span>
           <button
             type="button"
-            onClick={() => setQuantity((current) => current + step)}
-            className="flex h-11 w-11 items-center justify-center text-gray-500 transition-colors hover:text-black"
+            onClick={() => setQuantity((current) => Math.min(maxQty, current + step))}
+            disabled={quantity >= maxQty}
+            className="flex h-11 w-11 items-center justify-center text-gray-500 transition-colors hover:text-black disabled:opacity-30 disabled:cursor-not-allowed"
             aria-label="Zvýšit množství"
           >
             <Plus size={16} />

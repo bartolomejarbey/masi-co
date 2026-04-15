@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { ProductCard } from "./ProductCard";
 import type { Product } from "@/lib/types";
 
@@ -25,15 +24,7 @@ export function ProductsGrid({
   return (
     <div className="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3">
       {products.map((product) => (
-        <div key={product.id} className="space-y-3">
-          <ProductCard product={product} />
-          <Link
-            href={`/produkt/${product.slug}`}
-            className="inline-flex text-sm font-medium text-primary transition-colors hover:text-primary-dark"
-          >
-            Zobrazit detail
-          </Link>
-        </div>
+        <ProductCard key={product.id} product={product} />
       ))}
     </div>
   );
