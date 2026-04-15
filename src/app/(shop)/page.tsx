@@ -7,6 +7,7 @@ import { HowItWorks } from "@/components/shop/HowItWorks";
 import { AboutSection } from "@/components/shop/AboutSection";
 import { DeliverySection } from "@/components/shop/DeliverySection";
 import { NewsletterSection } from "@/components/shop/NewsletterSection";
+import { AnimateOnScroll } from "@/components/shop/AnimateOnScroll";
 import { supabase } from "@/lib/supabase";
 import type { Category, Product } from "@/lib/types";
 
@@ -58,7 +59,6 @@ async function getFeaturedProducts(): Promise<Product[]> {
       .limit(8);
 
     if (error || !data || data.length === 0) {
-      // Fallback: get first 6 in_stock products
       const { data: fallback } = await supabase
         .from("products")
         .select("*")
@@ -86,13 +86,27 @@ export default async function HomePage() {
     <>
       <HeroSection />
       <MarqueeBar />
-      <CategoriesSection categories={categories} />
-      <HotovkyBanner />
-      <FeaturedProducts products={featuredProducts} />
-      <HowItWorks />
-      <AboutSection />
-      <DeliverySection />
-      <NewsletterSection />
+      <AnimateOnScroll animation="fade-up">
+        <CategoriesSection categories={categories} />
+      </AnimateOnScroll>
+      <AnimateOnScroll animation="fade-in">
+        <HotovkyBanner />
+      </AnimateOnScroll>
+      <AnimateOnScroll animation="fade-up">
+        <FeaturedProducts products={featuredProducts} />
+      </AnimateOnScroll>
+      <AnimateOnScroll animation="fade-up">
+        <HowItWorks />
+      </AnimateOnScroll>
+      <AnimateOnScroll animation="fade-in">
+        <AboutSection />
+      </AnimateOnScroll>
+      <AnimateOnScroll animation="fade-up">
+        <DeliverySection />
+      </AnimateOnScroll>
+      <AnimateOnScroll animation="fade-in">
+        <NewsletterSection />
+      </AnimateOnScroll>
     </>
   );
 }

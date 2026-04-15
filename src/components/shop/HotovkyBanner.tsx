@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 
 export function HotovkyBanner() {
@@ -5,12 +6,16 @@ export function HotovkyBanner() {
     <section className="py-16 sm:py-24 px-4 sm:px-6 bg-off-white">
       <div className="max-w-7xl mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
-          <div className="relative aspect-[4/3] lg:aspect-[3/2] overflow-hidden rounded-2xl bg-[linear-gradient(135deg,#efe5d9,#d7c0a7)]">
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(204,25,57,0.18),transparent_24%)]" />
-            <div className="absolute bottom-8 left-8 h-36 w-24 rounded-t-[999px] rounded-b-2xl border border-white/50 bg-white/30 backdrop-blur-sm" />
-            <div className="absolute bottom-8 left-24 h-44 w-28 rounded-t-[999px] rounded-b-2xl border border-white/50 bg-white/20 backdrop-blur-sm" />
-            <div className="absolute bottom-8 left-44 h-32 w-24 rounded-t-[999px] rounded-b-2xl border border-white/50 bg-white/25 backdrop-blur-sm" />
-            <div className="absolute right-8 top-8 rounded-full border border-white/60 px-3 py-1 text-[11px] font-medium uppercase tracking-[0.25em] text-white">
+          <div className="relative aspect-[4/3] lg:aspect-[3/2] overflow-hidden rounded-2xl">
+            <Image
+              src="https://soobesyxsijdazjjstyn.supabase.co/storage/v1/object/public/products/categories/hotovky.jpg"
+              alt="Hotová jídla ve sklenici MASI-CO"
+              fill
+              sizes="(max-width: 1024px) 100vw, 50vw"
+              className="object-cover"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
+            <div className="absolute right-4 top-4 rounded-full border border-white/60 bg-black/20 px-4 py-1.5 text-xs font-medium uppercase tracking-[0.25em] text-white backdrop-blur-sm">
               Hotovky
             </div>
           </div>

@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 export function AboutSection() {
   return (
     <section className="py-16 sm:py-24 px-4 sm:px-6">
@@ -39,10 +41,16 @@ export function AboutSection() {
             </div>
           </div>
 
-          <div className="relative aspect-[4/3] overflow-hidden rounded-2xl bg-[linear-gradient(135deg,#efe2e2,#d8d8d8)]">
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(204,25,57,0.18),transparent_26%)]" />
-            <div className="absolute inset-x-6 bottom-8 top-8 rounded-[28px] border border-white/50 bg-white/20 backdrop-blur-[2px]" />
-            <div className="absolute left-12 top-12 rounded-full border border-white/70 px-3 py-1 text-[11px] font-medium uppercase tracking-[0.25em] text-white">
+          <div className="relative aspect-[4/3] overflow-hidden rounded-2xl">
+            <Image
+              src="/assets/hero/about-shop.jpg"
+              alt="Prodejna MASI-CO"
+              fill
+              sizes="(max-width: 1024px) 100vw, 50vw"
+              className="object-cover"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
+            <div className="absolute left-4 bottom-4 rounded-full border border-white/60 bg-black/20 px-4 py-1.5 text-xs font-medium uppercase tracking-[0.25em] text-white backdrop-blur-sm">
               Rodinná firma
             </div>
           </div>

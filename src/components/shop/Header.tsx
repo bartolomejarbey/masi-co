@@ -34,20 +34,20 @@ export function Header({ authEmail, categories = [] }: HeaderProps) {
 
   return (
     <header className="sticky top-0 z-50 border-b border-gray-200 bg-white">
-      <div className="mx-auto flex max-w-7xl items-center justify-between gap-3 px-4 sm:px-6 lg:h-[100px]">
-        <div className="flex h-16 items-center gap-8 lg:h-[100px]">
-          <Link href="/" className="relative block h-24 w-[300px] shrink-0 sm:h-28 sm:w-[350px]">
+      <div className="mx-auto flex max-w-7xl items-center gap-4 px-4 sm:px-6 lg:h-[100px]">
+        <div className="flex h-16 items-center gap-6 lg:h-[100px]">
+          <Link href="/" className="relative block h-20 w-[180px] shrink-0 sm:h-24 sm:w-[220px]">
             <Image
               src="/assets/brand/masico-logo.png"
               alt="MASI-CO"
               fill
-              sizes="350px"
+              sizes="220px"
               className="object-contain object-left"
               priority
             />
           </Link>
 
-          <nav className="hidden items-center gap-6 lg:flex">
+          <nav className="hidden items-center gap-5 lg:flex">
             <div
               className="relative"
               onMouseEnter={() => setSortimentOpen(true)}
@@ -77,7 +77,7 @@ export function Header({ authEmail, categories = [] }: HeaderProps) {
           </nav>
         </div>
 
-        <div className="hidden max-w-[360px] flex-1 xl:block">
+        <div className="hidden min-w-0 max-w-md flex-1 lg:block">
           <SearchBar variant="header" className="w-full" />
         </div>
 
