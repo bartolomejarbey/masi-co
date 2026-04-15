@@ -360,6 +360,49 @@ export async function fetchProductsByCategoryIds(categoryIds: string[], filters:
   return sortProducts(filterProducts(data ?? [], filters.availability ?? "all"), filters.sort ?? "default");
 }
 
+export async function fetchProductsByCategoryIdsPaginated(
+  categoryIds: string[],
+  filters: ProductFilters & { page?: number; perPage?: number } = {}
+): Promise<{ products: Product[]; total: number }> {
+  if (categoryIds.length === 0) {
+    return { products: [], total: 0 };
+  }
+
+  const page = filters.page ?? 1;
+  const perPage = filters.perPage ?? 18;
+  const from = (page - 1) * perPage;
+  const to = from + perPage - 1;
+
+  // Get total count
+  const { count, error: countError } = await db
+    .from("products")
+    .select("id", { count: "exact", head: true })
+    .in("category_id", categoryIds)
+    .eq("is_active", true);
+
+  if (countError) {
+    throw new Error(countError.message);
+  }
+
+  // Get paginated products
+  const { data, error } = await db
+    .from("products")
+    .select("*")
+    .in("category_id", categoryIds)
+    .eq("is_active", true)
+    .order("sort_order")
+    .range(from, to);
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  const filtered = filterProducts(data ?? [], filters.availability ?? "all");
+  const sorted = sortProducts(filtered, filters.sort ?? "default");
+
+  return { products: sorted, total: count ?? 0 };
+}
+
 export async function fetchProductBySlug(slug: string) {
   const { data, error } = await db
     .from("products")
