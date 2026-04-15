@@ -156,9 +156,9 @@ CREATE TABLE orders (
   shipping_method          text NOT NULL DEFAULT 'own_delivery'
                              CHECK (shipping_method IN ('own_delivery', 'zasilkovna', 'ppl')),
   payment_method           text NOT NULL
-                             CHECK (payment_method IN ('cash_on_delivery', 'meal_vouchers', 'online_card', 'apple_pay', 'google_pay')),
+                             CHECK (payment_method IN ('cash_on_delivery', 'bank_transfer', 'meal_vouchers', 'online_card', 'apple_pay', 'google_pay')),
   payment_status           text NOT NULL DEFAULT 'pending'
-                             CHECK (payment_status IN ('pending', 'paid', 'failed', 'refunded')),
+                             CHECK (payment_status IN ('pending', 'paid', 'failed', 'refunded', 'cancelled')),
   order_status             text NOT NULL DEFAULT 'new'
                              CHECK (order_status IN ('new', 'confirmed', 'processing', 'ready', 'delivering', 'delivered', 'cancelled')),
   subtotal                 decimal(10,2) NOT NULL,

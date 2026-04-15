@@ -9,6 +9,9 @@ const heroImages = [
   "/assets/hero/hero-1.jpg",
   "/assets/hero/hero-2.jpg",
   "/assets/hero/hero-3.jpg",
+  "/assets/hero/hero-4.jpg",
+  "/assets/hero/hero-5.jpg",
+  "/assets/hero/hero-6.jpg",
 ];
 
 export function HeroSection() {
@@ -17,7 +20,7 @@ export function HeroSection() {
   useEffect(() => {
     const interval = window.setInterval(() => {
       setActiveIndex((current) => (current + 1) % heroImages.length);
-    }, 3000);
+    }, 5000);
 
     return () => window.clearInterval(interval);
   }, []);

@@ -1,15 +1,25 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/lib/shop";
+import {
+  LayoutDashboard,
+  Package,
+  Beef,
+  FolderTree,
+  Users,
+  Mail,
+  Settings,
+  Store,
+} from "lucide-react";
 
 const navItems = [
-  { href: "/admin", label: "Dashboard", icon: "📊" },
-  { href: "/admin/objednavky", label: "Objednávky", icon: "📦" },
-  { href: "/admin/produkty", label: "Produkty", icon: "🥩" },
-  { href: "/admin/kategorie", label: "Kategorie", icon: "📂" },
-  { href: "/admin/zakaznici", label: "Zákazníci", icon: "👥" },
-  { href: "/admin/newsletter", label: "Newsletter", icon: "✉️" },
-  { href: "/admin/nastaveni", label: "Nastavení", icon: "⚙️" },
+  { href: "/admin", label: "Dashboard", icon: LayoutDashboard },
+  { href: "/admin/objednavky", label: "Objednávky", icon: Package },
+  { href: "/admin/produkty", label: "Produkty", icon: Beef },
+  { href: "/admin/kategorie", label: "Kategorie", icon: FolderTree },
+  { href: "/admin/zakaznici", label: "Zákazníci", icon: Users },
+  { href: "/admin/newsletter", label: "Newsletter", icon: Mail },
+  { href: "/admin/nastaveni", label: "Nastavení", icon: Settings },
 ];
 
 export default async function AdminLayout({ children }: { children: React.ReactNode }) {
@@ -34,15 +44,16 @@ export default async function AdminLayout({ children }: { children: React.ReactN
               href={item.href}
               className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-gray-300 transition-colors hover:bg-gray-800 hover:text-white"
             >
-              <span className="text-base">{item.icon}</span>
+              <item.icon size={18} />
               {item.label}
             </Link>
           ))}
         </nav>
         <div className="mt-auto border-t border-gray-800 p-4">
           <div className="text-xs text-gray-500">{user.email}</div>
-          <Link href="/" className="mt-2 block text-xs text-gray-400 hover:text-white">
-            ← Zpět na e-shop
+          <Link href="/" className="mt-2 flex items-center gap-1.5 text-xs text-gray-400 hover:text-white">
+            <Store size={14} />
+            Zpět na e-shop
           </Link>
         </div>
       </aside>
@@ -60,7 +71,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
                 href={item.href}
                 className="whitespace-nowrap rounded-md bg-gray-100 px-2 py-1 font-medium text-gray-700 hover:bg-gray-200"
               >
-                {item.icon}
+                <item.icon size={16} />
               </Link>
             ))}
           </div>

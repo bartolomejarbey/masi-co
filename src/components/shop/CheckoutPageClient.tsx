@@ -22,7 +22,7 @@ type FormState = {
   billing_company_name: string;
   billing_ico: string;
   billing_dic: string;
-  payment_method: "cash_on_delivery" | "meal_vouchers" | "online_card";
+  payment_method: "cash_on_delivery" | "meal_vouchers" | "online_card" | "bank_transfer";
   note: string;
   termsAccepted: boolean;
 };
@@ -82,14 +82,31 @@ export function CheckoutPageClient({ minOrderAmount }: CheckoutPageClientProps) 
         }),
       });
 
-      const payload = (await response.json()) as { error?: string; orderNumber?: string };
+      const payload = (await response.json()) as {
+        error?: string;
+        orderNumber?: string;
+        redirectUrl?: string;
+        qrCodeUrl?: string;
+      };
 
       if (!response.ok || !payload.orderNumber) {
         throw new Error(payload.error || "Objednávku se nepodařilo uložit.");
       }
 
       clearCart();
-      router.push(`/pokladna/potvrzeni?order=${encodeURIComponent(payload.orderNumber)}`);
+
+      // Comgate online payment — redirect to payment gateway
+      if (payload.redirectUrl) {
+        window.location.href = payload.redirectUrl;
+        return;
+      }
+
+      // Bank transfer — pass QR code URL to confirmation page
+      const params = new URLSearchParams({ order: payload.orderNumber });
+      if (payload.qrCodeUrl) {
+        params.set("qr", payload.qrCodeUrl);
+      }
+      router.push(`/pokladna/potvrzeni?${params.toString()}`);
     } catch (submitError) {
       setError(submitError instanceof Error ? submitError.message : "Objednávku se nepodařilo uložit.");
     } finally {
@@ -255,9 +272,10 @@ export function CheckoutPageClient({ minOrderAmount }: CheckoutPageClientProps) 
               <legend className="text-sm font-medium text-gray-700">Platba</legend>
               <div className="mt-3 grid gap-3 sm:grid-cols-3">
                 {[
-                  { value: "cash_on_delivery", label: "Hotovost" },
+                  { value: "cash_on_delivery", label: "Dobírka" },
+                  { value: "bank_transfer", label: "Převodem" },
                   { value: "meal_vouchers", label: "Stravenky" },
-                  { value: "online_card", label: "Online" },
+                  { value: "online_card", label: "Online kartou" },
                 ].map((option) => (
                   <label
                     key={option.value}

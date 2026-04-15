@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { ProductModal } from "./ProductModal";
 import { formatPrice } from "@/lib/utils";
+import { Search, ImageOff } from "lucide-react";
 import type { Product, Category } from "@/lib/types";
 
 type Props = {
@@ -31,6 +32,7 @@ export function ProductsClient({ products, categories, createAction, updateActio
   const [selected, setSelected] = useState<Set<string>>(new Set());
   const [filterCat, setFilterCat] = useState("");
   const [filterStock, setFilterStock] = useState("");
+  const [search, setSearch] = useState("");
 
   const catMap = Object.fromEntries(categories.map((c) => [c.id, c.name]));
 
@@ -44,6 +46,7 @@ export function ProductsClient({ products, categories, createAction, updateActio
   const filtered = products.filter((p) => {
     if (filterCat && p.category_id !== filterCat) return false;
     if (filterStock && p.stock_status !== filterStock) return false;
+    if (search && !p.name.toLowerCase().includes(search.toLowerCase())) return false;
     return true;
   });
 
@@ -82,8 +85,20 @@ export function ProductsClient({ products, categories, createAction, updateActio
         </button>
       </div>
 
+      {/* Search */}
+      <div className="relative mt-4 max-w-md">
+        <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+        <input
+          type="text"
+          placeholder="Hledat produkt..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          className="w-full rounded-lg border border-gray-300 py-2 pl-9 pr-3 text-sm focus:border-[#CC1939] focus:outline-none"
+        />
+      </div>
+
       {/* Quick stock filter buttons */}
-      <div className="mt-4 flex flex-wrap gap-2">
+      <div className="mt-3 flex flex-wrap gap-2">
         {[
           { key: "", label: "Vše", count: stockCounts.all },
           { key: "in_stock", label: "Skladem", count: stockCounts.in_stock },
@@ -176,7 +191,12 @@ export function ProductsClient({ products, categories, createAction, updateActio
                     />
                   </td>
                   <td className="px-4 py-3">
-                    <div className="font-medium">{product.name}</div>
+                    <div className="flex items-center gap-2">
+                      <span className="font-medium">{product.name}</span>
+                      {!product.image_url && (
+                        <ImageOff size={14} className="text-gray-300" />
+                      )}
+                    </div>
                     {product.badge && (
                       <span className="mt-0.5 inline-block rounded bg-[#CC1939] px-1.5 py-0.5 text-xs text-white">
                         {product.badge}

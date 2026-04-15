@@ -10,6 +10,7 @@ export type ShippingMethod = "own_delivery" | "zasilkovna" | "ppl";
 
 export type PaymentMethod =
   | "cash_on_delivery"
+  | "bank_transfer"
   | "meal_vouchers"
   | "online_card"
   | "apple_pay"

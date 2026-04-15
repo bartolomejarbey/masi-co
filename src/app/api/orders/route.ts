@@ -2,6 +2,9 @@ import { NextResponse } from "next/server";
 import { fetchMinOrderAmount } from "@/lib/shop";
 import { createServerClient } from "@supabase/ssr";
 import { getAdminSupabase, isAdminSupabaseConfigured } from "@/lib/supabase-admin";
+import { createComgatePayment, isComgateConfigured } from "@/lib/comgate";
+import { generateSPDString, getQRCodeUrl } from "@/lib/qr-payment";
+import { sendOrderConfirmation } from "@/lib/email";
 import type { CartItem, Database, PaymentMethod } from "@/lib/types";
 import { ensureCustomerProfile } from "@/lib/shop";
 
@@ -23,7 +26,7 @@ type OrderPayload = {
   items?: CartItem[];
 };
 
-const allowedPaymentMethods: PaymentMethod[] = ["cash_on_delivery", "meal_vouchers", "online_card"];
+const allowedPaymentMethods: PaymentMethod[] = ["cash_on_delivery", "bank_transfer", "meal_vouchers", "online_card"];
 
 export async function POST(request: Request) {
   try {
@@ -192,7 +195,55 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: itemsError.message }, { status: 500 });
     }
 
-    return NextResponse.json({ orderNumber: order.order_number });
+    // Generate QR payment data for bank transfer
+    const spdString = generateSPDString({
+      amount: normalizedSubtotal,
+      orderNumber: order.order_number,
+    });
+    const qrCodeUrl = getQRCodeUrl(spdString);
+
+    // Send confirmation email (non-blocking)
+    sendOrderConfirmation({
+      to: body.email!,
+      orderNumber: order.order_number,
+      firstName: body.first_name!,
+      items: normalizedItems.map((item) => ({
+        name: item.productName,
+        quantity: item.quantity,
+        unitPrice: item.unitPrice,
+        unit: item.unit,
+      })),
+      total: normalizedSubtotal,
+      paymentMethod: body.payment_method!,
+      shippingAddress: `${body.shipping_street}, ${body.shipping_city} ${body.shipping_zip}`,
+      bankTransferSPD: spdString,
+      qrCodeUrl,
+    }).catch((err) => console.error("[EMAIL] Failed to send:", err));
+
+    // For online payment, create Comgate transaction
+    if (body.payment_method === "online_card" && isComgateConfigured()) {
+      const comgateResult = await createComgatePayment({
+        orderId: order.id,
+        orderNumber: order.order_number,
+        totalCZK: normalizedSubtotal,
+        email: body.email!,
+      });
+
+      if (comgateResult.ok) {
+        return NextResponse.json({
+          orderNumber: order.order_number,
+          redirectUrl: comgateResult.redirectUrl,
+        });
+      }
+
+      // Comgate failed — order still created, just no redirect
+      console.error("[Comgate] Payment creation failed:", comgateResult.error);
+    }
+
+    return NextResponse.json({
+      orderNumber: order.order_number,
+      qrCodeUrl: body.payment_method === "bank_transfer" ? qrCodeUrl : undefined,
+    });
   } catch (error) {
     return NextResponse.json(
       { error: error instanceof Error ? error.message : "Neočekávaná chyba při vytváření objednávky." },
