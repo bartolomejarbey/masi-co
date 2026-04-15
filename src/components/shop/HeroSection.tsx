@@ -49,7 +49,7 @@ export function HeroSection() {
           <div className="mb-6 flex items-center gap-2">
             <span className="h-2 w-2 rounded-full bg-primary" />
             <span className="text-xs font-medium uppercase tracking-[0.2em] text-gray-300 sm:text-sm">
-              Online řeznictví
+              MASI-CO maso s respektem
             </span>
           </div>
 

@@ -10,8 +10,8 @@ import { MegaMenu } from "./MegaMenu";
 import type { CategoryWithChildren } from "@/lib/types";
 
 const navLinks = [
-  { href: "/produkty/hotovky", label: "Hotovky" },
   { href: "/jak-nakupovat", label: "Jak nakupovat" },
+  { href: "/obchodni-podminky", label: "Obchodní podmínky" },
   { href: "/kontakt", label: "Kontakt" },
 ];
 
@@ -83,11 +83,11 @@ export function Header({ authEmail, categories = [] }: HeaderProps) {
 
         <div className="hidden items-center gap-3 lg:flex">
           <a
-            href="tel:+420123456789"
+            href="tel:+420222533001"
             className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-red-50 px-4 py-2.5 text-sm font-semibold text-primary transition-colors hover:bg-primary hover:text-white"
           >
             <Phone size={16} />
-            <span>+420 123 456 789</span>
+            <span>+420 222 533 001</span>
           </a>
 
           <Link
@@ -114,7 +114,7 @@ export function Header({ authEmail, categories = [] }: HeaderProps) {
 
         <div className="flex items-center gap-3 lg:hidden">
           <a
-            href="tel:+420123456789"
+            href="tel:+420222533001"
             className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-primary text-white transition-colors hover:bg-primary-dark"
             aria-label="Zavolat na MASI-CO"
           >
@@ -150,11 +150,11 @@ export function Header({ authEmail, categories = [] }: HeaderProps) {
             <SearchBar variant="inline" className="w-full" />
 
             <a
-              href="tel:+420123456789"
+              href="tel:+420222533001"
               className="inline-flex w-full items-center justify-center gap-2 rounded-2xl bg-primary px-4 py-3 text-sm font-semibold text-white transition-colors hover:bg-primary-dark"
             >
               <Phone size={16} />
-              Zavolat: +420 123 456 789
+              Zavolat: +420 222 533 001
             </a>
 
             <div className="rounded-2xl border border-gray-200 px-4 py-3">

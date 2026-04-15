@@ -251,7 +251,7 @@ export default function ObchodniPodminkyPage() {
               </div>
               <p>V Praze dne 15. 3. 2026</p>
               <div className="space-y-1">
-                <p>Adam Slezák</p>
+                <p>Miroslav Slezák</p>
                 <p>jednatel společnosti</p>
                 <p>Masi-co s.r.o.</p>
               </div>

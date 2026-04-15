@@ -19,10 +19,19 @@ export default function KontaktPage() {
           <h2 className="font-display text-2xl font-bold">Kontaktní údaje</h2>
           <div className="mt-6 space-y-5 text-sm leading-7 text-gray-700">
             <div>
-              <p className="font-semibold text-black">Adresa</p>
+              <p className="font-semibold text-black">Sídlo</p>
               <p>
                 Masi-co s.r.o.
                 <br />
+                Jana Zajíce 563/20
+                <br />
+                170 00 Praha 7
+              </p>
+              <p className="mt-1">IČ: 28402979 | DIČ: CZ28402979</p>
+            </div>
+            <div>
+              <p className="font-semibold text-black">Provozovna</p>
+              <p>
                 Zahradní 466
                 <br />
                 250 64 Měšice, Praha-východ
@@ -30,15 +39,19 @@ export default function KontaktPage() {
             </div>
             <div>
               <p className="font-semibold text-black">E-mail</p>
-              <a href="mailto:info@masi-co.cz" className="text-primary transition-colors hover:text-primary-dark">
-                info@masi-co.cz
+              <a href="mailto:objednavky@masi-co.com" className="text-primary transition-colors hover:text-primary-dark">
+                objednavky@masi-co.com
               </a>
             </div>
             <div>
               <p className="font-semibold text-black">Telefon</p>
-              <a href="tel:+420123456789" className="text-primary transition-colors hover:text-primary-dark">
-                +420 123 456 789
+              <a href="tel:+420222533001" className="text-primary transition-colors hover:text-primary-dark">
+                +420 222 533 001
               </a>
+            </div>
+            <div>
+              <p className="font-semibold text-black">Jednatel</p>
+              <p>Miroslav Slezák</p>
             </div>
           </div>
         </div>

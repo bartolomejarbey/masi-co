@@ -4,9 +4,9 @@ import { Facebook, Globe, Instagram, Music2 } from "lucide-react";
 
 export function Footer() {
   const socialLinks = [
-    { href: "https://masi-co.cz", label: "Facebook", icon: Facebook },
-    { href: "https://masi-co.cz", label: "Instagram", icon: Instagram },
-    { href: "https://masi-co.cz", label: "TikTok", icon: Music2 },
+    { href: "#", label: "Facebook", icon: Facebook },
+    { href: "#", label: "Instagram", icon: Instagram },
+    { href: "#", label: "TikTok", icon: Music2 },
     { href: "https://masi-co.cz", label: "Web", icon: Globe },
   ];
 
@@ -26,12 +26,15 @@ export function Footer() {
               />
             </Link>
             <p className="text-gray-400 text-sm mt-3 leading-relaxed">
-              Řeznictví s tradicí. Maso s respektem.
+              MASI-CO maso s respektem
             </p>
             <div className="text-gray-500 text-sm mt-4 space-y-1">
               <p>Masi-co s.r.o.</p>
-              <p>Zahradní 466</p>
-              <p>250 64 Měšice, Praha-východ</p>
+              <p className="font-medium text-gray-400">Sídlo:</p>
+              <p>Jana Zajíce 563/20, 170 00 Praha 7</p>
+              <p>IČ: 28402979 | DIČ: CZ28402979</p>
+              <p className="font-medium text-gray-400 mt-2">Provozovna:</p>
+              <p>Zahradní 466, 250 64 Měšice, Praha-východ</p>
             </div>
           </div>
 
@@ -47,7 +50,9 @@ export function Footer() {
                 { href: "/produkty/uzene-maso", label: "Uzené maso" },
                 { href: "/produkty/ostatni-maso", label: "Ostatní maso" },
                 { href: "/produkty/zverina", label: "Zvěřina" },
+                { href: "/produkty/ryby", label: "Ryby" },
                 { href: "/produkty/uzeniny", label: "Uzeniny" },
+                { href: "/produkty/ostatni-sortiment", label: "Ostatní sortiment" },
               ].map((item) => (
                 <li key={item.href}>
                   <Link
@@ -94,19 +99,22 @@ export function Footer() {
             <ul className="space-y-2.5 text-sm">
               <li>
                 <a
-                  href="mailto:info@masi-co.cz"
+                  href="mailto:objednavky@masi-co.com"
                   className="text-gray-400 hover:text-white transition-colors"
                 >
-                  info@masi-co.cz
+                  objednavky@masi-co.com
                 </a>
               </li>
               <li>
                 <a
-                  href="tel:+420123456789"
+                  href="tel:+420222533001"
                   className="text-gray-400 hover:text-white transition-colors"
                 >
-                  +420 123 456 789
+                  +420 222 533 001
                 </a>
+              </li>
+              <li className="text-gray-500 text-xs mt-2">
+                Č. účtu: 43-2367040227/0100
               </li>
             </ul>
             <div className="flex items-center gap-4 mt-6">

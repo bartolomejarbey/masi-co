@@ -426,8 +426,8 @@ export async function fetchContactSettings(): Promise<ContactSettings> {
     (addressData?.value as { company?: string; street?: string; zip?: string; city?: string } | null) ?? {};
 
   return {
-    email: contact.email ?? "info@masi-co.cz",
-    phone: contact.phone ?? "+420 123 456 789",
+    email: contact.email ?? "objednavky@masi-co.com",
+    phone: contact.phone ?? "+420 222 533 001",
     company: address.company ?? "Masi-co s.r.o.",
     street: address.street ?? "Zahradní 466",
     zip: address.zip ?? "250 64",
