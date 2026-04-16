@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { ChevronDown, ChevronRight, Menu, Phone, ShoppingCart, User, X } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useCart } from "./CartProvider";
 import { SearchBar } from "./SearchBar";
 import { MegaMenu } from "./MegaMenu";
@@ -23,13 +23,51 @@ interface HeaderProps {
 export function Header({ authEmail, categories = [] }: HeaderProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [sortimentOpen, setSortimentOpen] = useState(false);
+  const [sortimentLocked, setSortimentLocked] = useState(false);
   const [expandedCategory, setExpandedCategory] = useState<string | null>(null);
   const { getItemCount } = useCart();
   const itemCount = getItemCount();
   const isAuthenticated = Boolean(authEmail);
+  const sortimentRef = useRef<HTMLDivElement>(null);
+
+  // Close on click outside when locked
+  useEffect(() => {
+    if (!sortimentLocked) return;
+    function handleClickOutside(e: MouseEvent) {
+      if (sortimentRef.current && !sortimentRef.current.contains(e.target as Node)) {
+        setSortimentLocked(false);
+        setSortimentOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [sortimentLocked]);
 
   const toggleMobileCategory = (catId: string) => {
     setExpandedCategory((prev) => (prev === catId ? null : catId));
+  };
+
+  const handleSortimentClick = () => {
+    if (sortimentLocked) {
+      setSortimentLocked(false);
+      setSortimentOpen(false);
+    } else {
+      setSortimentLocked(true);
+      setSortimentOpen(true);
+    }
+  };
+
+  const handleSortimentMouseEnter = () => {
+    if (!sortimentLocked) setSortimentOpen(true);
+  };
+
+  const handleSortimentMouseLeave = () => {
+    if (!sortimentLocked) setSortimentOpen(false);
+  };
+
+  const handleMegaMenuClose = () => {
+    setSortimentOpen(false);
+    setSortimentLocked(false);
   };
 
   return (
@@ -49,11 +87,17 @@ export function Header({ authEmail, categories = [] }: HeaderProps) {
 
           <nav className="hidden items-center gap-5 lg:flex">
             <div
+              ref={sortimentRef}
               className="relative"
-              onMouseEnter={() => setSortimentOpen(true)}
-              onMouseLeave={() => setSortimentOpen(false)}
+              onMouseEnter={handleSortimentMouseEnter}
+              onMouseLeave={handleSortimentMouseLeave}
             >
-              <button className="flex items-center gap-1 py-2 text-sm font-medium text-black transition-colors hover:text-primary">
+              <button
+                onClick={handleSortimentClick}
+                className={`flex items-center gap-1 py-2 text-sm font-medium transition-colors hover:text-primary ${
+                  sortimentLocked ? "text-primary bg-red-50 rounded-lg px-3" : "text-black"
+                }`}
+              >
                 Sortiment
                 <ChevronDown size={14} className={`transition-transform ${sortimentOpen ? "rotate-180" : ""}`} />
               </button>
@@ -61,7 +105,7 @@ export function Header({ authEmail, categories = [] }: HeaderProps) {
               <MegaMenu
                 categories={categories}
                 isOpen={sortimentOpen}
-                onClose={() => setSortimentOpen(false)}
+                onClose={handleMegaMenuClose}
               />
             </div>
 

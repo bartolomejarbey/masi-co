@@ -7,6 +7,7 @@ import { HowItWorks } from "@/components/shop/HowItWorks";
 import { AboutSection } from "@/components/shop/AboutSection";
 import { DeliverySection } from "@/components/shop/DeliverySection";
 import { NewsletterSection } from "@/components/shop/NewsletterSection";
+import { OrderProcessAnimation } from "@/components/shop/OrderProcessAnimation";
 import { AnimateOnScroll } from "@/components/shop/AnimateOnScroll";
 import { supabase } from "@/lib/supabase";
 import type { Category, Product } from "@/lib/types";
@@ -103,6 +104,9 @@ export default async function HomePage() {
       </AnimateOnScroll>
       <AnimateOnScroll animation="fade-up">
         <DeliverySection />
+      </AnimateOnScroll>
+      <AnimateOnScroll animation="fade-up">
+        <OrderProcessAnimation />
       </AnimateOnScroll>
       <AnimateOnScroll animation="fade-in">
         <NewsletterSection />

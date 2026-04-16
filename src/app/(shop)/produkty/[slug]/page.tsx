@@ -28,6 +28,7 @@ type CategoryPageProps = {
     sort?: string;
     availability?: string;
     page?: string;
+    sub?: string;
   };
 };
 
@@ -43,6 +44,7 @@ export default async function KategoriePage({ params, searchParams }: CategoryPa
   const sort = (searchParams?.sort as ProductSort) || "default";
   const availability = (searchParams?.availability as AvailabilityFilter) || "all";
   const page = Math.max(1, parseInt(searchParams?.page ?? "1", 10) || 1);
+  const activeSub = searchParams?.sub || "all";
 
   const [allCategories, subcategories] = await Promise.all([
     fetchAllCategories(),
@@ -55,10 +57,16 @@ export default async function KategoriePage({ params, searchParams }: CategoryPa
     .filter((item) => item.parent_id === null)
     .sort((a, b) => a.sort_order - b.sort_order);
 
-  // Collect all relevant category IDs (parent + subcategories)
-  const categoryIds = typedSubcategories.length > 0
-    ? typedSubcategories.map((sc) => sc.id)
-    : [category.id];
+  // Determine which category IDs to fetch products from
+  let categoryIds: string[];
+  if (activeSub !== "all" && typedSubcategories.length > 0) {
+    const selectedSub = typedSubcategories.find((sc) => sc.slug === activeSub);
+    categoryIds = selectedSub ? [selectedSub.id] : [category.id];
+  } else if (typedSubcategories.length > 0) {
+    categoryIds = typedSubcategories.map((sc) => sc.id);
+  } else {
+    categoryIds = [category.id];
+  }
 
   const { products, total } = await fetchProductsByCategoryIdsPaginated(categoryIds, {
     sort,
@@ -73,6 +81,17 @@ export default async function KategoriePage({ params, searchParams }: CategoryPa
   const paginationParams: Record<string, string> = {};
   if (sort !== "default") paginationParams.sort = sort;
   if (availability !== "all") paginationParams.availability = availability;
+  if (activeSub !== "all") paginationParams.sub = activeSub;
+
+  // Build subcategory filter URL helper
+  const buildSubUrl = (subSlug: string) => {
+    const p = new URLSearchParams();
+    if (sort !== "default") p.set("sort", sort);
+    if (availability !== "all") p.set("availability", availability);
+    if (subSlug !== "all") p.set("sub", subSlug);
+    const qs = p.toString();
+    return `/produkty/${params.slug}${qs ? `?${qs}` : ""}`;
+  };
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:py-14">
@@ -89,7 +108,7 @@ export default async function KategoriePage({ params, searchParams }: CategoryPa
 
       {/* Category navigation + filters */}
       <div className="mt-6 flex flex-col gap-6">
-        {/* Category pills */}
+        {/* Root category pills */}
         <div className="flex flex-wrap gap-2">
           {rootCategories.map((rootCategory) => (
             <Link
@@ -105,6 +124,35 @@ export default async function KategoriePage({ params, searchParams }: CategoryPa
             </Link>
           ))}
         </div>
+
+        {/* Subcategory filter pills */}
+        {typedSubcategories.length > 0 && (
+          <div className="flex flex-wrap gap-2">
+            <Link
+              href={buildSubUrl("all")}
+              className={`rounded-full border px-3.5 py-1.5 text-sm font-medium transition-all ${
+                activeSub === "all"
+                  ? "border-gray-900 bg-gray-900 text-white shadow-sm"
+                  : "border-gray-200 bg-white text-gray-600 hover:border-gray-400 hover:text-gray-900"
+              }`}
+            >
+              Vše
+            </Link>
+            {typedSubcategories.map((sub) => (
+              <Link
+                key={sub.id}
+                href={buildSubUrl(sub.slug)}
+                className={`rounded-full border px-3.5 py-1.5 text-sm font-medium transition-all ${
+                  activeSub === sub.slug
+                    ? "border-primary bg-primary text-white shadow-sm"
+                    : "border-gray-200 bg-white text-gray-600 hover:border-primary/40 hover:text-primary"
+                }`}
+              >
+                {sub.name}
+              </Link>
+            ))}
+          </div>
+        )}
 
         {/* Sort & filter */}
         <form className="flex flex-wrap items-end gap-3">

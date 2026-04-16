@@ -43,8 +43,8 @@ export function AboutSection() {
 
           <div className="relative aspect-[4/3] overflow-hidden rounded-2xl">
             <Image
-              src="/assets/hero/about-shop.jpg"
-              alt="Prodejna MASI-CO"
+              src="/assets/hero/onas.jpg"
+              alt="MASI-CO tým"
               fill
               sizes="(max-width: 1024px) 100vw, 50vw"
               className="object-cover"
