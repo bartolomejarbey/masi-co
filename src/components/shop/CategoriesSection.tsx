@@ -89,10 +89,10 @@ export function CategoriesSection({ categories }: CategoriesSectionProps) {
         {/* Section header */}
         <div className="text-center mb-12">
           <p className="text-xs uppercase tracking-[0.2em] font-medium text-primary mb-3">
-            Sortiment
+            Produkty
           </p>
           <h2 className="font-display text-3xl sm:text-4xl font-bold mb-3">
-            Náš sortiment
+            Naše produkty
           </h2>
           <p className="text-gray-500 text-sm sm:text-base max-w-lg mx-auto">
             Vybírejte z široké nabídky čerstvého masa, hotových jídel a dalších specialit.

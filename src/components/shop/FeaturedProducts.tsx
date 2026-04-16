@@ -29,7 +29,7 @@ export function FeaturedProducts({ products }: FeaturedProductsProps) {
             href="/produkty"
             className="text-sm font-medium text-primary hover:text-primary-dark transition-colors inline-flex items-center gap-1 shrink-0"
           >
-            Celý sortiment
+            Všechny produkty
             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
             </svg>

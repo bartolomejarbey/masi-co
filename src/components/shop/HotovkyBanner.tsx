@@ -6,13 +6,13 @@ export function HotovkyBanner() {
     <section className="py-16 sm:py-24 px-4 sm:px-6 bg-off-white">
       <div className="max-w-7xl mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
-          <div className="relative aspect-[4/3] lg:aspect-[3/2] overflow-hidden rounded-2xl">
+          <div className="relative aspect-[3/4] sm:aspect-[4/3] lg:aspect-[3/2] overflow-hidden rounded-2xl bg-gray-800">
             <Image
               src="https://soobesyxsijdazjjstyn.supabase.co/storage/v1/object/public/products/categories/hotovky.jpg"
               alt="Hotová jídla ve sklenici MASI-CO"
               fill
               sizes="(max-width: 1024px) 100vw, 50vw"
-              className="object-contain"
+              className="object-contain sm:object-cover"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
             <div className="absolute right-4 top-4 rounded-full border border-white/60 bg-black/20 px-4 py-1.5 text-xs font-medium uppercase tracking-[0.25em] text-white backdrop-blur-sm">

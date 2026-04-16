@@ -186,7 +186,7 @@ export function DeliverySection() {
         </div>
 
         {/* ── CTAs ── */}
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-3 sm:gap-4">
           <Link
             href="/produkty"
             className="inline-flex items-center justify-center gap-2 bg-primary text-white px-8 py-3.5 rounded-lg text-sm font-semibold transition-colors hover:bg-primary-dark"

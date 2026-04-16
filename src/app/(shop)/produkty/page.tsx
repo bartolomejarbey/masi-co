@@ -49,7 +49,7 @@ export default async function NaseProduktyPage() {
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_20%,rgba(204,25,57,0.06),transparent_50%)]" />
         <div className="relative mx-auto max-w-7xl px-4 py-20 sm:px-6 sm:py-28 lg:py-36">
           <p className="text-sm font-medium uppercase tracking-[0.25em] text-primary">
-            MASI-CO Sortiment
+            MASI-CO Produkty
           </p>
           <h1 className="mt-4 font-display text-4xl font-bold leading-tight sm:text-5xl lg:text-6xl">
             Naše produkty

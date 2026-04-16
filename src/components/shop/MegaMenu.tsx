@@ -61,7 +61,7 @@ export function MegaMenu({ categories, isOpen, onClose }: MegaMenuProps) {
               onClick={onClose}
               className="block rounded-xl px-3 py-2.5 text-sm font-semibold text-primary transition-colors hover:bg-red-50"
             >
-              Celý sortiment
+              Všechny produkty
             </Link>
           </div>
         </div>

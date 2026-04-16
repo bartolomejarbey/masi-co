@@ -237,7 +237,7 @@ export default function JakNakupovatPage() {
               href="/produkty"
               className="inline-flex rounded-md bg-primary px-8 py-4 text-sm font-medium uppercase tracking-wider text-white transition-colors hover:bg-primary-dark"
             >
-              Prohlédnout sortiment
+              Prohlédnout produkty
             </Link>
             <Link
               href="/kontakt"

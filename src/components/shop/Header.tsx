@@ -98,7 +98,7 @@ export function Header({ authEmail, categories = [] }: HeaderProps) {
                   sortimentLocked ? "text-primary bg-red-50 rounded-lg px-3" : "text-black"
                 }`}
               >
-                Sortiment
+                Produkty
                 <ChevronDown size={14} className={`transition-transform ${sortimentOpen ? "rotate-180" : ""}`} />
               </button>
 
@@ -202,7 +202,7 @@ export function Header({ authEmail, categories = [] }: HeaderProps) {
             </a>
 
             <div className="rounded-2xl border border-gray-200 px-4 py-3">
-              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">Sortiment</p>
+              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">Produkty</p>
               <div className="mt-3 space-y-1">
                 {categories.map((cat) => (
                   <div key={cat.id}>

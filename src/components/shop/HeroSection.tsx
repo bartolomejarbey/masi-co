@@ -75,7 +75,7 @@ export function HeroSection() {
               href="/produkty"
               className="inline-flex w-full items-center justify-center rounded-md bg-primary px-8 py-4 text-sm font-medium uppercase tracking-wider text-white transition-colors hover:bg-primary-dark focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white sm:w-auto"
             >
-              Prohlédnout sortiment
+              Prohlédnout produkty
             </Link>
             <Link
               href="/jak-nakupovat"

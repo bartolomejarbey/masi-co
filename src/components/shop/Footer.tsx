@@ -41,7 +41,7 @@ export function Footer() {
           {/* Col 2 — Sortiment */}
           <div>
             <h3 className="text-xs font-medium text-gray-400 uppercase tracking-wider mb-4">
-              Sortiment
+              Produkty
             </h3>
             <ul className="space-y-2.5">
               {[
