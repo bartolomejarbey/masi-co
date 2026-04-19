@@ -109,7 +109,7 @@ export function SettingsClient({ settings, updateAction }: Props) {
 
   return (
     <div className="p-6 lg:p-8">
-      <h1 className="font-display text-3xl font-bold">Nastavení</h1>
+      <h1 className="font-display text-2xl font-bold text-gray-900">Nastavení</h1>
       <p className="mt-1 text-sm text-gray-500">Konfigurace e-shopu MASI-CO</p>
 
       <div className="mt-6 space-y-6">
@@ -128,20 +128,20 @@ export function SettingsClient({ settings, updateAction }: Props) {
                       name={field.name}
                       rows={2}
                       defaultValue={getFieldValue(config.key, field.name)}
-                      className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-[#CC1939] focus:outline-none"
+                      className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-primary focus:outline-none"
                     />
                   ) : (
                     <input
                       name={field.name}
                       type={field.type}
                       defaultValue={getFieldValue(config.key, field.name)}
-                      className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-[#CC1939] focus:outline-none"
+                      className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-primary focus:outline-none"
                     />
                   )}
                 </div>
               ))}
               <div className="flex items-center gap-3">
-                <button type="submit" className="rounded-lg bg-black px-4 py-2 text-sm font-medium text-white hover:bg-[#CC1939]">
+                <button type="submit" className="rounded-lg bg-gray-900 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-primary">
                   Uložit
                 </button>
                 {saved === config.key && (
