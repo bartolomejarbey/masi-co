@@ -1,63 +1,91 @@
-import Image from "next/image";
 import Link from "next/link";
-import { Facebook, Globe, Instagram, Music2 } from "lucide-react";
+import { Phone, Mail, MapPin, Truck } from "lucide-react";
+
+const sortimentLinks = [
+  { href: "/sortiment/maso", label: "Maso" },
+  { href: "/sortiment/hotovky", label: "Hotová jídla" },
+  { href: "/sortiment/uzene-maso", label: "Uzené speciality" },
+  { href: "/sortiment/uzeniny", label: "Uzeniny" },
+  { href: "/sortiment/zverina", label: "Zvěřina" },
+  { href: "/sortiment/ryby", label: "Ryby" },
+  { href: "/sortiment/ostatni-sortiment", label: "Ostatní sortiment" },
+];
+
+const infoLinks = [
+  { href: "/jak-nakupovat", label: "Jak nakupovat" },
+  { href: "/o-nas", label: "O nás" },
+  { href: "/kontakt", label: "Kontakt" },
+  { href: "/obchodni-podminky", label: "Obchodní podmínky" },
+  { href: "/ochrana-udaju", label: "Ochrana osobních údajů" },
+  { href: "/prihlaseni", label: "Přihlášení / Registrace" },
+];
 
 export function Footer() {
-  const socialLinks = [
-    { href: "#", label: "Facebook", icon: Facebook },
-    { href: "#", label: "Instagram", icon: Instagram },
-    { href: "#", label: "TikTok", icon: Music2 },
-    { href: "https://masi-co.cz", label: "Web", icon: Globe },
-  ];
-
   return (
-    <footer className="bg-black text-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12 sm:py-16">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
-          {/* Col 1 — Logo & info */}
+    <footer className="bg-[#111] text-white">
+      {/* Delivery banner */}
+      <div className="border-b border-white/10">
+        <div className="mx-auto flex max-w-7xl items-center justify-center gap-2 px-4 py-3.5 text-sm sm:px-6">
+          <Truck size={16} className="shrink-0 text-primary" />
+          <span className="text-gray-300">
+            Doprava zdarma od 1 000 Kč — vlastní chlazený rozvoz po Praze a okolí
+          </span>
+        </div>
+      </div>
+
+      {/* Main footer */}
+      <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 sm:py-16">
+        <div className="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-4">
+          {/* Col 1 — Brand */}
           <div>
-            <Link href="/" className="relative block h-24 w-[296px]">
-              <Image
-                src="/assets/brand/masico-logo.png"
-                alt="MASI-CO"
-                fill
-                sizes="296px"
-                className="object-contain object-left brightness-0 invert"
-              />
+            <Link
+              href="/"
+              className="inline-block font-display text-2xl font-bold"
+            >
+              <span className="text-white">MASI</span>
+              <span className="text-primary">-CO</span>
             </Link>
-            <p className="text-gray-400 text-sm mt-3 leading-relaxed">
-              MASI-CO maso s respektem
+            <p className="mt-3 text-sm leading-relaxed text-gray-400">
+              Poctivé řeznictví s vlastním rozvozem. Čerstvé maso od českých
+              dodavatelů přímo k vám domů.
             </p>
-            <div className="text-gray-500 text-sm mt-4 space-y-1">
-              <p>Masi-co s.r.o.</p>
-              <p className="font-medium text-gray-400">Sídlo:</p>
-              <p>Jana Zajíce 563/20, 170 00 Praha 7</p>
-              <p>IČ: 28402979 | DIČ: CZ28402979</p>
-              <p className="font-medium text-gray-400 mt-2">Provozovna:</p>
-              <p>Zahradní 466, 250 64 Měšice, Praha-východ</p>
+            <div className="mt-5 space-y-2.5 text-sm text-gray-500">
+              <div className="flex items-start gap-2">
+                <MapPin size={14} className="mt-0.5 shrink-0 text-gray-600" />
+                <span>Zahradní 466, 250 64 Měšice</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Phone size={14} className="shrink-0 text-gray-600" />
+                <a
+                  href="tel:+420222533001"
+                  className="transition-colors hover:text-white"
+                >
+                  +420 222 533 001
+                </a>
+              </div>
+              <div className="flex items-center gap-2">
+                <Mail size={14} className="shrink-0 text-gray-600" />
+                <a
+                  href="mailto:objednavky@masi-co.com"
+                  className="transition-colors hover:text-white"
+                >
+                  objednavky@masi-co.com
+                </a>
+              </div>
             </div>
           </div>
 
           {/* Col 2 — Sortiment */}
           <div>
-            <h3 className="text-xs font-medium text-gray-400 uppercase tracking-wider mb-4">
-              Produkty
+            <h3 className="mb-4 text-xs font-semibold uppercase tracking-[0.15em] text-gray-400">
+              Sortiment
             </h3>
             <ul className="space-y-2.5">
-              {[
-                { href: "/sortiment/hotovky", label: "Hotovky" },
-                { href: "/sortiment/maso", label: "Maso" },
-                { href: "/sortiment/uzene-maso", label: "Uzené maso" },
-                { href: "/sortiment/ostatni-maso", label: "Ostatní maso" },
-                { href: "/sortiment/zverina", label: "Zvěřina" },
-                { href: "/sortiment/ryby", label: "Ryby" },
-                { href: "/sortiment/uzeniny", label: "Uzeniny" },
-                { href: "/sortiment/ostatni-sortiment", label: "Ostatní sortiment" },
-              ].map((item) => (
+              {sortimentLinks.map((item) => (
                 <li key={item.href}>
                   <Link
                     href={item.href}
-                    className="text-sm text-gray-400 hover:text-white transition-colors"
+                    className="text-sm text-gray-400 transition-colors hover:text-white"
                   >
                     {item.label}
                   </Link>
@@ -68,21 +96,15 @@ export function Footer() {
 
           {/* Col 3 — Informace */}
           <div>
-            <h3 className="text-xs font-medium text-gray-400 uppercase tracking-wider mb-4">
+            <h3 className="mb-4 text-xs font-semibold uppercase tracking-[0.15em] text-gray-400">
               Informace
             </h3>
             <ul className="space-y-2.5">
-              {[
-                { href: "/jak-nakupovat", label: "Jak nakupovat" },
-                { href: "/obchodni-podminky", label: "Obchodní podmínky" },
-                { href: "/ochrana-udaju", label: "Ochrana osobních údajů" },
-                { href: "/prihlaseni", label: "Přihlášení" },
-                { href: "/kontakt", label: "Kontakt" },
-              ].map((item) => (
+              {infoLinks.map((item) => (
                 <li key={item.href}>
                   <Link
                     href={item.href}
-                    className="text-sm text-gray-400 hover:text-white transition-colors"
+                    className="text-sm text-gray-400 transition-colors hover:text-white"
                   >
                     {item.label}
                   </Link>
@@ -91,66 +113,44 @@ export function Footer() {
             </ul>
           </div>
 
-          {/* Col 4 — Kontakt */}
+          {/* Col 4 — Kontakt & Legal */}
           <div>
-            <h3 className="text-xs font-medium text-gray-400 uppercase tracking-wider mb-4">
-              Kontakt
+            <h3 className="mb-4 text-xs font-semibold uppercase tracking-[0.15em] text-gray-400">
+              Fakturační údaje
             </h3>
-            <ul className="space-y-2.5 text-sm">
-              <li>
-                <a
-                  href="mailto:objednavky@masi-co.com"
-                  className="text-gray-400 hover:text-white transition-colors"
-                >
-                  objednavky@masi-co.com
-                </a>
-              </li>
-              <li>
-                <a
-                  href="tel:+420222533001"
-                  className="text-gray-400 hover:text-white transition-colors"
-                >
-                  +420 222 533 001
-                </a>
-              </li>
-              <li className="text-gray-500 text-xs mt-2">
-                Č. účtu: 43-2367040227/0100
-              </li>
-            </ul>
-            <div className="flex items-center gap-4 mt-6">
-              {socialLinks.map((item) => {
-                const Icon = item.icon;
-
-                return (
-                  <a
-                    key={item.label}
-                    href={item.href}
-                    aria-label={item.label}
-                    className="flex h-9 w-9 items-center justify-center rounded-full border border-gray-700 text-gray-500 transition-colors hover:border-gray-400 hover:text-white"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <Icon size={15} />
-                  </a>
-                );
-              })}
+            <div className="space-y-1.5 text-sm text-gray-500">
+              <p className="font-medium text-gray-300">Masi-co s.r.o.</p>
+              <p>Jana Zajíce 563/20</p>
+              <p>170 00 Praha 7</p>
+              <p className="mt-2">IČ: 28402979</p>
+              <p>DIČ: CZ28402979</p>
+              <p className="mt-2 text-xs">Č. účtu: 43-2367040227/0100</p>
             </div>
           </div>
         </div>
+      </div>
 
-        {/* Bottom bar */}
-        <div className="border-t border-gray-800 mt-12 pt-6 flex flex-col sm:flex-row items-center justify-between gap-3">
-          <p className="text-xs text-gray-500">
-            2026 Masi-co s.r.o. | Ceny s DPH
+      {/* Bottom bar */}
+      <div className="border-t border-white/10">
+        <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-3 px-4 py-5 sm:flex-row sm:px-6">
+          <p className="text-xs text-gray-600">
+            &copy; {new Date().getFullYear()} Masi-co s.r.o. Všechny ceny jsou
+            uvedeny včetně DPH.
           </p>
-          <a
-            href="https://masi-co.cz"
-            className="text-xs text-gray-500 hover:text-gray-300 transition-colors"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            masi-co.cz
-          </a>
+          <div className="flex items-center gap-4 text-xs text-gray-600">
+            <Link
+              href="/obchodni-podminky"
+              className="transition-colors hover:text-gray-300"
+            >
+              Podmínky
+            </Link>
+            <Link
+              href="/ochrana-udaju"
+              className="transition-colors hover:text-gray-300"
+            >
+              GDPR
+            </Link>
+          </div>
         </div>
       </div>
     </footer>
