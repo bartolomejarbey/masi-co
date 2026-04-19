@@ -12,7 +12,7 @@ export function HotovkyBanner() {
               alt="Hotová jídla ve sklenici MASI-CO"
               fill
               sizes="(max-width: 1024px) 100vw, 50vw"
-              className="object-contain sm:object-cover"
+              className="object-contain"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
             <div className="absolute right-4 top-4 rounded-full border border-white/60 bg-black/20 px-4 py-1.5 text-xs font-medium uppercase tracking-[0.25em] text-white backdrop-blur-sm">
