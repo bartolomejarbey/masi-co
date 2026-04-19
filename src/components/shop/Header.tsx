@@ -16,7 +16,6 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { useCart } from "./CartProvider";
 import { MegaMenu } from "./MegaMenu";
-import { CategoryBar } from "./CategoryBar";
 import type { CategoryWithChildren } from "@/lib/types";
 
 const navLinks = [
@@ -256,10 +255,6 @@ export function Header({ authEmail, categories = [] }: HeaderProps) {
           </div>
         </div>
 
-        {/* Category Bar — desktop only */}
-        <div className="hidden lg:block">
-          <CategoryBar categories={categories} />
-        </div>
       </header>
 
       {/* Search Overlay */}

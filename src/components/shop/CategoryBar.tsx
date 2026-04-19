@@ -32,6 +32,9 @@ interface CategoryBarProps {
 export function CategoryBar({ categories }: CategoryBarProps) {
   const pathname = usePathname();
 
+  // Hide on homepage
+  if (pathname === "/") return null;
+
   return (
     <div className="border-t border-gray-100 bg-[#FAFAFA]">
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
