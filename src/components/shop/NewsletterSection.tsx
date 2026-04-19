@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { Mail } from "lucide-react";
 
 export function NewsletterSection() {
   const [email, setEmail] = useState("");
@@ -29,43 +30,53 @@ export function NewsletterSection() {
   }
 
   return (
-    <section className="bg-black text-white py-16 sm:py-20 px-4 sm:px-6">
-      <div className="max-w-2xl mx-auto text-center">
-        <h2 className="font-display text-3xl sm:text-4xl font-bold mb-3">
-          Novinky a akce
+    <section className="bg-black px-4 py-16 text-white sm:px-6 sm:py-24">
+      <div className="mx-auto max-w-2xl text-center">
+        <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-primary/10">
+          <Mail size={22} className="text-primary" />
+        </div>
+        <h2 className="font-display text-3xl font-bold sm:text-4xl">
+          Buďte v obraze
         </h2>
-        <p className="text-gray-400 text-sm sm:text-base mb-8">
-          Přihlaste se k odběru novinek a nenechte si ujít žádnou akci.
+        <p className="mt-3 text-sm text-gray-400 sm:text-base">
+          Odběratelé se dozví o akcích, novinkách a speciálních nabídkách jako první.
         </p>
 
         {status === "success" ? (
-          <div className="bg-green-600/10 border border-green-600/30 text-green-400 text-sm py-4 px-6 rounded-2xl">
+          <div className="mt-8 rounded-xl border border-green-600/30 bg-green-600/10 px-6 py-4 text-sm text-green-400">
             Děkujeme, odběr novinek je potvrzený.
           </div>
         ) : (
-          <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
+          <form
+            onSubmit={handleSubmit}
+            className="mx-auto mt-8 flex max-w-md flex-col gap-3 sm:flex-row"
+          >
             <input
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="Váš e-mail"
               required
-              className="flex-1 rounded-md px-4 py-3 bg-white/10 border border-white/20 text-white placeholder-gray-500 text-sm outline-none focus:border-primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary transition-colors"
+              className="flex-1 rounded-lg border border-white/20 bg-white/10 px-4 py-3 text-sm text-white outline-none placeholder:text-gray-500 transition-colors focus:border-primary"
             />
             <button
               type="submit"
               disabled={status === "loading"}
-              className="rounded-md bg-primary hover:bg-primary-dark text-white font-medium text-sm uppercase tracking-wider px-6 py-3 transition-colors disabled:opacity-50 shrink-0"
+              className="shrink-0 rounded-lg bg-primary px-6 py-3 text-sm font-medium uppercase tracking-wider text-white transition-colors hover:bg-primary-dark disabled:opacity-50"
             >
               {status === "loading" ? "Odesílám..." : "Odebírat"}
             </button>
           </form>
         )}
         {status === "error" && (
-          <p className="text-red-400 text-xs mt-3">
+          <p className="mt-3 text-xs text-red-400">
             Došlo k chybě. Zkuste to prosím znovu.
           </p>
         )}
+        <p className="mt-4 text-[11px] text-gray-600">
+          Souhlasem přijímáte, že vám můžeme zasílat marketingová sdělení. Můžete se
+          kdykoliv odhlásit.
+        </p>
       </div>
     </section>
   );
