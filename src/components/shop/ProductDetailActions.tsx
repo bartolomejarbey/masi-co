@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Minus, Plus, ShoppingCart } from "lucide-react";
+import { toast } from "sonner";
 import { useCart } from "./CartProvider";
 import type { Product } from "@/lib/types";
 
@@ -69,7 +70,12 @@ export function ProductDetailActions({ product, isAvailable }: ProductDetailActi
       <button
         type="button"
         disabled={!isAvailable}
-        onClick={() => addToCart(product, quantity)}
+        onClick={() => {
+          addToCart(product, quantity);
+          toast.success(`${product.name} přidáno do košíku`, {
+            description: `${quantity} ${product.unit}`,
+          });
+        }}
         className="inline-flex h-12 items-center justify-center gap-2 rounded-md bg-black px-6 text-sm font-semibold uppercase tracking-wide text-white transition-colors hover:bg-primary disabled:cursor-not-allowed disabled:bg-gray-200 disabled:text-gray-500"
       >
         <ShoppingCart size={16} />

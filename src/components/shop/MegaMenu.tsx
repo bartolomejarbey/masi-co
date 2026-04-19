@@ -49,7 +49,7 @@ export function MegaMenu({ categories, isOpen, onClose }: MegaMenuProps) {
               >
                 {cat.image_url ? (
                   <div className="relative h-8 w-8 shrink-0 overflow-hidden rounded-lg">
-                    <Image src={cat.image_url} alt="" fill sizes="32px" className="object-cover" />
+                    <Image src={cat.image_url} alt={cat.name} fill sizes="32px" className="object-cover" />
                   </div>
                 ) : (
                   <div className="h-8 w-8 shrink-0 rounded-lg bg-gray-100" />
@@ -84,7 +84,7 @@ export function MegaMenu({ categories, isOpen, onClose }: MegaMenuProps) {
               >
                 {cat.image_url ? (
                   <div className="relative h-8 w-8 shrink-0 overflow-hidden rounded-lg">
-                    <Image src={cat.image_url} alt="" fill sizes="32px" className="object-cover" />
+                    <Image src={cat.image_url} alt={cat.name} fill sizes="32px" className="object-cover" />
                   </div>
                 ) : (
                   <div className="h-8 w-8 shrink-0 rounded-lg bg-gray-100" />

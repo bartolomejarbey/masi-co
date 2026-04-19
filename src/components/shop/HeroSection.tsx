@@ -39,7 +39,7 @@ export function HeroSection() {
           >
             <Image
               src={image}
-              alt=""
+              alt="MASI-CO čerstvé maso"
               fill
               priority={index === 0}
               sizes="100vw"

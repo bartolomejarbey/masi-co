@@ -4,6 +4,7 @@ import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Minus, Plus, ShoppingCart, Eye } from "lucide-react";
+import { toast } from "sonner";
 import { formatPrice } from "@/lib/utils";
 import { useCart } from "./CartProvider";
 import type { Product } from "@/lib/types";
@@ -80,6 +81,7 @@ export function ProductCard({ product }: ProductCardProps) {
               onClick={(e) => {
                 e.preventDefault();
                 addToCart(product, qty);
+                toast.success(`${product.name} přidáno do košíku`);
               }}
               className="flex items-center gap-2 rounded-lg bg-white px-5 py-2.5 text-sm font-semibold text-black shadow-lg transition-transform hover:scale-105"
             >
@@ -146,7 +148,10 @@ export function ProductCard({ product }: ProductCardProps) {
                 </button>
               </div>
               <button
-                onClick={() => addToCart(product, qty)}
+                onClick={() => {
+                  addToCart(product, qty);
+                  toast.success(`${product.name} přidáno do košíku`);
+                }}
                 className="flex h-9 flex-1 items-center justify-center gap-1.5 rounded-lg bg-black px-3 text-xs font-medium uppercase tracking-wider text-white transition-colors hover:bg-primary"
               >
                 <ShoppingCart size={14} />

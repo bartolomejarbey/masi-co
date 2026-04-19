@@ -81,7 +81,7 @@ export default function JakNakupovatPage() {
         <div className="absolute inset-0 opacity-40">
           <Image
             src="/assets/hero/hero-1.jpg"
-            alt=""
+            alt="MASI-CO řeznictví"
             fill
             className="object-cover"
             priority

@@ -47,8 +47,30 @@ export default async function ProduktDetailPage({ params }: ProductDetailPagePro
       ? "bg-red-100 text-red-700"
       : "bg-orange-100 text-orange-700";
 
+  const productJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    name: product.name,
+    description: product.description ?? `${product.name} — MASI-CO`,
+    image: product.image_url ?? undefined,
+    offers: {
+      "@type": "Offer",
+      price: product.price,
+      priceCurrency: "CZK",
+      availability:
+        product.stock_status === "out_of_stock"
+          ? "https://schema.org/OutOfStock"
+          : "https://schema.org/InStock",
+      seller: { "@type": "Organization", name: "MASI-CO" },
+    },
+  };
+
   return (
     <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:py-10">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(productJsonLd) }}
+      />
       {/* Breadcrumbs */}
       <nav className="mb-6 flex items-center gap-1.5 text-sm text-gray-400">
         <Link href="/" className="transition-colors hover:text-gray-600">
