@@ -90,7 +90,7 @@ export default async function KategoriePage({ params, searchParams }: CategoryPa
     if (availability !== "all") p.set("availability", availability);
     if (subSlug !== "all") p.set("sub", subSlug);
     const qs = p.toString();
-    return `/produkty/${params.slug}${qs ? `?${qs}` : ""}`;
+    return `/sortiment/${params.slug}${qs ? `?${qs}` : ""}`;
   };
 
   return (
@@ -113,7 +113,7 @@ export default async function KategoriePage({ params, searchParams }: CategoryPa
           {rootCategories.map((rootCategory) => (
             <Link
               key={rootCategory.id}
-              href={`/produkty/${rootCategory.slug}`}
+              href={`/sortiment/${rootCategory.slug}`}
               className={`rounded-full border px-4 py-2 text-sm font-medium transition-colors ${
                 rootCategory.id === category.id
                   ? "border-primary bg-red-50 text-primary"
@@ -201,7 +201,7 @@ export default async function KategoriePage({ params, searchParams }: CategoryPa
       <Pagination
         currentPage={page}
         totalPages={totalPages}
-        baseHref={`/produkty/${params.slug}`}
+        baseHref={`/sortiment/${params.slug}`}
         searchParams={paginationParams}
       />
     </div>

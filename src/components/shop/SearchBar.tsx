@@ -29,7 +29,7 @@ export function SearchBar({
       return;
     }
 
-    router.push(`/produkty?q=${encodeURIComponent(trimmedQuery)}`);
+    router.push(`/sortiment?q=${encodeURIComponent(trimmedQuery)}`);
   }
 
   const variants = {

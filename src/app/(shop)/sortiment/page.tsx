@@ -5,7 +5,7 @@ import type { Category } from "@/lib/types";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Naše produkty",
+  title: "Sortiment",
 };
 
 const categoryContent: Record<string, { headline: string; text: string }> = {
@@ -108,7 +108,7 @@ export default async function NaseProduktyPage() {
                   </p>
                   <div className="mt-8">
                     <Link
-                      href={`/produkty/${category.slug}`}
+                      href={`/sortiment/${category.slug}`}
                       className="inline-flex items-center gap-2 rounded-lg bg-black px-6 py-3 text-sm font-semibold uppercase tracking-wider text-white transition-colors hover:bg-primary"
                     >
                       Prozkoumat

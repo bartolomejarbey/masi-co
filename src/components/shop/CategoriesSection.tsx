@@ -9,7 +9,7 @@ interface CategoriesSectionProps {
 function CategoryCard({ cat, isHighlighted }: { cat: Category; isHighlighted: boolean }) {
   return (
     <Link
-      href={`/produkty/${cat.slug}`}
+      href={`/sortiment/${cat.slug}`}
       className={`group relative overflow-hidden rounded-2xl bg-gray-200 flex flex-col items-center justify-end text-center transition-all duration-300 hover:-translate-y-1 hover:shadow-xl focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary ${
         isHighlighted
           ? "sm:col-span-2 sm:row-span-2 min-h-[280px] sm:min-h-[400px]"
