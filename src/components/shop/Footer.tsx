@@ -45,14 +45,14 @@ export function Footer() {
             </h3>
             <ul className="space-y-2.5">
               {[
-                { href: "/produkty/hotovky", label: "Hotovky" },
-                { href: "/produkty/maso", label: "Maso" },
-                { href: "/produkty/uzene-maso", label: "Uzené maso" },
-                { href: "/produkty/ostatni-maso", label: "Ostatní maso" },
-                { href: "/produkty/zverina", label: "Zvěřina" },
-                { href: "/produkty/ryby", label: "Ryby" },
-                { href: "/produkty/uzeniny", label: "Uzeniny" },
-                { href: "/produkty/ostatni-sortiment", label: "Ostatní sortiment" },
+                { href: "/sortiment/hotovky", label: "Hotovky" },
+                { href: "/sortiment/maso", label: "Maso" },
+                { href: "/sortiment/uzene-maso", label: "Uzené maso" },
+                { href: "/sortiment/ostatni-maso", label: "Ostatní maso" },
+                { href: "/sortiment/zverina", label: "Zvěřina" },
+                { href: "/sortiment/ryby", label: "Ryby" },
+                { href: "/sortiment/uzeniny", label: "Uzeniny" },
+                { href: "/sortiment/ostatni-sortiment", label: "Ostatní sortiment" },
               ].map((item) => (
                 <li key={item.href}>
                   <Link

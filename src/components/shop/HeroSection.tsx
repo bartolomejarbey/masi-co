@@ -72,7 +72,7 @@ export function HeroSection() {
 
           <div className="mt-6 flex flex-col gap-4 sm:flex-row sm:items-center">
             <Link
-              href="/produkty"
+              href="/sortiment"
               className="inline-flex w-full items-center justify-center rounded-md bg-primary px-8 py-4 text-sm font-medium uppercase tracking-wider text-white transition-colors hover:bg-primary-dark focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white sm:w-auto"
             >
               Prohlédnout produkty

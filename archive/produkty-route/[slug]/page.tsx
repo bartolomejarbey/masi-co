@@ -97,7 +97,7 @@ export default async function KategoriePage({ params, searchParams }: CategoryPa
     <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:py-14">
       {/* Header */}
       <div className="border-b border-gray-200 pb-8">
-        <Link href="/produkty" className="text-sm font-medium text-primary transition-colors hover:text-primary-dark">
+        <Link href="/sortiment" className="text-sm font-medium text-primary transition-colors hover:text-primary-dark">
           &larr; Naše produkty
         </Link>
         <h1 className="mt-4 font-display text-4xl font-bold sm:text-5xl">{category.name}</h1>

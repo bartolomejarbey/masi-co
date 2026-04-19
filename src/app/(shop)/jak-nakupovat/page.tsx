@@ -99,7 +99,7 @@ export default function JakNakupovatPage() {
           </p>
           <div className="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
             <Link
-              href="/produkty"
+              href="/sortiment"
               className="inline-flex rounded-md bg-primary px-8 py-4 text-sm font-medium uppercase tracking-wider text-white transition-colors hover:bg-primary-dark"
             >
               Začít nakupovat
@@ -234,7 +234,7 @@ export default function JakNakupovatPage() {
           </p>
           <div className="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
             <Link
-              href="/produkty"
+              href="/sortiment"
               className="inline-flex rounded-md bg-primary px-8 py-4 text-sm font-medium uppercase tracking-wider text-white transition-colors hover:bg-primary-dark"
             >
               Prohlédnout produkty

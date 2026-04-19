@@ -240,7 +240,7 @@ export function OrderProcessAnimation() {
                     Přehrát znovu
                   </button>
                   <Link
-                    href="/produkty"
+                    href="/sortiment"
                     className="px-6 py-3 text-sm font-medium rounded-xl bg-primary text-white hover:bg-primary-dark transition-colors"
                   >
                     Objednat doopravdy

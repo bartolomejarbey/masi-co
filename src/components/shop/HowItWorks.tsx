@@ -126,7 +126,7 @@ export function HowItWorks() {
         {/* CTA button */}
         <div className="text-center mt-12">
           <Link
-            href="/produkty"
+            href="/sortiment"
             className="inline-flex items-center gap-2 rounded-full bg-gray-900 px-8 py-3.5 text-sm font-semibold text-white transition-colors hover:bg-primary"
           >
             Začít nakupovat

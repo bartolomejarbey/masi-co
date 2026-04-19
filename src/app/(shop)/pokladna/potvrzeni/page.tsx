@@ -65,7 +65,7 @@ export default function PotvrzeniObjednavkyPage({ searchParams }: ConfirmationPa
       </p>
       <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
         <Link
-          href="/produkty"
+          href="/sortiment"
           className="inline-flex rounded-md bg-black px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-primary"
         >
           Pokračovat v nákupu

@@ -26,7 +26,7 @@ export function FeaturedProducts({ products }: FeaturedProductsProps) {
             </p>
           </div>
           <Link
-            href="/produkty"
+            href="/sortiment"
             className="text-sm font-medium text-primary hover:text-primary-dark transition-colors inline-flex items-center gap-1 shrink-0"
           >
             Všechny produkty

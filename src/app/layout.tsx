@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import { Roboto, Roboto_Slab } from "next/font/google";
 import "./globals.css";
+import { TopBar } from "@/components/shop/TopBar";
 import { Header } from "@/components/shop/Header";
 import { Footer } from "@/components/shop/Footer";
-import { AnnouncementBar } from "@/components/shop/AnnouncementBar";
 import { CartProvider } from "@/components/shop/CartProvider";
 import { getCurrentUser, fetchCategoryTree } from "@/lib/shop";
 
@@ -44,7 +44,7 @@ export default function RootLayout({
         className={`${roboto.variable} ${robotoSlab.variable} font-sans antialiased bg-white text-black`}
       >
         <CartProvider>
-          <AnnouncementBar />
+          <TopBar />
           <HeaderWrapper userPromise={userPromise} categoriesPromise={categoriesPromise} />
           <main>{children}</main>
           <Footer />

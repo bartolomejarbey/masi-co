@@ -122,7 +122,7 @@ export function CheckoutPageClient({ minOrderAmount }: CheckoutPageClientProps) 
           Nejprve vložte produkty do košíku a poté dokončete objednávku.
         </p>
         <Link
-          href="/produkty"
+          href="/sortiment"
           className="mt-6 inline-flex rounded-md bg-black px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-primary"
         >
           Zpět do katalogu

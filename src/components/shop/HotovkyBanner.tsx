@@ -43,7 +43,7 @@ export function HotovkyBanner() {
             </div>
 
             <Link
-              href="/produkty/hotovky"
+              href="/sortiment/hotovky"
               className="inline-flex items-center justify-center rounded-md bg-primary hover:bg-primary-dark text-white font-medium text-sm uppercase tracking-wider px-7 py-3.5 transition-colors"
             >
               Prohlédnout hotovky

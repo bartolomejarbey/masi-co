@@ -25,7 +25,7 @@ export function SearchBar({
 
     const trimmedQuery = query.trim();
     if (!trimmedQuery) {
-      router.push("/produkty");
+      router.push("/sortiment");
       return;
     }
 
