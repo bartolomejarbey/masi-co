@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import {
   LayoutDashboard,
@@ -50,10 +51,15 @@ export function AdminSidebar({ navItems, userEmail }: AdminSidebarProps) {
       {/* Logo */}
       <div className="flex h-16 items-center justify-between border-b border-white/10 px-4">
         {!collapsed && (
-          <Link href="/admin" className="flex items-center gap-1">
-            <span className="font-display text-lg font-bold">MASI</span>
-            <span className="font-display text-lg font-bold text-primary">-CO</span>
-            <span className="ml-1.5 rounded bg-white/10 px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-gray-400">
+          <Link href="/admin" className="flex items-center gap-2">
+            <Image
+              src="/assets/brand/masico-logo.png"
+              alt="MASI-CO"
+              width={120}
+              height={45}
+              className="h-7 w-auto brightness-0 invert"
+            />
+            <span className="rounded bg-white/10 px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-gray-400">
               Admin
             </span>
           </Link>

@@ -1,6 +1,5 @@
 import Link from "next/link";
-import { redirect } from "next/navigation";
-import { getCurrentUser } from "@/lib/shop";
+import { requireAdmin } from "@/lib/admin-auth";
 import {
   LayoutDashboard,
   Package,
@@ -23,11 +22,7 @@ const navItems = [
 ];
 
 export default async function AdminLayout({ children }: { children: React.ReactNode }) {
-  const user = await getCurrentUser();
-
-  if (!user) {
-    redirect("/prihlaseni?redirectTo=/admin");
-  }
+  const user = await requireAdmin();
 
   return (
     <div className="flex min-h-screen bg-gray-50">

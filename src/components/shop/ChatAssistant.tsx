@@ -1,9 +1,33 @@
 "use client";
 
-import { useState, useRef, useEffect, FormEvent } from "react";
+import { useState, useRef, useEffect, FormEvent, ReactNode } from "react";
 import { X, Send, MessageCircle } from "lucide-react";
 
 type Message = { role: "user" | "assistant"; content: string };
+
+/** Parse markdown links [text](url) into clickable <a> elements. */
+function renderMessageContent(content: string): ReactNode {
+  const parts = content.split(/(\[[^\]]+\]\([^)]+\))/g);
+
+  return parts.map((part, i) => {
+    const linkMatch = part.match(/^\[([^\]]+)\]\(([^)]+)\)$/);
+    if (linkMatch) {
+      const [, text, url] = linkMatch;
+      const isInternal = url.startsWith("/");
+      return (
+        <a
+          key={i}
+          href={url}
+          className="underline font-medium hover:text-[#CC1939]"
+          {...(isInternal ? {} : { target: "_blank", rel: "noopener noreferrer" })}
+        >
+          {text}
+        </a>
+      );
+    }
+    return <span key={i}>{part}</span>;
+  });
+}
 
 export function ChatAssistant() {
   const [dismissed, setDismissed] = useState(false);
@@ -111,7 +135,9 @@ export function ChatAssistant() {
                     : "bg-white text-gray-800 shadow-sm border border-gray-100"
                 }`}
               >
-                {msg.content}
+                {msg.role === "assistant"
+                  ? renderMessageContent(msg.content)
+                  : msg.content}
               </div>
             </div>
           ))}

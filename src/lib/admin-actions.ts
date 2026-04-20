@@ -2,6 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { getAdminSupabase } from "./supabase-admin";
+import { requireAdminAction } from "./admin-auth";
 import type { Order, OrderItem } from "./types";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -49,6 +50,7 @@ function parseStockFields(formData: FormData) {
 }
 
 export async function createProduct(formData: FormData) {
+  await requireAdminAction();
   const name = String(formData.get("name") || "");
   const slug = formData.get("slug") ? String(formData.get("slug")) : generateSlug(name);
   const description = formData.get("description") ? String(formData.get("description")) : null;
@@ -78,6 +80,7 @@ export async function createProduct(formData: FormData) {
 }
 
 export async function updateProduct(formData: FormData) {
+  await requireAdminAction();
   const id = String(formData.get("id") || "");
   const name = String(formData.get("name") || "");
   const slug = formData.get("slug") ? String(formData.get("slug")) : generateSlug(name);
@@ -108,6 +111,7 @@ export async function updateProduct(formData: FormData) {
 }
 
 export async function adjustStock(formData: FormData) {
+  await requireAdminAction();
   const id = String(formData.get("id") || "");
   const adjustment = parseFloat(String(formData.get("adjustment") || "0"));
   if (!id || adjustment === 0) return;
@@ -130,6 +134,7 @@ export async function adjustStock(formData: FormData) {
 }
 
 export async function deleteProduct(formData: FormData) {
+  await requireAdminAction();
   const id = String(formData.get("id") || "");
   const { error } = await admin().from("products").delete().eq("id", id);
   if (error) throw new Error(error.message);
@@ -138,6 +143,7 @@ export async function deleteProduct(formData: FormData) {
 }
 
 export async function bulkUpdateStockStatus(formData: FormData) {
+  await requireAdminAction();
   const ids = String(formData.get("ids") || "").split(",").filter(Boolean);
   const stock_status = String(formData.get("stock_status") || "in_stock");
   if (ids.length === 0) return;
@@ -151,6 +157,7 @@ export async function bulkUpdateStockStatus(formData: FormData) {
 // ── CATEGORIES ──
 
 export async function createCategory(formData: FormData) {
+  await requireAdminAction();
   const name = String(formData.get("name") || "");
   const slug = formData.get("slug") ? String(formData.get("slug")) : generateSlug(name);
   const description = formData.get("description") ? String(formData.get("description")) : null;
@@ -170,6 +177,7 @@ export async function createCategory(formData: FormData) {
 }
 
 export async function updateCategory(formData: FormData) {
+  await requireAdminAction();
   const id = String(formData.get("id") || "");
   const name = String(formData.get("name") || "");
   const slug = formData.get("slug") ? String(formData.get("slug")) : generateSlug(name);
@@ -190,6 +198,7 @@ export async function updateCategory(formData: FormData) {
 }
 
 export async function deleteCategory(formData: FormData) {
+  await requireAdminAction();
   const id = String(formData.get("id") || "");
   const { error } = await admin().from("categories").delete().eq("id", id);
   if (error) throw new Error(error.message);
@@ -200,6 +209,7 @@ export async function deleteCategory(formData: FormData) {
 // ── ORDERS ──
 
 export async function updateOrderStatus(formData: FormData) {
+  await requireAdminAction();
   const orderId = String(formData.get("orderId") || "");
   const status = String(formData.get("status") || "") as Order["order_status"];
   if (!orderId || !status) return;
@@ -212,6 +222,7 @@ export async function updateOrderStatus(formData: FormData) {
 }
 
 export async function updateOrderAdminNote(formData: FormData) {
+  await requireAdminAction();
   const orderId = String(formData.get("orderId") || "");
   const admin_note = String(formData.get("admin_note") || "");
 
@@ -221,6 +232,7 @@ export async function updateOrderAdminNote(formData: FormData) {
 }
 
 export async function updateOrderItemFinal(formData: FormData) {
+  await requireAdminAction();
   const itemId = String(formData.get("itemId") || "");
   const orderId = String(formData.get("orderId") || "");
   const final_total = parseFloat(String(formData.get("final_total") || "0"));
@@ -243,6 +255,7 @@ export async function updateOrderItemFinal(formData: FormData) {
 // ── SETTINGS ──
 
 export async function updateSiteSetting(formData: FormData) {
+  await requireAdminAction();
   const key = String(formData.get("key") || "");
   const valueStr = String(formData.get("value") || "{}");
 
@@ -261,6 +274,7 @@ export async function updateSiteSetting(formData: FormData) {
 // ── NEWSLETTER ──
 
 export async function toggleNewsletterSubscriber(formData: FormData) {
+  await requireAdminAction();
   const id = String(formData.get("id") || "");
   const is_active = formData.get("is_active") === "true";
 

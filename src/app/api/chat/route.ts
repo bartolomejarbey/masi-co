@@ -1,22 +1,138 @@
 import { NextRequest, NextResponse } from "next/server";
 import OpenAI from "openai";
+import { fetchAllProducts, fetchAllCategories, fetchProductsByCategoryIds, getStockLabel } from "@/lib/shop";
+import type { Product, Category } from "@/lib/types";
 
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+
+// --- OpenAI Tool Definitions ---
+
+const tools: OpenAI.Chat.Completions.ChatCompletionTool[] = [
+  {
+    type: "function",
+    function: {
+      name: "search_products",
+      description:
+        "Vyhledá produkty v databázi podle klíčového slova (název, popis). Použij pro dotazy typu 'máte svíčkovou?', 'co na gril', 'klobásy' apod.",
+      parameters: {
+        type: "object",
+        properties: {
+          query: {
+            type: "string",
+            description: "Hledaný výraz, např. 'krkovice', 'klobása', 'uzené'",
+          },
+        },
+        required: ["query"],
+      },
+    },
+  },
+  {
+    type: "function",
+    function: {
+      name: "get_categories",
+      description:
+        "Vrátí seznam všech kategorií produktů (hovězí, vepřové, uzeniny atd.). Použij když zákazník chce vědět co nabízíme nebo se ptá na kategorie.",
+      parameters: {
+        type: "object",
+        properties: {},
+      },
+    },
+  },
+  {
+    type: "function",
+    function: {
+      name: "get_products_by_category",
+      description:
+        "Vrátí produkty z konkrétní kategorie podle ID. Použij po get_categories když zákazník chce vidět konkrétní kategorii.",
+      parameters: {
+        type: "object",
+        properties: {
+          category_id: {
+            type: "string",
+            description: "UUID kategorie",
+          },
+        },
+        required: ["category_id"],
+      },
+    },
+  },
+];
+
+// --- Format product for LLM (keep token count low) ---
+
+function formatProductForLLM(product: Product) {
+  return {
+    name: product.name,
+    slug: product.slug,
+    price: product.price,
+    unit: product.unit,
+    stock_status: getStockLabel(product.stock_status),
+    badge: product.badge,
+    weight_info: product.weight_info,
+    url: `/produkt/${product.slug}`,
+  };
+}
+
+// --- Tool Executor ---
+
+async function executeTool(name: string, args: Record<string, unknown>) {
+  try {
+    switch (name) {
+      case "search_products": {
+        const query = (args.query as string) || "";
+        const products = await fetchAllProducts({ query });
+        return products.slice(0, 10).map(formatProductForLLM);
+      }
+      case "get_categories": {
+        const categories = (await fetchAllCategories()) as Category[];
+        return categories.map((c) => ({
+          id: c.id,
+          name: c.name,
+          slug: c.slug,
+        }));
+      }
+      case "get_products_by_category": {
+        const categoryId = args.category_id as string;
+        if (!categoryId) return { error: "Chybí category_id" };
+        const products = await fetchProductsByCategoryIds([categoryId]);
+        return products.slice(0, 10).map(formatProductForLLM);
+      }
+      default:
+        return { error: `Neznámý nástroj: ${name}` };
+    }
+  } catch (err) {
+    console.error(`Tool ${name} error:`, err);
+    return { error: "Nepodařilo se načíst data z databáze." };
+  }
+}
+
+// --- System Prompt ---
 
 const SYSTEM_PROMPT = `Jsi přátelský asistent e-shopu MASI-CO — online řeznictví s rozvozem po Praze a okolí.
 
 Tvoje úloha:
 - Pomáhat zákazníkům s výběrem masa, uzenin, hotových jídel
+- Doporučovat produkty na základě preferencí (grilování, guláš, svíčková, počet osob atd.)
 - Odpovídat na dotazy o produktech, cenách, doručení
-- Doporučovat podle preferencí (grilování, guláš, svíčková atd.)
-- Informovat o podmínkách: minimální objednávka 1 000 Kč, doprava zdarma od 1 500 Kč, rozvoz po Praze a okolí
-- Provozní doba rozvozu: Po–Pá
 
-Styl:
-- Piš česky, stručně, přátelsky
-- Používej krátké odpovědi (max 2-3 věty)
-- Pokud si nejsi jistý cenou, řekni ať se podívají do katalogu
-- Nikdy nevymýšlej produkty které neexistují`;
+Postup doporučování:
+1. Nejdřív se zeptej 1-2 otázky k upřesnění (příležitost, preference, počet osob)
+2. Pak použij nástroje k vyhledání produktů v databázi
+3. Doporuč 2-4 konkrétní produkty s cenami a odkazy
+
+Formát doporučení:
+- Každý produkt uveď jako: [Název produktu](/produkt/slug) — CENA Kč/jednotka
+- Přidej krátký tip (kolik kg na osobu, jak připravit apod.)
+- Pokud je produkt "Vyprodáno", uveď to
+
+Pravidla:
+- NIKDY nevymýšlej produkty — používej POUZE data z nástrojů
+- Pokud nenajdeš relevantní produkty, řekni to a navrhni alternativu
+- Piš česky, stručně, přátelsky (max 3-4 věty + seznam produktů)
+- Minimální objednávka 1 000 Kč, doprava zdarma od 1 500 Kč
+- Rozvoz po Praze a okolí, Po–Pá`;
+
+// --- POST Handler with Tool Call Loop ---
 
 export async function POST(req: NextRequest) {
   try {
@@ -26,27 +142,67 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Missing messages" }, { status: 400 });
     }
 
-    // Limit conversation history to last 20 messages
     const trimmed = messages.slice(-20);
 
-    const completion = await openai.chat.completions.create({
+    const chatMessages: OpenAI.Chat.Completions.ChatCompletionMessageParam[] = [
+      { role: "system", content: SYSTEM_PROMPT },
+      ...trimmed,
+    ];
+
+    // Tool call loop — max 3 rounds
+    for (let round = 0; round < 3; round++) {
+      const completion = await openai.chat.completions.create({
+        model: "gpt-4o-mini",
+        messages: chatMessages,
+        tools,
+        max_tokens: 400,
+        temperature: 0.7,
+      });
+
+      const choice = completion.choices[0];
+
+      if (!choice) {
+        return NextResponse.json({ reply: "Omlouvám se, zkuste to znovu." });
+      }
+
+      // Text response — done
+      if (choice.finish_reason !== "tool_calls" || !choice.message.tool_calls?.length) {
+        const reply = choice.message.content || "Omlouvám se, zkuste to znovu.";
+        return NextResponse.json({ reply });
+      }
+
+      // Process tool calls
+      chatMessages.push(choice.message);
+
+      for (const toolCall of choice.message.tool_calls) {
+        if (toolCall.type !== "function") continue;
+        const args = JSON.parse(toolCall.function.arguments || "{}");
+        const result = await executeTool(toolCall.function.name, args);
+
+        chatMessages.push({
+          role: "tool",
+          tool_call_id: toolCall.id,
+          content: JSON.stringify(result),
+        });
+      }
+    }
+
+    // Exhausted rounds — one final call without tools
+    const finalCompletion = await openai.chat.completions.create({
       model: "gpt-4o-mini",
-      messages: [
-        { role: "system", content: SYSTEM_PROMPT },
-        ...trimmed,
-      ],
-      max_tokens: 300,
+      messages: chatMessages,
+      max_tokens: 400,
       temperature: 0.7,
     });
 
-    const reply = completion.choices[0]?.message?.content || "Omlouvám se, zkuste to znovu.";
-
+    const reply =
+      finalCompletion.choices[0]?.message?.content || "Omlouvám se, zkuste to znovu.";
     return NextResponse.json({ reply });
   } catch (err: unknown) {
     console.error("Chat API error:", err);
     return NextResponse.json(
       { error: "Chyba při komunikaci s asistentem." },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { Phone, Mail, MapPin, Truck } from "lucide-react";
 
 const sortimentLinks = [
@@ -38,12 +39,14 @@ export function Footer() {
         <div className="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-4">
           {/* Col 1 — Brand */}
           <div>
-            <Link
-              href="/"
-              className="inline-block font-display text-2xl font-bold"
-            >
-              <span className="text-white">MASI</span>
-              <span className="text-primary">-CO</span>
+            <Link href="/" className="inline-block">
+              <Image
+                src="/assets/brand/masico-logo.png"
+                alt="MASI-CO"
+                width={160}
+                height={60}
+                className="h-10 w-auto brightness-0 invert"
+              />
             </Link>
             <p className="mt-3 text-sm leading-relaxed text-gray-400">
               Poctivé řeznictví s vlastním rozvozem. Čerstvé maso od českých

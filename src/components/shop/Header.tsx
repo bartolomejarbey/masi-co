@@ -139,9 +139,9 @@ export function Header({ authEmail, categories = [] }: HeaderProps) {
               <Image
                 src="/assets/brand/masico-logo.png"
                 alt="MASI-CO"
-                width={160}
-                height={60}
-                className="h-10 w-auto lg:h-12"
+                width={320}
+                height={120}
+                className="h-20 w-auto lg:h-24"
                 priority
               />
             </Link>
