@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import {
   ChevronDown,
   ChevronRight,
@@ -134,13 +135,15 @@ export function Header({ authEmail, categories = [] }: HeaderProps) {
         <div className="border-b border-gray-100">
           <div className="mx-auto flex max-w-7xl items-center justify-between px-4 sm:px-6 h-16 lg:h-20">
             {/* Logo */}
-            <Link href="/" className="flex items-center gap-0 shrink-0">
-              <span className="font-display text-2xl font-bold tracking-[-0.01em] lg:text-3xl">
-                MASI
-              </span>
-              <span className="font-display text-2xl font-bold tracking-[-0.01em] text-primary lg:text-3xl">
-                -CO
-              </span>
+            <Link href="/" className="shrink-0">
+              <Image
+                src="/assets/brand/masico-logo.png"
+                alt="MASI-CO"
+                width={160}
+                height={60}
+                className="h-10 w-auto lg:h-12"
+                priority
+              />
             </Link>
 
             {/* Desktop Navigation */}
@@ -301,9 +304,14 @@ export function Header({ authEmail, categories = [] }: HeaderProps) {
         <div className="absolute inset-0 bg-white overflow-y-auto">
           {/* Mobile menu header */}
           <div className="flex items-center justify-between border-b border-gray-100 px-4 py-4">
-            <Link href="/" onClick={() => setMobileMenuOpen(false)} className="flex items-center">
-              <span className="font-display text-xl font-bold tracking-[-0.01em]">MASI</span>
-              <span className="font-display text-xl font-bold tracking-[-0.01em] text-primary">-CO</span>
+            <Link href="/" onClick={() => setMobileMenuOpen(false)} className="shrink-0">
+              <Image
+                src="/assets/brand/masico-logo.png"
+                alt="MASI-CO"
+                width={120}
+                height={45}
+                className="h-8 w-auto"
+              />
             </Link>
             <button
               onClick={() => setMobileMenuOpen(false)}
