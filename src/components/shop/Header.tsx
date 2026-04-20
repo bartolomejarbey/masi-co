@@ -35,7 +35,7 @@ export function Header({ authEmail, categories = [] }: HeaderProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [sortimentOpen, setSortimentOpen] = useState(false);
   const [sortimentLocked, setSortimentLocked] = useState(false);
-  const [expandedCategory, setExpandedCategory] = useState<string | null>(null);
+  const [expandedCategories, setExpandedCategories] = useState<Set<string>>(new Set());
   const [scrolled, setScrolled] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
@@ -109,7 +109,15 @@ export function Header({ authEmail, categories = [] }: HeaderProps) {
   }, [pathname]);
 
   const toggleMobileCategory = useCallback((catId: string) => {
-    setExpandedCategory((prev) => (prev === catId ? null : catId));
+    setExpandedCategories((prev) => {
+      const next = new Set(prev);
+      if (next.has(catId)) {
+        next.delete(catId);
+      } else {
+        next.add(catId);
+      }
+      return next;
+    });
   }, []);
 
   const handleSearchSubmit = (e: React.FormEvent) => {
@@ -365,12 +373,12 @@ export function Header({ authEmail, categories = [] }: HeaderProps) {
                 <ChevronRight
                   size={16}
                   className={`text-gray-400 transition-transform ${
-                    expandedCategory === "sortiment-root" ? "rotate-90" : ""
+                    expandedCategories.has("sortiment-root") ? "rotate-90" : ""
                   }`}
                 />
               </button>
 
-              {expandedCategory === "sortiment-root" && (
+              {expandedCategories.has("sortiment-root") && (
                 <div className="ml-2 space-y-0.5 border-l-2 border-gray-100 pl-3">
                   {categories.map((cat) => (
                     <div key={cat.id}>
@@ -390,13 +398,13 @@ export function Header({ authEmail, categories = [] }: HeaderProps) {
                             <ChevronRight
                               size={14}
                               className={`transition-transform ${
-                                expandedCategory === cat.id ? "rotate-90" : ""
+                                expandedCategories.has(cat.id) ? "rotate-90" : ""
                               }`}
                             />
                           </button>
                         )}
                       </div>
-                      {expandedCategory === cat.id && cat.children.length > 0 && (
+                      {expandedCategories.has(cat.id) && cat.children.length > 0 && (
                         <div className="ml-3 space-y-0.5 border-l border-gray-100 pl-3">
                           {cat.children.map((sub) => (
                             <Link

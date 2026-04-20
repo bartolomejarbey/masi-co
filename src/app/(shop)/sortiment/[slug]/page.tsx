@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { ProductsGrid } from "@/components/shop/ProductsGrid";
 import { Pagination } from "@/components/shop/Pagination";
+import { FilterHelp } from "@/components/shop/FilterHelp";
 import {
   fetchAllCategories,
   fetchCategoriesByParent,
@@ -156,6 +157,7 @@ export default async function KategoriePage({ params, searchParams }: CategoryPa
 
         {/* Sort & filter */}
         <form className="flex flex-wrap items-end gap-3">
+          <FilterHelp />
           <label className="text-sm font-medium text-gray-700">
             <span className="mb-1.5 block text-xs">Řazení</span>
             <select
