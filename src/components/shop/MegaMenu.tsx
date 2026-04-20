@@ -6,6 +6,14 @@ import { ChevronRight, Truck, Beef, Flame, UtensilsCrossed, Drumstick, Fish, Sal
 import type { CategoryWithChildren } from "@/lib/types";
 import type { LucideIcon } from "lucide-react";
 
+/** Column 3 header labels — more descriptive than just the category name */
+const subcategoryLabels: Record<string, string> = {
+  maso: "Druh masa",
+  "uzene-maso": "Druh uzeného",
+  "ostatni-maso": "Druh masa",
+  uzeniny: "Druh uzenin",
+};
+
 const categoryIcons: Record<string, LucideIcon> = {
   hotovky: UtensilsCrossed,
   maso: Beef,
@@ -27,13 +35,13 @@ export function MegaMenu({ categories, isOpen, onClose }: MegaMenuProps) {
   const [hoveredId, setHoveredId] = useState<string | null>(null);
   const intentTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  // Hover intent: wait 150ms before switching category.
-  // If user is just passing through (on the way to column 3), it won't trigger.
+  // Hover intent: wait 400ms before switching category.
+  // Gives user enough time to move diagonally to the subcategory column.
   const handleMouseEnter = useCallback((catId: string) => {
     if (intentTimeout.current) clearTimeout(intentTimeout.current);
     intentTimeout.current = setTimeout(() => {
       setHoveredId(catId);
-    }, 150);
+    }, 400);
   }, []);
 
   const handleMouseLeave = useCallback(() => {
@@ -118,7 +126,7 @@ export function MegaMenu({ categories, isOpen, onClose }: MegaMenuProps) {
           {hasChildren ? (
             <>
               <p className="mb-1 px-4 text-[10px] font-semibold uppercase tracking-[0.2em] text-gray-400">
-                {hoveredCategory.name}
+                {subcategoryLabels[hoveredCategory.slug] || hoveredCategory.name}
               </p>
               {hoveredCategory.children.map((sub) => (
                 <Link
