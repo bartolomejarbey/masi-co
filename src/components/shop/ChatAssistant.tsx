@@ -97,11 +97,11 @@ export function ChatAssistant() {
       <div className="fixed bottom-6 right-6 z-[9998] flex flex-col w-[360px] max-w-[calc(100vw-2rem)] h-[500px] max-h-[calc(100vh-6rem)] rounded-2xl bg-white shadow-2xl border border-gray-200 overflow-hidden">
         {/* Header */}
         <div className="flex items-center gap-3 bg-[#CC1939] px-4 py-3 text-white">
-          <span className="text-2xl" role="img" aria-label="robot">
-            🤖
+          <span className="text-2xl" role="img" aria-label="kráva">
+            🐄
           </span>
           <div className="flex-1">
-            <p className="text-sm font-bold leading-tight">MASI-CO Asistent</p>
+            <p className="text-sm font-bold leading-tight">MASI-CO Řezník</p>
             <p className="text-xs opacity-80">Poradíme s výběrem</p>
           </div>
           <button
@@ -118,7 +118,7 @@ export function ChatAssistant() {
           {/* Welcome message */}
           {messages.length === 0 && (
             <div className="rounded-xl bg-white px-4 py-3 text-sm text-gray-700 shadow-sm border border-gray-100">
-              Ahoj! Jsem MASI-CO asistent. Poradím s výběrem masa, uzenin
+              Dobrý den! Jsem váš MASI-CO řezník. Poradím s výběrem masa, uzenin
               nebo hotových jídel. Na co se chcete zeptat?
             </div>
           )}
@@ -211,11 +211,11 @@ export function ChatAssistant() {
       <button
         onClick={() => setOpen(true)}
         className="flex-shrink-0 animate-[fadeSlideIn_0.5s_ease-out] cursor-pointer"
-        aria-label="Otevřít chat s asistentem"
+        aria-label="Otevřít chat s řezníkem"
       >
         <div className="relative h-16 w-16 rounded-full bg-[#CC1939] shadow-lg flex items-center justify-center transition-transform hover:scale-110">
-          <span className="text-3xl animate-[wave_2s_ease-in-out_infinite]" role="img" aria-label="robot">
-            🤖
+          <span className="text-3xl animate-[wave_2s_ease-in-out_infinite]" role="img" aria-label="kráva">
+            🐄
           </span>
         </div>
       </button>
