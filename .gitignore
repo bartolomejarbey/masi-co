@@ -36,8 +36,13 @@ yarn-error.log*
 /*.jpeg
 /*.png
 
-# local helper scripts with credentials
+# local helper scripts & generated assets
 /scripts/*.js
+/scripts/reference-cache/
+/scripts/reference-images/
+/scripts/generation-log.txt
+missing-photos.txt
+.superpowers/
 
 # local env files
 .env*.local
