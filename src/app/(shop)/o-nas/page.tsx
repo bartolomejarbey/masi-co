@@ -186,7 +186,7 @@ export default function ONasPage() {
 
           <div className="overflow-hidden rounded-2xl border border-gray-200">
             <iframe
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2554.5!2d14.4347!3d50.1686!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNTDCsDEwJzA3LjAiTiAxNMKwMjYnMDUuMCJF!5e0!3m2!1scs!2scz!4v1"
+              src="https://maps.google.com/maps?q=Zahradn%C3%AD+466%2C+250+64+M%C4%9B%C5%A1ice&t=&z=16&ie=UTF8&iwloc=&output=embed"
               width="100%"
               height="320"
               style={{ border: 0 }}

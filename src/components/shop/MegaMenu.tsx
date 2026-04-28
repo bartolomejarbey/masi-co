@@ -12,6 +12,7 @@ const subcategoryLabels: Record<string, string> = {
   "uzene-maso": "Druh uzeného",
   "ostatni-maso": "Druh masa",
   uzeniny: "Druh uzenin",
+  "ostatni-sortiment": "Druh sortimentu",
 };
 
 const categoryIcons: Record<string, LucideIcon> = {
