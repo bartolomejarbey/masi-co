@@ -43,6 +43,7 @@ yarn-error.log*
 /scripts/generation-log.txt
 missing-photos.txt
 .superpowers/
+.claude/
 
 # local env files
 .env*.local

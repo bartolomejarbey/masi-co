@@ -255,7 +255,7 @@ const TRANSLATION_MAP: Record<string, string> = {
   "Hovězí krájené kostky na guláš 1kg": "diced beef for goulash",
   "Hovězí líčka mražená 1kg": "frozen beef cheeks",
   "Hovězí mleté maso 1kg": "ground beef",
-  "Hovězí oháňka 1kg": "beef oxtail",
+  "Hovězí oháňka 1kg": "beef oxtail cut into round cross-sections showing tail vertebrae and meat, NOT marrow bones, NOT knee joints",
   "Hovězí ořez-HPV 1kg": "beef trimmings",
   "Hovězí přední b.k. krk/býk 1kg": "boneless beef neck from bull",
   "Hovězí přední b.k. krk/kráva 1kg": "boneless beef neck from cow",
@@ -265,7 +265,7 @@ const TRANSLATION_MAP: Record<string, string> = {
   "Hovězí roštěná stařená 1kg": "dry-aged beef sirloin",
   "Hovězí roštěná/býk 1kg": "beef sirloin from bull",
   "Hovězí roštěná/kráva 1kg": "beef sirloin from cow",
-  "Hovězí svíčková/býk 1kg": "beef tenderloin from bull",
+  "Hovězí svíčková/býk 1kg": "long whole cylindrical beef tenderloin muscle from bull, intact loin shape, NOT a flat steak",
   "Hovězí svíčková/kráva 1kg": "beef tenderloin from cow",
   "Hovězí zadní b.k./býk 1kg": "boneless beef rump from bull",
   "Hovězí zadní b.k./kráva 1kg": "boneless beef rump from cow",
@@ -284,7 +284,7 @@ const TRANSLATION_MAP: Record<string, string> = {
   "Vepřová kůže 1kg": "pork skin",
   "Vepřová kýta bez kosti 1kg": "boneless pork leg",
   "Vepřová kýta plátkovaná 1kg": "sliced pork leg",
-  "Vepřová kýta/nudličky 1kg": "pork leg strips",
+  "Vepřová kýta/nudličky 1kg": "raw pork leg pre-cut into thin uniform strips, multiple visible strips of meat in a pile, NOT a whole muscle chunk",
   "Vepřová líčka 1kg": "pork cheeks",
   "Vepřová panenka chlazená 1kg": "chilled pork tenderloin",
   "Vepřová pečeně bez kosti 1kg": "boneless pork roast",
@@ -301,8 +301,8 @@ const TRANSLATION_MAP: Record<string, string> = {
   "Vepřové koleno zadní s kostí 1kg": "rear pork knuckle with bone",
   "Vepřové krájené kostky na guláš z plece 1kg": "diced pork shoulder for goulash",
   "Vepřové mleté maso 1kg": "ground pork",
-  "Vepřové nožičky 1kg": "pork trotters",
-  "Vepřové ocásky masité 1kg": "meaty pork tails",
+  "Vepřové nožičky 1kg": "multiple raw pork trotters (pig feet) with hooves, cleaned, traditional Czech butcher product, normal pig anatomy, NO human-hand distortion",
+  "Vepřové ocásky masité 1kg": "multiple raw meaty pork tails laid in a small pile, recognizable curly tail shape, traditional Czech butcher product",
   "Vepřové palce z panenek 1kg": "pork tenderloin medallions",
   "Vepřové sádlo hřbetní 1kg": "pork back fat",
   "Vepřové sele 1kg": "whole raw suckling pig carcass for roasting, butchered, skin on, ready to cook",
@@ -316,20 +316,20 @@ const TRANSLATION_MAP: Record<string, string> = {
   "Telecí kosti/mražené 1kg": "frozen veal bones",
   "Telecí kýta býk/kráva/mražená 1kg": "frozen veal leg",
   "Telecí plec býk/kráva/mražená 1kg": "frozen veal shoulder",
-  "Telecí svíčková 1kg": "veal tenderloin",
+  "Telecí svíčková 1kg": "long whole cylindrical veal tenderloin muscle, intact loin shape",
 
   // ── Kuřecí maso ──
   "Kuře celé/1,2 až 1,5kg/ 1kg": "whole chicken",
   "Kuře chlazené/nekalibrované/ 1kg": "chilled whole chicken",
   "Kuřecí čtvrtky chlazené 1kg": "chilled chicken quarters",
-  "Kuřecí játra/tácek 0,5kg/ 1kg": "chicken liver",
-  "Kuřecí kostry 1kg": "chicken carcasses",
-  "Kuřecí křídla 1kg": "chicken wings",
+  "Kuřecí játra/tácek 0,5kg/ 1kg": "pile of multiple small fresh raw chicken liver lobes, NOT a single large piece",
+  "Kuřecí kostry 1kg": "raw chicken backbone frames in a stack (rib cage and spine only, without breast meat or legs), traditional butcher carcass leftovers",
+  "Kuřecí křídla 1kg": "stack of multiple separated raw chicken wings in a pile, NOT a whole chicken",
   "Kuřecí křídla bez letek 1kg": "chicken wings without tips",
   "Kuřecí paličky 1kg": "chicken drumsticks",
-  "Kuřecí prsa 1kg": "chicken breast",
-  "Kuřecí prsa b.k. s kůží 1kg": "boneless chicken breast with skin",
-  "Kuřecí prsa s.k. s kůží-supreme 1kg": "chicken breast supreme with bone and skin",
+  "Kuřecí prsa 1kg": "raw chicken pectoral fillet, boneless white poultry meat cut",
+  "Kuřecí prsa b.k. s kůží 1kg": "raw boneless chicken pectoral fillet with skin, white poultry meat",
+  "Kuřecí prsa s.k. s kůží-supreme 1kg": "raw chicken supreme pectoral cut with bone and skin, white poultry meat",
   "Kuřecí roláda/vykoštěné kuře 1kg": "chicken roulade, deboned whole chicken",
   "Kuřecí špalíčky 1kg": "chicken leg portions",
   "Kuřecí srdce/tácek 0,5kg/ 1kg": "chicken hearts",
@@ -339,20 +339,20 @@ const TRANSLATION_MAP: Record<string, string> = {
 
   // ── Ostatní maso ──
   "Husa/mražená/ 1kg": "frozen whole plucked goose carcass, headless, raw poultry ready to cook",
-  "Husí stehna/mražená/ 1kg": "frozen goose legs",
+  "Husí stehna/mražená/ 1kg": "stack of multiple frozen separated goose drumsticks and thighs, individual leg portions, NOT whole birds",
   "Husokachna 3,4kg /mražená/ 1kg": "frozen Muscovy duck",
   "Jehněčí koleno zadní 400-600g /mražené/ 1kg": "frozen rear lamb shank",
   "Kachna 2,2-2,4kg /mražená/ 1kg": "frozen whole plucked duck carcass, headless, raw poultry ready to cook",
-  "Kachní čtvrtky /mražené/ 1kg": "frozen duck quarters",
+  "Kachní čtvrtky /mražené/ 1kg": "multiple frozen separated duck quarter portions (leg with thigh attached), individual pieces in a pile, NOT whole birds",
   "Kachní játra /bal. 0,5kg/mražená 1kg": "frozen duck liver",
-  "Kachní prsa bez kosti/mražené/ 1kg": "frozen boneless duck breast",
+  "Kachní prsa bez kosti/mražené/ 1kg": "frozen raw boneless duck pectoral fillet, dark poultry meat cut",
   "Králičí hřbety /bal. 0,5kg/mražené 1kg": "frozen rabbit backs",
   "Králičí stehna/mražená/ 1kg": "frozen rabbit legs",
-  "Králík 1,3-1,4kg /mražený/ 1kg": "frozen whole rabbit",
-  "Krůta chl/mr 1kg": "whole turkey",
+  "Králík 1,3-1,4kg /mražený/ 1kg": "frozen whole skinned headless rabbit carcass, butchered, raw, ready to cook",
+  "Krůta chl/mr 1kg": "whole plucked headless turkey carcass, raw poultry, butchered, ready to cook",
   "Krůtí játra /mražené/ 1kg": "frozen turkey liver",
   "Krůtí palička chl/mr 1kg": "turkey drumstick",
-  "Krůtí prsa/chlazená/ 1kg": "chilled turkey breast",
+  "Krůtí prsa/chlazená/ 1kg": "chilled raw turkey pectoral fillet, boneless white poultry meat cut",
   "Krůtí stehenní plátek chl/mr 1kg": "turkey thigh steak",
   "Slepice lehká 1,3kg /mražená/ 1kg": "frozen light hen",
   "Slepice těžká/mražená/ 1kg": "frozen heavy stewing hen",
@@ -362,7 +362,7 @@ const TRANSLATION_MAP: Record<string, string> = {
   "Mleté maso mix 50/50 1kg": "mixed ground meat 50/50 beef and pork",
 
   // ── Hovězí droby ──
-  "Hovězí býčí žlázy 1kg": "beef sweetbreads (bull glands)",
+  "Hovězí býčí žlázy 1kg": "fresh raw beef sweetbreads (bull thymus glands), creamy pale pink soft smooth lobes, NOT brain tissue, NO convoluted or folded texture",
   "Hovězí dršťky syrové chl/mr 1kg": "raw beef tripe",
   "Hovězí dršťky/předvařené 1kg": "pre-cooked beef tripe",
   "Hovězí játra 1kg": "beef liver",
@@ -371,7 +371,7 @@ const TRANSLATION_MAP: Record<string, string> = {
 
   // ── Vepřové droby ──
   "Vepřová játra chl/mr 1kg": "pork liver",
-  "Vepřová krev 1kg": "fresh pork blood",
+  "Vepřová krev 1kg": "fresh red pork blood as viscous liquid filling a clear glass jar, liquid surface visible, NOT solid meat",
   "Vepřová ledvina chl/mr 1kg": "pork kidney",
   "Vepřové srdce chl/mr 1kg": "pork heart",
   "Vepřový jazyk chl/mr 1kg": "pork tongue",
@@ -540,10 +540,31 @@ const TRANSLATION_MAP: Record<string, string> = {
 
 const NEGATIVE = "IMPORTANT: No text, no letters, no labels, no logos, no writing, no typography anywhere in the image. No packaging with labels. No brand names.";
 
-function buildPrompt(productNameEN: string, type: PromptType): string {
+function buildPrompt(productNameEN: string, productNameCZ: string, type: PromptType): string {
+  const lowerEN = productNameEN.toLowerCase();
+  const isFrozen =
+    lowerEN.includes("frozen") || productNameCZ.toLowerCase().includes("mražen");
+  const isWholeAnimal =
+    lowerEN.includes("carcass") ||
+    /\bwhole\b/.test(lowerEN);
+  const isGround = lowerEN.includes("ground");
+  const frostyGuard = isFrozen
+    ? " Clean professional product shot, NO ice crystals or freezer-burn distortion on meat surface, NO snow or frost coating the flesh."
+    : "";
+  const liveAnimalGuard =
+    isWholeAnimal
+      ? " The animal MUST be butchered, plucked, headless, and laid out as a raw cooking-ready carcass. NEVER show a live animal."
+      : "";
+
   switch (type) {
     case "maso":
-      return `A piece of raw ${productNameEN} held by a butcher's hand in a black nitrile glove, in the same professional studio photography style as the reference images. Dark background, dramatic lighting, minimalist composition. ${NEGATIVE}`;
+      if (isGround) {
+        return `A handful of fresh raw ${productNameEN} held by a butcher's hand in a black nitrile glove or laid on butcher paper. The ground meat must show uniform fresh ground texture with visible meat fibers and no convoluted, brain-like, or AI-distorted patterns. In the same professional studio photography style as the reference images. Dark background, dramatic lighting, minimalist composition.${frostyGuard} ${NEGATIVE}`;
+      }
+      if (isWholeAnimal) {
+        return `${productNameEN}, laid out flat on butcher paper as a raw carcass ready for cooking. In the same professional studio photography style as the reference images. Dark background, dramatic lighting, minimalist composition.${liveAnimalGuard}${frostyGuard} ${NEGATIVE}`;
+      }
+      return `A piece of raw ${productNameEN} held by a butcher's hand in a black nitrile glove, in the same professional studio photography style as the reference images. Dark background, dramatic lighting, minimalist composition.${frostyGuard} ${NEGATIVE}`;
 
     case "uzeniny":
       return `A ${productNameEN} placed on a rustic dark wooden cutting board with scattered sea salt, peppercorns, rosemary and bay leaf, in the same professional studio photography style as the reference images. Dark background, dramatic lighting. Show sausages/meat directly without any plastic packaging, without any labels, without any branded wrapping. Just the meat product on the wooden board with scattered salt, peppercorns, rosemary, bay leaf. ${NEGATIVE}`;
@@ -551,17 +572,22 @@ function buildPrompt(productNameEN: string, type: PromptType): string {
     case "uzene":
       return `Smoked ${productNameEN} hanging on a steel butcher's hook, held by a hand in black nitrile glove, in the same professional studio photography style as the reference images. Dark background, warm amber tones. Show the meat directly without any plastic packaging, without any labels, without any branded wrapping. ${NEGATIVE}`;
 
-    case "hotovky":
-      return `A single clear glass jar 900ml filled with Czech traditional ${productNameEN}, white checkered fabric cover on top tied with rustic string, in the same professional studio photography style as the reference images. Pitch black background, dramatic low-key studio lighting from the side creating rim light on glass, warm tones inside jar, minimalist composition, single subject. ${NEGATIVE}`;
+    case "hotovky": {
+      const labelText = productNameCZ.replace(/\s*\d+\s*ml\s*$/i, "").toUpperCase();
+      return `A single clear glass jar 900ml filled with Czech traditional ${productNameEN}, white red-checkered fabric cover on top tied with rustic string. The jar wears a prominent rectangular paper label on the front, centered, clearly readable. The label has bold red "MASI-CO ŘEZNICTVÍ" branding at the top and the product name "${labelText}" below it in clean black serif typography on cream-colored paper. Both lines must be sharp, legible, correctly spelled and centered. In the same professional studio photography style as the reference images. Pitch black background, dramatic low-key studio lighting from the side creating rim light on glass, warm tones inside jar, minimalist composition, single subject only.`;
+    }
 
     case "ryby":
       return `Raw ${productNameEN} on a dark wet slate surface with crushed ice, in the same professional studio photography style as the reference images. Dark background, dramatic lighting, glistening fish skin. ${NEGATIVE}`;
 
     case "zverina":
-      return `A piece of raw wild game ${productNameEN} held by a hand in a black nitrile glove, in the same professional studio photography style as the reference images. Dark background, dramatic lighting, rich meat tones. ${NEGATIVE}`;
+      if (isWholeAnimal) {
+        return `${productNameEN}, laid out flat on butcher paper as a raw carcass ready for cooking. In the same professional studio photography style as the reference images. Dark background, dramatic lighting, rich meat tones, minimalist composition.${liveAnimalGuard}${frostyGuard} ${NEGATIVE}`;
+      }
+      return `A piece of raw wild game ${productNameEN} held by a hand in a black nitrile glove, in the same professional studio photography style as the reference images. Dark background, dramatic lighting, rich meat tones.${frostyGuard} ${NEGATIVE}`;
 
     case "droby":
-      return `Fresh raw ${productNameEN} placed on a dark slate board, in the same professional studio photography style as the reference images. Dark background, dramatic lighting, minimalist composition, single subject only. ${NEGATIVE}`;
+      return `Fresh raw ${productNameEN} placed on a dark slate board, in the same professional studio photography style as the reference images. Dark background, dramatic lighting, minimalist composition, single subject only.${frostyGuard} ${NEGATIVE}`;
 
     case "ostatni":
       return `${productNameEN} placed on a dark wooden board, in the same professional studio photography style as the reference images. Dark background, dramatic lighting, minimalist composition. ${NEGATIVE}`;
@@ -781,7 +807,7 @@ async function main() {
     // Determine prompt type
     const promptType = CATEGORY_TYPE_MAP[categoryName] || "ostatni";
     const englishName = translateProduct(product.name);
-    const prompt = buildPrompt(englishName, promptType);
+    const prompt = buildPrompt(englishName, product.name, promptType);
 
     // Smart reference selection
     const { paths: refPaths, breakdown } = getReferencesForProduct(product);
