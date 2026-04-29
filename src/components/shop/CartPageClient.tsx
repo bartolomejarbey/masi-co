@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Minus, Plus, Trash2, ShoppingBag } from "lucide-react";
 import { useCart } from "./CartProvider";
-import { formatPrice } from "@/lib/utils";
+import { formatPrice, formatPriceExclVat, priceExclVat, VAT_RATE_FOOD } from "@/lib/utils";
 
 interface CartPageClientProps {
   minOrderAmount: number;
@@ -93,8 +93,16 @@ export function CartPageClient({ minOrderAmount }: CartPageClientProps) {
                     <p className="mt-0.5 text-sm text-gray-500">
                       {formatPrice(product.price)} / {product.unit}
                     </p>
+                    <p className="text-[11px] text-gray-400">
+                      {formatPriceExclVat(product.price)} / {product.unit} bez DPH 12 %
+                    </p>
                   </div>
-                  <p className="text-lg font-bold text-black">{formatPrice(total)}</p>
+                  <div className="text-right">
+                    <p className="text-lg font-bold text-black">{formatPrice(total)}</p>
+                    <p className="text-[11px] text-gray-400">
+                      {formatPriceExclVat(total)} bez DPH 12 %
+                    </p>
+                  </div>
                 </div>
 
                 <div className="flex flex-wrap items-center justify-between gap-3">
@@ -145,9 +153,17 @@ export function CartPageClient({ minOrderAmount }: CartPageClientProps) {
         <div className="mt-5 space-y-3 border-b border-gray-200 pb-4 text-sm">
           <div className="flex items-center justify-between">
             <span className="text-gray-600">
-              Položky ({items.reduce((s, i) => s + i.quantity, 0)})
+              Mezisoučet bez DPH ({items.reduce((s, i) => s + i.quantity, 0)})
             </span>
-            <span className="font-semibold text-black">{formatPrice(subtotal)}</span>
+            <span className="font-semibold text-black">
+              {formatPrice(priceExclVat(subtotal))}
+            </span>
+          </div>
+          <div className="flex items-center justify-between">
+            <span className="text-gray-600">DPH 12 %</span>
+            <span className="font-semibold text-black">
+              {formatPrice(subtotal - priceExclVat(subtotal))}
+            </span>
           </div>
           <div className="flex items-center justify-between">
             <span className="text-gray-600">Doprava</span>
@@ -156,7 +172,7 @@ export function CartPageClient({ minOrderAmount }: CartPageClientProps) {
         </div>
 
         <div className="mt-4 flex items-center justify-between">
-          <span className="text-base font-medium text-gray-700">Celkem</span>
+          <span className="text-base font-medium text-gray-700">Celkem s DPH</span>
           <span className="font-display text-2xl font-bold text-primary">
             {formatPrice(subtotal)}
           </span>

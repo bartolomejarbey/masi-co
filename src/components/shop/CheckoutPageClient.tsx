@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useCart } from "./CartProvider";
-import { formatPrice } from "@/lib/utils";
+import { formatPrice, formatPriceExclVat, priceExclVat } from "@/lib/utils";
 import {
   Banknote,
   CreditCard,
@@ -539,6 +539,9 @@ export function CheckoutPageClient({ minOrderAmount }: CheckoutPageClientProps) 
                 <p className="text-xs text-gray-500">
                   {quantity} × {formatPrice(product.price)} / {product.unit}
                 </p>
+                <p className="text-[11px] text-gray-400">
+                  {formatPriceExclVat(product.price)} / {product.unit} bez DPH 12 %
+                </p>
               </div>
               <p className="shrink-0 font-semibold text-black">
                 {formatPrice(product.price * quantity)}
@@ -549,15 +552,21 @@ export function CheckoutPageClient({ minOrderAmount }: CheckoutPageClientProps) 
 
         <div className="mt-5 space-y-2 border-t border-gray-200 pt-4 text-sm">
           <div className="flex items-center justify-between">
-            <span className="text-gray-600">Mezisoučet</span>
-            <span className="font-semibold">{formatPrice(subtotal)}</span>
+            <span className="text-gray-600">Mezisoučet bez DPH</span>
+            <span className="font-semibold">{formatPrice(priceExclVat(subtotal))}</span>
+          </div>
+          <div className="flex items-center justify-between">
+            <span className="text-gray-600">DPH 12 %</span>
+            <span className="font-semibold">
+              {formatPrice(subtotal - priceExclVat(subtotal))}
+            </span>
           </div>
           <div className="flex items-center justify-between">
             <span className="text-gray-600">Doprava</span>
             <span className="text-sm font-medium text-green-600">Zdarma</span>
           </div>
           <div className="flex items-center justify-between border-t border-gray-200 pt-3">
-            <span className="text-base font-medium text-gray-700">Celkem</span>
+            <span className="text-base font-medium text-gray-700">Celkem s DPH</span>
             <span className="font-display text-2xl font-bold text-primary">
               {formatPrice(subtotal)}
             </span>

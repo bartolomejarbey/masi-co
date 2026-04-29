@@ -277,7 +277,7 @@ const TRANSLATION_MAP: Record<string, string> = {
   "Hovězí zadní/váleček 1kg": "beef round roll",
 
   // ── Vepřové maso ──
-  "Vepřová hlava půlená 1kg": "halved pork head",
+  "Vepřová hlava půlená 1kg": "raw butcher cuts of cheek and jowl meat from a pork head, lean pink pork meat pieces neatly arranged on butcher paper, NOT a whole or halved head, NOT showing skull, eyes, ears, or brain, professional product photography",
   "Vepřová kostra 1kg": "pork carcass bones",
   "Vepřová krkovice bez kosti 1kg": "boneless pork neck collar",
   "Vepřová krkovice s kostí 1kg": "pork neck collar with bone",
@@ -305,7 +305,7 @@ const TRANSLATION_MAP: Record<string, string> = {
   "Vepřové ocásky masité 1kg": "multiple raw meaty pork tails laid in a small pile, recognizable curly tail shape, traditional Czech butcher product",
   "Vepřové palce z panenek 1kg": "pork tenderloin medallions",
   "Vepřové sádlo hřbetní 1kg": "pork back fat",
-  "Vepřové sele 1kg": "whole raw suckling pig carcass for roasting, butchered, skin on, ready to cook",
+  "Vepřové sele 1kg": "vacuum-packed raw pork shoulder portion from a young pig, rosy pink raw pork meat, NOT a whole carcass, NOT a piglet, NOT showing skin or limbs, professional butcher product photography",
   "Vepřový bok bez kosti 1kg": "boneless pork belly",
   "Vepřový bok s kostí 1kg": "pork belly with bone",
   "Vepřový lalok 1kg": "pork jowl",
@@ -348,7 +348,7 @@ const TRANSLATION_MAP: Record<string, string> = {
   "Kachní prsa bez kosti/mražené/ 1kg": "frozen raw boneless duck pectoral fillet, dark poultry meat cut",
   "Králičí hřbety /bal. 0,5kg/mražené 1kg": "frozen rabbit backs",
   "Králičí stehna/mražená/ 1kg": "frozen rabbit legs",
-  "Králík 1,3-1,4kg /mražený/ 1kg": "frozen whole skinned headless rabbit carcass, butchered, raw, ready to cook",
+  "Králík 1,3-1,4kg /mražený/ 1kg": "neat raw rabbit fillet portions on butcher paper, multiple cleaned boneless meat pieces, pale rosy raw rabbit meat, NOT a whole carcass, NOT showing limbs, head, or rib cage, professional butcher product photography",
   "Krůta chl/mr 1kg": "whole plucked headless turkey carcass, raw poultry, butchered, ready to cook",
   "Krůtí játra /mražené/ 1kg": "frozen turkey liver",
   "Krůtí palička chl/mr 1kg": "turkey drumstick",

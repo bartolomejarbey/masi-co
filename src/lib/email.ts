@@ -23,7 +23,12 @@ const PAYMENT_LABELS: Record<string, string> = {
 };
 
 function formatPrice(amount: number): string {
-  return new Intl.NumberFormat("cs-CZ", { style: "currency", currency: "CZK", minimumFractionDigits: 0 }).format(amount);
+  return new Intl.NumberFormat("cs-CZ", { style: "currency", currency: "CZK", minimumFractionDigits: 0, maximumFractionDigits: 0 }).format(amount);
+}
+
+const VAT_RATE_FOOD = 0.12;
+function priceExclVat(inclVat: number): number {
+  return inclVat / (1 + VAT_RATE_FOOD);
 }
 
 function buildOrderConfirmationHTML(params: OrderConfirmationParams): string {
@@ -76,8 +81,16 @@ function buildOrderConfirmationHTML(params: OrderConfirmationParams): string {
       <tbody>${itemRows}</tbody>
       <tfoot>
         <tr>
-          <td colspan="2" style="padding:12px;font-weight:700;font-size:15px">Celkem (orientačně)</td>
-          <td style="padding:12px;font-weight:700;text-align:right;font-size:15px;color:#CC1939">${formatPrice(params.total)}</td>
+          <td colspan="2" style="padding:8px 12px;color:#6b7280;font-size:13px">Mezisoučet bez DPH</td>
+          <td style="padding:8px 12px;text-align:right;color:#374151;font-size:13px">${formatPrice(priceExclVat(params.total))}</td>
+        </tr>
+        <tr>
+          <td colspan="2" style="padding:8px 12px;color:#6b7280;font-size:13px">DPH 12 %</td>
+          <td style="padding:8px 12px;text-align:right;color:#374151;font-size:13px">${formatPrice(params.total - priceExclVat(params.total))}</td>
+        </tr>
+        <tr>
+          <td colspan="2" style="padding:12px;font-weight:700;font-size:15px;border-top:1px solid #e5e7eb">Celkem s DPH (orientačně)</td>
+          <td style="padding:12px;font-weight:700;text-align:right;font-size:15px;color:#CC1939;border-top:1px solid #e5e7eb">${formatPrice(params.total)}</td>
         </tr>
       </tfoot>
     </table>

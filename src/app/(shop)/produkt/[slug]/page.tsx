@@ -6,7 +6,7 @@ import { ProductDetailActions } from "@/components/shop/ProductDetailActions";
 import { ProductGallery } from "@/components/shop/ProductGallery";
 import { ProductAccordion } from "@/components/shop/ProductAccordion";
 import type { Category } from "@/lib/types";
-import { formatPrice } from "@/lib/utils";
+import { formatPrice, formatPriceExclVat } from "@/lib/utils";
 import {
   fetchAllCategories,
   fetchProductBySlug,
@@ -144,6 +144,9 @@ export default async function ProduktDetailPage({ params }: ProductDetailPagePro
             </span>
             <span className="pb-1 text-base text-gray-500">/ {product.unit}</span>
           </div>
+          <p className="mt-1 text-sm text-gray-500">
+            {formatPriceExclVat(product.price)} bez DPH 12 %
+          </p>
 
           {product.unit === "kg" && (
             <div className="mt-4 rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 text-sm text-gray-600">

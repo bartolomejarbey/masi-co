@@ -5,7 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Minus, Plus, ShoppingCart, Eye } from "lucide-react";
 import { toast } from "sonner";
-import { formatPrice } from "@/lib/utils";
+import { formatPrice, formatPriceExclVat } from "@/lib/utils";
 import { useCart } from "./CartProvider";
 import type { Product } from "@/lib/types";
 
@@ -115,6 +115,9 @@ export function ProductCard({ product }: ProductCardProps) {
           <span className="text-xl font-bold text-primary">{formatPrice(product.price)}</span>
           <span className="text-xs text-gray-400">/{product.unit}</span>
         </div>
+        <p className="mt-0.5 text-[11px] text-gray-400">
+          {formatPriceExclVat(product.price)} bez DPH 12 %
+        </p>
 
         {isLowStock && (
           <p className="mt-1 text-[10px] text-amber-600">

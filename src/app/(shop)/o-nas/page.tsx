@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import type { Metadata } from "next";
 import { Heart, Shield, Scale, Users, ArrowRight, MapPin, Phone } from "lucide-react";
@@ -39,20 +40,39 @@ export default function ONasPage() {
       {/* Hero */}
       <section className="relative overflow-hidden bg-gradient-to-br from-gray-50 via-white to-red-50">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_20%,rgba(204,25,57,0.06),transparent_50%)]" />
-        <div className="relative mx-auto max-w-7xl px-4 py-20 sm:px-6 sm:py-28 lg:py-36">
-          <p className="text-sm font-medium uppercase tracking-[0.25em] text-primary">
-            O nás
-          </p>
-          <h1 className="mt-4 font-display text-4xl font-bold leading-tight sm:text-5xl lg:text-6xl">
-            Poctivé řeznictví,
-            <br />
-            moderní přístup
-          </h1>
-          <p className="mt-6 max-w-2xl text-lg leading-relaxed text-gray-600">
-            MASI-CO je rodinné řeznictví s vlastním rozvozem po Praze a okolí.
-            Spojujeme tradiční řemeslo s pohodlím online nákupu — čerstvé maso
-            objednáte z domova a my ho dovezeme v chlazeném voze přímo ke dveřím.
-          </p>
+        <div className="relative mx-auto max-w-7xl px-4 py-16 sm:px-6 sm:py-24 lg:py-28">
+          <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
+            <div>
+              <p className="text-sm font-medium uppercase tracking-[0.25em] text-primary">
+                O nás
+              </p>
+              <h1 className="mt-4 font-display text-4xl font-bold leading-tight sm:text-5xl lg:text-6xl">
+                Poctivé řeznictví,
+                <br />
+                moderní přístup
+              </h1>
+              <p className="mt-6 max-w-2xl text-lg leading-relaxed text-gray-600">
+                MASI-CO je rodinné řeznictví s vlastním rozvozem po Praze a okolí.
+                Spojujeme tradiční řemeslo s pohodlím online nákupu — čerstvé maso
+                objednáte z domova a my ho dovezeme v chlazeném voze přímo ke dveřím.
+              </p>
+            </div>
+
+            <div className="relative aspect-[4/3] overflow-hidden rounded-2xl shadow-lg">
+              <Image
+                src="/assets/hero/onas.jpg"
+                alt="MASI-CO tým"
+                fill
+                sizes="(max-width: 1024px) 100vw, 50vw"
+                className="object-cover"
+                priority
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
+              <div className="absolute left-4 bottom-4 rounded-full border border-white/60 bg-black/20 px-4 py-1.5 text-xs font-medium uppercase tracking-[0.25em] text-white backdrop-blur-sm">
+                Rodinná firma
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 

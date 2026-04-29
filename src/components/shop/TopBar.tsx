@@ -6,7 +6,7 @@ export function TopBar() {
       <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-2">
         <div className="flex items-center gap-2 text-[13px] tracking-[0.05em]">
           <Clock size={14} className="shrink-0 opacity-70" />
-          <span>Objednávky do 12:00 expedujeme týž den</span>
+          <span>Expedujeme tentýž den po předchozí telefonické domluvě</span>
         </div>
         <div className="flex items-center gap-5 text-[13px] tracking-[0.05em]">
           <a
