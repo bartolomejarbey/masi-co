@@ -59,7 +59,7 @@ export default async function NaseProduktyPage({ searchParams }: Props) {
               Vyhledávání
             </p>
             <h1 className="mt-3 font-display text-3xl font-bold leading-tight sm:text-4xl">
-              Výsledky pro „{rawQuery}"
+              Výsledky pro „{rawQuery}“
             </h1>
             <p className="mt-3 text-sm text-gray-600">
               Nalezeno {results.length} {results.length === 1 ? "produkt" : results.length >= 2 && results.length <= 4 ? "produkty" : "produktů"}
@@ -78,7 +78,7 @@ export default async function NaseProduktyPage({ searchParams }: Props) {
                 Zkuste jiné slovo nebo se podívejte na <Link href="/sortiment" className="text-primary underline">celý sortiment</Link>.
               </p>
               <p className="mt-2 text-xs text-gray-500">
-                Tip: hledá se bez ohledu na diakritiku — „svickova" najde i „svíčkovou".
+                Tip: hledá se bez ohledu na diakritiku — „svickova“ najde i „svíčkovou“.
               </p>
             </div>
           ) : (
