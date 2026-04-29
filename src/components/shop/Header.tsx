@@ -380,46 +380,63 @@ export function Header({ authEmail, categories = [] }: HeaderProps) {
 
               {expandedCategories.has("sortiment-root") && (
                 <div className="ml-2 space-y-0.5 border-l-2 border-gray-100 pl-3">
-                  {categories.map((cat) => (
-                    <div key={cat.id}>
-                      <div className="flex items-center">
+                  {categories.map((cat) => {
+                    const hasChildren = cat.children.length > 0;
+                    const isExpanded = expandedCategories.has(cat.id);
+
+                    if (!hasChildren) {
+                      return (
                         <Link
+                          key={cat.id}
                           href={`/sortiment/${cat.slug}`}
                           onClick={() => setMobileMenuOpen(false)}
-                          className="flex-1 rounded-lg px-3 py-2.5 text-sm text-gray-600 transition-colors hover:bg-gray-50 hover:text-primary"
+                          className="block min-h-[44px] rounded-lg px-3 py-2.5 text-sm text-gray-600 transition-colors hover:bg-gray-50 hover:text-primary"
                         >
                           {cat.name}
                         </Link>
-                        {cat.children.length > 0 && (
-                          <button
-                            onClick={() => toggleMobileCategory(cat.id)}
-                            className="flex h-8 w-8 items-center justify-center rounded-lg text-gray-400 hover:bg-gray-100"
-                          >
-                            <ChevronRight
-                              size={14}
-                              className={`transition-transform ${
-                                expandedCategories.has(cat.id) ? "rotate-90" : ""
-                              }`}
-                            />
-                          </button>
+                      );
+                    }
+
+                    return (
+                      <div key={cat.id}>
+                        <button
+                          type="button"
+                          onClick={() => toggleMobileCategory(cat.id)}
+                          aria-expanded={isExpanded}
+                          className="flex min-h-[44px] w-full items-center justify-between rounded-lg px-3 py-2.5 text-left text-sm text-gray-600 transition-colors hover:bg-gray-50 hover:text-primary"
+                        >
+                          <span>{cat.name}</span>
+                          <ChevronRight
+                            size={16}
+                            className={`shrink-0 text-gray-400 transition-transform ${
+                              isExpanded ? "rotate-90" : ""
+                            }`}
+                          />
+                        </button>
+                        {isExpanded && (
+                          <div className="ml-3 space-y-0.5 border-l border-gray-100 pl-3">
+                            <Link
+                              href={`/sortiment/${cat.slug}`}
+                              onClick={() => setMobileMenuOpen(false)}
+                              className="block min-h-[40px] rounded-lg px-3 py-2 text-sm font-medium text-primary transition-colors hover:bg-gray-50"
+                            >
+                              Všechny produkty
+                            </Link>
+                            {cat.children.map((sub) => (
+                              <Link
+                                key={sub.id}
+                                href={`/sortiment/${sub.slug}`}
+                                onClick={() => setMobileMenuOpen(false)}
+                                className="block min-h-[40px] rounded-lg px-3 py-2 text-sm text-gray-500 transition-colors hover:text-primary"
+                              >
+                                {sub.name}
+                              </Link>
+                            ))}
+                          </div>
                         )}
                       </div>
-                      {expandedCategories.has(cat.id) && cat.children.length > 0 && (
-                        <div className="ml-3 space-y-0.5 border-l border-gray-100 pl-3">
-                          {cat.children.map((sub) => (
-                            <Link
-                              key={sub.id}
-                              href={`/sortiment/${sub.slug}`}
-                              onClick={() => setMobileMenuOpen(false)}
-                              className="block rounded-lg px-3 py-2 text-sm text-gray-500 transition-colors hover:text-primary"
-                            >
-                              {sub.name}
-                            </Link>
-                          ))}
-                        </div>
-                      )}
-                    </div>
-                  ))}
+                    );
+                  })}
                 </div>
               )}
             </div>
