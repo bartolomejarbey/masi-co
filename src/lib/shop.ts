@@ -311,12 +311,12 @@ export async function fetchCategoriesByParent(parentId: string) {
   return data ?? [];
 }
 
+// Combining diacritical marks block (U+0300–U+036F) covers Latin/Czech accents.
+// Built from a string so the source file contains only ASCII — no literal combining marks.
+const COMBINING_MARKS_RE = new RegExp("[\\u0300-\\u036f]+", "g");
+
 function foldDiacritics(value: string): string {
-  return value
-    .toLowerCase()
-    .normalize("NFD")
-    .replace(/\p{M}+/gu, "")
-    .replace(/ß/g, "ss");
+  return value.toLowerCase().normalize("NFD").replace(COMBINING_MARKS_RE, "").replace(/ß/g, "ss");
 }
 
 function tokenizeQuery(query: string): string[] {
