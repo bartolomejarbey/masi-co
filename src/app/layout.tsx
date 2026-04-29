@@ -66,15 +66,16 @@ export default function RootLayout({
   const categoriesPromise = fetchCategoryTree();
 
   return (
-    <html lang="cs">
+    <html lang="cs" className="overflow-x-hidden">
       <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
       </head>
       <body
-        className={`${roboto.variable} ${robotoSlab.variable} font-sans antialiased bg-white text-black`}
+        className={`${roboto.variable} ${robotoSlab.variable} font-sans antialiased bg-white text-black overflow-x-hidden`}
       >
         <CartProvider>
           <TopBar />

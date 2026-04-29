@@ -37,8 +37,8 @@ export function CategoryBar({ categories }: CategoryBarProps) {
 
   return (
     <div className="border-t border-gray-100 bg-[#FAFAFA]">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6">
-        <div className="scrollbar-hide flex gap-1 overflow-x-auto py-2">
+      <div className="mx-auto max-w-7xl overflow-hidden px-4 sm:px-6">
+        <div className="scrollbar-hide -mx-2 flex gap-1 overflow-x-auto px-2 py-2">
           {categories.map((cat) => {
             const isActive =
               pathname === `/sortiment/${cat.slug}` ||

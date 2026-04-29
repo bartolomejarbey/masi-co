@@ -26,7 +26,7 @@ export function ProductGallery({ mainImage, gallery, productName }: ProductGalle
         />
       </div>
       {allImages.length > 1 && (
-        <div className="mt-3 flex gap-2 overflow-x-auto pb-1">
+        <div className="scrollbar-hide mt-3 flex max-w-full gap-2 overflow-x-auto pb-1">
           {allImages.map((url, i) => (
             <button
               key={i}
