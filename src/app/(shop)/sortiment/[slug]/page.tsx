@@ -110,48 +110,62 @@ export default async function KategoriePage({ params, searchParams }: CategoryPa
       {/* Category navigation + filters */}
       <div className="mt-6 flex flex-col gap-6">
         {/* Root category pills */}
-        <div className="flex flex-wrap gap-2">
-          {rootCategories.map((rootCategory) => (
-            <Link
-              key={rootCategory.id}
-              href={`/sortiment/${rootCategory.slug}`}
-              className={`rounded-full border px-4 py-2 text-sm font-medium transition-colors ${
-                rootCategory.id === category.id
-                  ? "border-primary bg-red-50 text-primary"
-                  : "border-gray-200 text-gray-700 hover:border-primary hover:text-primary"
-              }`}
-            >
-              {rootCategory.name}
-            </Link>
-          ))}
+        <div>
+          <p className="mb-2 text-xs font-medium uppercase tracking-wider text-gray-500">
+            Vyberte kategorii
+          </p>
+          <div className="flex flex-wrap gap-2">
+            {rootCategories.map((rootCategory) => {
+              const isActive =
+                rootCategory.id === category.id || rootCategory.id === category.parent_id;
+              return (
+                <Link
+                  key={rootCategory.id}
+                  href={`/sortiment/${rootCategory.slug}`}
+                  className={`rounded-full border-2 px-4 py-2 text-sm font-semibold transition-all ${
+                    isActive
+                      ? "border-primary bg-primary text-white shadow-sm"
+                      : "border-gray-200 bg-white text-gray-700 hover:border-primary hover:text-primary"
+                  }`}
+                >
+                  {rootCategory.name}
+                </Link>
+              );
+            })}
+          </div>
         </div>
 
         {/* Subcategory filter pills */}
         {typedSubcategories.length > 0 && (
-          <div className="flex flex-wrap gap-2">
-            <Link
-              href={buildSubUrl("all")}
-              className={`rounded-full border px-3.5 py-1.5 text-sm font-medium transition-all ${
-                activeSub === "all"
-                  ? "border-gray-900 bg-gray-900 text-white shadow-sm"
-                  : "border-gray-200 bg-white text-gray-600 hover:border-gray-400 hover:text-gray-900"
-              }`}
-            >
-              Vše
-            </Link>
-            {typedSubcategories.map((sub) => (
+          <div>
+            <p className="mb-2 text-xs font-medium uppercase tracking-wider text-gray-500">
+              Vyberte podkategorii
+            </p>
+            <div className="flex flex-wrap gap-2">
               <Link
-                key={sub.id}
-                href={buildSubUrl(sub.slug)}
+                href={buildSubUrl("all")}
                 className={`rounded-full border px-3.5 py-1.5 text-sm font-medium transition-all ${
-                  activeSub === sub.slug
-                    ? "border-primary bg-primary text-white shadow-sm"
-                    : "border-gray-200 bg-white text-gray-600 hover:border-primary/40 hover:text-primary"
+                  activeSub === "all"
+                    ? "border-gray-900 bg-gray-900 text-white shadow-sm"
+                    : "border-gray-200 bg-white text-gray-600 hover:border-gray-400 hover:text-gray-900"
                 }`}
               >
-                {sub.name}
+                Vše
               </Link>
-            ))}
+              {typedSubcategories.map((sub) => (
+                <Link
+                  key={sub.id}
+                  href={buildSubUrl(sub.slug)}
+                  className={`rounded-full border px-3.5 py-1.5 text-sm font-medium transition-all ${
+                    activeSub === sub.slug
+                      ? "border-primary bg-primary text-white shadow-sm"
+                      : "border-gray-200 bg-white text-gray-600 hover:border-primary/40 hover:text-primary"
+                  }`}
+                >
+                  {sub.name}
+                </Link>
+              ))}
+            </div>
           </div>
         )}
 

@@ -77,6 +77,8 @@ async function getFeaturedProducts(): Promise<Product[]> {
   }
 }
 
+export const revalidate = 60;
+
 export default async function HomePage() {
   const [categories, featuredProducts] = await Promise.all([
     getCategories(),
