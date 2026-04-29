@@ -311,21 +311,198 @@ export async function fetchCategoriesByParent(parentId: string) {
   return data ?? [];
 }
 
+function foldDiacritics(value: string): string {
+  return value
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/\p{M}+/gu, "")
+    .replace(/ß/g, "ss");
+}
+
+function tokenizeQuery(query: string): string[] {
+  return foldDiacritics(query)
+    .replace(/[^a-z0-9\s]+/g, " ")
+    .split(/\s+/)
+    .map((token) => token.trim())
+    .filter((token) => token.length >= 2);
+}
+
+const STOP_TOKENS = new Set(["s", "se", "z", "ze", "a", "i", "na", "do", "po", "pro", "od", "u", "v", "ve", "k", "ke", "1kg", "kg", "ml", "ks"]);
+
+// True synonyms that fuzzy/stem can't bridge — different words for the same thing.
+const SYNONYMS: Record<string, string[]> = {
+  krocan: ["kruta"],
+  kruta: ["krocan"],
+  prase: ["veprove", "vepro"],
+  kachna: ["kachni"],
+  husa: ["husi"],
+  jehne: ["jehneci"],
+};
+
+type MatchKind = "word" | "sub" | "stem" | "fuzzy";
+
+// Damerau-Levenshtein distance ≤ 1 (substitution, insertion, deletion, or adjacent transposition).
+function editDistanceAtMost1(a: string, b: string): boolean {
+  if (a === b) return true;
+  const aLen = a.length;
+  const bLen = b.length;
+  if (Math.abs(aLen - bLen) > 1) return false;
+
+  if (aLen === bLen) {
+    const diffs: number[] = [];
+    for (let i = 0; i < aLen; i++) {
+      if (a[i] !== b[i]) {
+        diffs.push(i);
+        if (diffs.length > 2) return false;
+      }
+    }
+    if (diffs.length <= 1) return true;
+    return diffs[1] === diffs[0] + 1 && a[diffs[0]] === b[diffs[1]] && a[diffs[1]] === b[diffs[0]];
+  }
+
+  const [shorter, longer] = aLen < bLen ? [a, b] : [b, a];
+  let i = 0;
+  let j = 0;
+  let skipped = false;
+  while (i < shorter.length && j < longer.length) {
+    if (shorter[i] === longer[j]) {
+      i++;
+      j++;
+    } else {
+      if (skipped) return false;
+      skipped = true;
+      j++;
+    }
+  }
+  return true;
+}
+
+function fuzzyHaystackMatch(haystack: string, token: string): boolean {
+  if (token.length < 5) return false;
+  const words = haystack.split(/[^a-z0-9]+/).filter(Boolean);
+  for (const word of words) {
+    if (editDistanceAtMost1(token, word)) return true;
+    if (word.length > token.length) {
+      if (editDistanceAtMost1(token, word.slice(0, token.length))) return true;
+      if (editDistanceAtMost1(token, word.slice(0, token.length + 1))) return true;
+    }
+  }
+  return false;
+}
+
+function matchKind(haystack: string, token: string): MatchKind | null {
+  if (!haystack) return null;
+  if (new RegExp(`(^|\\W)${token}(\\W|$)`).test(haystack)) return "word";
+  if (haystack.includes(token)) return "sub";
+  // Czech morphology: dropping the last char handles ryba/ryby, hovezi/hovezí, kuřata/kuře, etc.
+  if (token.length >= 4 && haystack.includes(token.slice(0, -1))) return "stem";
+  if (fuzzyHaystackMatch(haystack, token)) return "fuzzy";
+  return null;
+}
+
+function scoreTokenGroup(
+  group: string[],
+  nameHay: string,
+  descHay: string,
+  catHay: string
+): number {
+  let best = 0;
+  for (const token of group) {
+    const nameMatch = matchKind(nameHay, token);
+    if (nameMatch === "word") return 5;
+    if (nameMatch === "sub") best = Math.max(best, 3);
+    else if (nameMatch === "stem" || nameMatch === "fuzzy") best = Math.max(best, 2);
+    else {
+      const descMatch = matchKind(descHay, token);
+      if (descMatch) {
+        best = Math.max(best, 1);
+      } else {
+        const catMatch = matchKind(catHay, token);
+        if (catMatch) best = Math.max(best, 1);
+      }
+    }
+  }
+  return best;
+}
+
+export async function searchProductsByQuery(rawQuery: string): Promise<Product[]> {
+  const trimmed = rawQuery.trim();
+  if (!trimmed) return [];
+
+  const tokens = tokenizeQuery(trimmed).filter((token) => !STOP_TOKENS.has(token));
+  if (tokens.length === 0) return [];
+
+  const tokenGroups = tokens.map((token) => [token, ...(SYNONYMS[token] ?? [])]);
+
+  const [productsResult, categoriesResult] = await Promise.all([
+    db.from("products").select("*").eq("is_active", true),
+    db.from("categories").select("id,name,parent_id"),
+  ]);
+
+  if (productsResult.error) throw new Error(productsResult.error.message);
+  if (categoriesResult.error) throw new Error(categoriesResult.error.message);
+
+  const products = (productsResult.data ?? []) as Product[];
+  const categories = (categoriesResult.data ?? []) as Array<{
+    id: string;
+    name: string;
+    parent_id: string | null;
+  }>;
+
+  const categoryById = new Map(categories.map((c) => [c.id, c]));
+  const categoryHayById = new Map<string, string>();
+  for (const cat of categories) {
+    const parts: string[] = [cat.name];
+    let parentId = cat.parent_id;
+    while (parentId) {
+      const parent = categoryById.get(parentId);
+      if (!parent) break;
+      parts.push(parent.name);
+      parentId = parent.parent_id;
+    }
+    categoryHayById.set(cat.id, foldDiacritics(parts.join(" ")));
+  }
+
+  const scored: Array<{ product: Product; score: number }> = [];
+
+  for (const product of products) {
+    const nameHay = foldDiacritics(product.name);
+    const descHay = foldDiacritics(product.description ?? "");
+    const catHay = categoryHayById.get(product.category_id) ?? "";
+
+    let totalScore = 0;
+    let allMatched = true;
+
+    for (const group of tokenGroups) {
+      const score = scoreTokenGroup(group, nameHay, descHay, catHay);
+      if (score === 0) {
+        allMatched = false;
+        break;
+      }
+      totalScore += score;
+    }
+
+    // All tokens must match somewhere — users expect AND semantics for multi-word queries.
+    if (!allMatched) continue;
+
+    scored.push({ product, score: totalScore });
+  }
+
+  return scored
+    .sort((a, b) => b.score - a.score || a.product.name.localeCompare(b.product.name, "cs"))
+    .map((entry) => entry.product);
+}
+
 export async function fetchAllProducts(filters: ProductFilters = {}) {
   const query = filters.query?.trim();
   const sort = filters.sort ?? "default";
   const availability = filters.availability ?? "all";
 
   if (query) {
-    const { data, error } = await db.rpc("search_products", {
-      search_query: query,
-    });
-
-    if (error) {
-      throw new Error(error.message);
-    }
-
-    return sortProducts(filterProducts(data ?? [], availability), sort);
+    const results = await searchProductsByQuery(query);
+    // Search already ranks by relevance — only re-sort if explicit sort other than default.
+    const filtered = filterProducts(results, availability);
+    return sort === "default" ? filtered : sortProducts(filtered, sort);
   }
 
   const { data, error } = await db

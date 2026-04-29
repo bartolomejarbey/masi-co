@@ -1,11 +1,17 @@
 import Image from "next/image";
 import Link from "next/link";
-import { fetchRootCategories } from "@/lib/shop";
+import { fetchRootCategories, searchProductsByQuery } from "@/lib/shop";
+import { ProductsGrid } from "@/components/shop/ProductsGrid";
+import { SearchBar } from "@/components/shop/SearchBar";
 import type { Category } from "@/lib/types";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Sortiment",
+};
+
+type Props = {
+  searchParams?: { q?: string };
 };
 
 const categoryContent: Record<string, { headline: string; text: string }> = {
@@ -39,7 +45,54 @@ const categoryContent: Record<string, { headline: string; text: string }> = {
   },
 };
 
-export default async function NaseProduktyPage() {
+export default async function NaseProduktyPage({ searchParams }: Props) {
+  const rawQuery = searchParams?.q?.trim() ?? "";
+
+  if (rawQuery) {
+    const results = await searchProductsByQuery(rawQuery);
+    return (
+      <div>
+        <section className="relative overflow-hidden bg-gradient-to-br from-gray-50 via-white to-red-50">
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_20%,rgba(204,25,57,0.06),transparent_50%)]" />
+          <div className="relative mx-auto max-w-7xl px-4 py-12 sm:px-6 sm:py-16">
+            <p className="text-sm font-medium uppercase tracking-[0.25em] text-primary">
+              Vyhledávání
+            </p>
+            <h1 className="mt-3 font-display text-3xl font-bold leading-tight sm:text-4xl">
+              Výsledky pro „{rawQuery}"
+            </h1>
+            <p className="mt-3 text-sm text-gray-600">
+              Nalezeno {results.length} {results.length === 1 ? "produkt" : results.length >= 2 && results.length <= 4 ? "produkty" : "produktů"}
+            </p>
+            <div className="mt-6 max-w-xl">
+              <SearchBar initialQuery={rawQuery} variant="inline" />
+            </div>
+          </div>
+        </section>
+
+        <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:py-14">
+          {results.length === 0 ? (
+            <div className="rounded-2xl border border-dashed border-gray-300 bg-white p-10 text-center">
+              <h2 className="font-display text-2xl font-semibold">Nic jsme nenašli</h2>
+              <p className="mt-3 text-sm text-gray-600">
+                Zkuste jiné slovo nebo se podívejte na <Link href="/sortiment" className="text-primary underline">celý sortiment</Link>.
+              </p>
+              <p className="mt-2 text-xs text-gray-500">
+                Tip: hledá se bez ohledu na diakritiku — „svickova" najde i „svíčkovou".
+              </p>
+            </div>
+          ) : (
+            <ProductsGrid
+              products={results}
+              emptyTitle="Nic jsme nenašli"
+              emptyText="Zkuste jiné klíčové slovo."
+            />
+          )}
+        </div>
+      </div>
+    );
+  }
+
   const categories = await fetchRootCategories();
 
   return (
