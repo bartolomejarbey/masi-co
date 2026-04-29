@@ -21,25 +21,31 @@ CREATE INDEX idx_categories_is_active ON categories (is_active) WHERE is_active 
 
 -- 2. PRODUCTS
 CREATE TABLE products (
-  id                uuid PRIMARY KEY DEFAULT gen_random_uuid(),
-  name              text NOT NULL,
-  slug              text NOT NULL UNIQUE,
-  description       text,
-  category_id       uuid NOT NULL REFERENCES categories (id) ON DELETE RESTRICT,
-  price             decimal(10,2) NOT NULL,
-  unit              text NOT NULL DEFAULT 'kg',
-  weight_info       text,
-  image_url         text,
-  gallery           text[],
-  stock_status      text NOT NULL DEFAULT 'in_stock'
-                      CHECK (stock_status IN ('in_stock', 'out_of_stock', 'on_order')),
-  is_active         boolean NOT NULL DEFAULT true,
-  is_featured       boolean NOT NULL DEFAULT false,
-  badge             text,
-  sort_order        int NOT NULL DEFAULT 0,
-  search_vector     tsvector,
-  created_at        timestamptz NOT NULL DEFAULT now(),
-  updated_at        timestamptz NOT NULL DEFAULT now()
+  id                    uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  name                  text NOT NULL,
+  slug                  text NOT NULL UNIQUE,
+  description           text,
+  category_id           uuid NOT NULL REFERENCES categories (id) ON DELETE RESTRICT,
+  price                 decimal(10,2) NOT NULL,
+  unit                  text NOT NULL DEFAULT 'kg',
+  weight_info           text,
+  image_url             text,
+  gallery               text[],
+  stock_status          text NOT NULL DEFAULT 'in_stock'
+                          CHECK (stock_status IN ('in_stock', 'out_of_stock', 'on_order')),
+  manage_stock          boolean NOT NULL DEFAULT false,
+  stock_quantity        decimal(10,3),
+  low_stock_threshold   int DEFAULT 3,
+  max_per_order         int,
+  allow_backorders      text NOT NULL DEFAULT 'no'
+                          CHECK (allow_backorders IN ('no', 'notify', 'yes')),
+  is_active             boolean NOT NULL DEFAULT true,
+  is_featured           boolean NOT NULL DEFAULT false,
+  badge                 text,
+  sort_order            int NOT NULL DEFAULT 0,
+  search_vector         tsvector,
+  created_at            timestamptz NOT NULL DEFAULT now(),
+  updated_at            timestamptz NOT NULL DEFAULT now()
 );
 CREATE INDEX idx_products_slug ON products (slug);
 CREATE INDEX idx_products_category_id ON products (category_id);
@@ -47,6 +53,8 @@ CREATE INDEX idx_products_stock_status ON products (stock_status);
 CREATE INDEX idx_products_is_active ON products (is_active) WHERE is_active = true;
 CREATE INDEX idx_products_is_featured ON products (is_featured) WHERE is_featured = true;
 CREATE INDEX idx_products_search ON products USING GIN (search_vector);
+CREATE INDEX idx_products_low_stock ON products (stock_quantity)
+  WHERE manage_stock = true AND stock_quantity IS NOT NULL;
 
 CREATE OR REPLACE FUNCTION products_search_vector_update()
 RETURNS trigger AS $$
@@ -59,6 +67,29 @@ $$ LANGUAGE plpgsql;
 CREATE TRIGGER trg_products_search_vector
   BEFORE INSERT OR UPDATE OF name ON products
   FOR EACH ROW EXECUTE FUNCTION products_search_vector_update();
+
+CREATE OR REPLACE FUNCTION auto_update_stock_status()
+RETURNS trigger AS $$
+BEGIN
+  IF NEW.manage_stock = true AND NEW.stock_quantity IS NOT NULL THEN
+    IF NEW.stock_quantity <= 0 THEN
+      IF NEW.allow_backorders <> 'no' THEN
+        NEW.stock_status := 'on_order';
+      ELSE
+        NEW.stock_status := 'out_of_stock';
+      END IF;
+    ELSE
+      NEW.stock_status := 'in_stock';
+    END IF;
+  END IF;
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER trg_auto_stock_status
+  BEFORE INSERT OR UPDATE OF stock_quantity, manage_stock, allow_backorders
+  ON products
+  FOR EACH ROW EXECUTE FUNCTION auto_update_stock_status();
 
 CREATE OR REPLACE FUNCTION search_products(search_query text)
 RETURNS SETOF products AS $$
