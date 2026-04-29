@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Minus, Plus, Trash2, ShoppingBag } from "lucide-react";
 import { useCart } from "./CartProvider";
-import { formatPrice, formatPriceExclVat, priceExclVat, VAT_RATE_FOOD } from "@/lib/utils";
+import { formatPrice, formatPriceExclVat, priceExclVat } from "@/lib/utils";
 
 interface CartPageClientProps {
   minOrderAmount: number;
