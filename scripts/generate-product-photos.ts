@@ -673,6 +673,29 @@ type CategoryRow = {
 };
 
 async function main() {
+  // ── SAFETY GUARD ──────────────────────────────────────────────────────────
+  // Past incident (2026-04-28): script regenerated AI photos for 18 hotovky
+  // products that had been manually nullified by `image_url = NULL`. Real DSC
+  // originals (in storage) were left orphaned and the user only realized days
+  // later. Required: explicit --i-know-this-overwrites flag on every run.
+  // See scripts/_restore-hotovky-dsc.js for recovery script and the AI
+  // photo audit doc for the full timeline.
+  if (!process.argv.includes("--i-know-this-overwrites")) {
+    console.error("=".repeat(70));
+    console.error("REFUSING TO RUN — generate-product-photos.ts");
+    console.error("");
+    console.error("This script will REPLACE every product's image_url where it is NULL.");
+    console.error("If any product had its image_url nullified by mistake, real DSC photos");
+    console.error("will be silently overwritten with AI versions. This has happened before.");
+    console.error("");
+    console.error("Before running:");
+    console.error("  1) Audit which products have image_url = NULL — do they SHOULD be NULL?");
+    console.error("  2) Check Supabase Storage for orphan DSC*.jpg files that need restoring.");
+    console.error("  3) If safe, re-run with: --i-know-this-overwrites");
+    console.error("=".repeat(70));
+    process.exit(1);
+  }
+
   log("=".repeat(60));
   log("MASI-CO Product Photo Generator — SMART REFERENCES");
   log(`Mode: images.edit() with per-product reference selection (gpt-image-1)`);
