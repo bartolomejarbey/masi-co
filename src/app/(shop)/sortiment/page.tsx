@@ -6,6 +6,8 @@ import { SearchBar } from "@/components/shop/SearchBar";
 import type { Category } from "@/lib/types";
 import type { Metadata } from "next";
 
+export const revalidate = 60;
+
 export const metadata: Metadata = {
   title: "Sortiment",
 };

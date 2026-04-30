@@ -14,6 +14,8 @@ import {
 } from "@/lib/shop";
 import type { Category } from "@/lib/types";
 
+export const revalidate = 60;
+
 const PRODUCTS_PER_PAGE = 18;
 
 const sortOptions: { value: ProductSort; label: string }[] = [

@@ -15,6 +15,8 @@ import {
 } from "@/lib/shop";
 import { ChevronRight } from "lucide-react";
 
+export const revalidate = 60;
+
 type ProductDetailPageProps = {
   params: { slug: string };
 };
