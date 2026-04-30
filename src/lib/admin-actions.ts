@@ -22,31 +22,8 @@ function generateSlug(name: string): string {
 // ── PRODUCTS ──
 
 function parseStockFields(formData: FormData) {
-  const manage_stock = formData.get("manage_stock") === "on";
-  const stock_quantity = manage_stock && formData.get("stock_quantity")
-    ? parseFloat(String(formData.get("stock_quantity")))
-    : null;
-  const low_stock_threshold = manage_stock && formData.get("low_stock_threshold")
-    ? parseInt(String(formData.get("low_stock_threshold")), 10)
-    : null;
-  const max_per_order = formData.get("max_per_order")
-    ? parseInt(String(formData.get("max_per_order")), 10)
-    : null;
-  const allow_backorders = manage_stock
-    ? String(formData.get("allow_backorders") || "no")
-    : "no";
-
-  // Auto-compute stock_status when managing stock
-  let stock_status = String(formData.get("stock_status") || "in_stock");
-  if (manage_stock && stock_quantity !== null) {
-    if (stock_quantity <= 0) {
-      stock_status = allow_backorders !== "no" ? "on_order" : "out_of_stock";
-    } else {
-      stock_status = "in_stock";
-    }
-  }
-
-  return { manage_stock, stock_quantity, low_stock_threshold, max_per_order, allow_backorders, stock_status };
+  const stock_status = String(formData.get("stock_status") || "in_stock");
+  return { stock_status };
 }
 
 export async function createProduct(formData: FormData) {
@@ -112,25 +89,9 @@ export async function updateProduct(formData: FormData) {
 
 export async function adjustStock(formData: FormData) {
   await requireAdminAction();
-  const id = String(formData.get("id") || "");
-  const adjustment = parseFloat(String(formData.get("adjustment") || "0"));
-  if (!id || adjustment === 0) return;
-
-  const { data: product } = await admin().from("products").select("stock_quantity, manage_stock, allow_backorders").eq("id", id).single();
-  if (!product || !product.manage_stock) return;
-
-  const newQty = Math.max(0, (product.stock_quantity ?? 0) + adjustment);
-  let stock_status: string;
-  if (newQty <= 0) {
-    stock_status = product.allow_backorders !== "no" ? "on_order" : "out_of_stock";
-  } else {
-    stock_status = "in_stock";
-  }
-
-  const { error } = await admin().from("products").update({ stock_quantity: newQty, stock_status }).eq("id", id);
-  if (error) throw new Error(error.message);
-  revalidatePath("/admin/produkty");
-  revalidatePath("/");
+  void formData;
+  // Stock quantity management requires DB migration 20260429000000_add_stock_fields.sql.
+  // Without it the manage_stock/stock_quantity columns don't exist; skip silently.
 }
 
 export async function deleteProduct(formData: FormData) {
