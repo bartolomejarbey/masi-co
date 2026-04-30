@@ -1,0 +1,259 @@
+[
+  {
+    "_section": "TINY veprove products (priority — replace 26-31KB jpgs)",
+    "source": "Vepřová krkovice.jpg",
+    "slug": "veprova-krkovice-bez-kosti-1kg",
+    "category": "maso",
+    "role": "main"
+  },
+  {
+    "source": "Vepřová krkovice-2.jpg",
+    "slug": "veprova-krkovice-s-kosti-1kg",
+    "category": "maso",
+    "role": "main",
+    "_note": "vision-confirmed: -2 = s kostí variant"
+  },
+  {
+    "source": "Vepřová pečeně.jpg",
+    "slug": "veprova-pecene-bez-kosti-1kg",
+    "category": "maso",
+    "role": "main"
+  },
+  {
+    "source": "Vepřová pečeně-2.jpg",
+    "slug": "veprova-pecene-s-kosti-1kg",
+    "category": "maso",
+    "role": "main",
+    "_note": "vision-confirmed: -2 shows visible bone"
+  },
+  {
+    "source": "Vepřová kýta.jpg",
+    "slug": "veprova-kyta-bez-kosti-1kg",
+    "category": "maso",
+    "role": "main"
+  },
+  {
+    "source": "Vepřová kýta-2.jpg",
+    "slug": "veprova-kyta-bez-kosti-1kg",
+    "category": "maso",
+    "role": "gallery"
+  },
+  {
+    "source": "Vepřová plec.jpg",
+    "slug": "veprova-plec-bez-kosti-1kg",
+    "category": "maso",
+    "role": "main"
+  },
+  {
+    "source": "Vepřová žebra - pásky z pečení.jpg",
+    "slug": "veprova-zebra-z-pecene-a-krkovice-1kg",
+    "category": "maso",
+    "role": "main",
+    "_note": "manual fix: 'pásky z pečení' = z-pecene-a-krkovice slug, not -boku-special"
+  },
+  {
+    "source": "Vepřová žebra - pásky z pečení-2.jpg",
+    "slug": "veprova-zebra-z-pecene-a-krkovice-1kg",
+    "category": "maso",
+    "role": "gallery"
+  },
+  {
+    "source": "Vepřová žebra speciál.jpg",
+    "slug": "veprova-zebra-z-boku-special-1kg",
+    "category": "maso",
+    "role": "main"
+  },
+  {
+    "source": "Vepřová žebra z boku plochá bez chrupavek.jpg",
+    "slug": "veprova-zebra-z-boku-plocha-1kg",
+    "category": "maso",
+    "role": "main"
+  },
+  {
+    "source": "vepřová žebra z boku plochá bez chrupavek-2.jpg",
+    "slug": "veprova-zebra-z-boku-plocha-1kg",
+    "category": "maso",
+    "role": "gallery"
+  },
+  {
+    "source": "Vepřové koleno přední s kostí.jpg",
+    "slug": "veprove-koleno-predni-s-kosti-1kg",
+    "category": "maso",
+    "role": "main"
+  },
+  {
+    "source": "Vepřové koleno zadní s kostí.jpg",
+    "slug": "veprove-koleno-zadni-s-kosti-1kg",
+    "category": "maso",
+    "role": "main"
+  },
+  {
+    "source": "vepřový bok bez kosti.jpg",
+    "slug": "veprovy-bok-bez-kosti-1kg",
+    "category": "maso",
+    "role": "main"
+  },
+  {
+    "source": "Vepřová panenka.jpg",
+    "slug": "veprova-panenka-chlazena-1kg",
+    "category": "maso",
+    "role": "main"
+  },
+  {
+    "source": "vepřová panenka-2.jpg",
+    "slug": "veprova-panenka-chlazena-1kg",
+    "category": "maso",
+    "role": "gallery"
+  },
+  {
+    "_section": "Klobasy",
+    "source": "Klobása Jalapenos se sýrem.jpg",
+    "slug": "klobasa-jalapenos-se-syrem-1kg",
+    "category": "uzeniny",
+    "role": "main"
+  },
+  {
+    "source": "Pikantní klobása.jpg",
+    "slug": "pikantni-klobasa-1kg",
+    "category": "uzeniny",
+    "role": "main"
+  },
+  {
+    "source": "Živickáklobása.jpg",
+    "slug": "zivicka-klobasa-bal-cca-1kg-1kg",
+    "category": "uzeniny",
+    "role": "main",
+    "_note": "manual add — audit script missed (no space in filename)"
+  },
+  {
+    "_section": "HOVĚZÍ KRK: byk is TINY (30KB), krava is HD PNG",
+    "source": "Hovězí přední krk.jpg",
+    "slug": "hovezi-predni-b-k-krk-byk-1kg",
+    "category": "maso",
+    "role": "main",
+    "_note": "primary→byk because byk is the TINY one"
+  },
+  {
+    "source": "Hovězí přední krk-2.jpg",
+    "slug": "hovezi-predni-b-k-krk-krava-1kg",
+    "category": "maso",
+    "role": "main",
+    "_note": "-2 → krava (replace AI PNG with real photo)"
+  },
+  {
+    "_section": "HOVĚZÍ KLIŽKA: 2 separate source files",
+    "source": "hovězí kližka.jpg",
+    "slug": "hovezi-predni-klizka-krava-1kg",
+    "category": "maso",
+    "role": "main"
+  },
+  {
+    "source": "Hovězí klížka.jpg",
+    "slug": "hovezi-predni-klizka-byk-1kg",
+    "category": "maso",
+    "role": "main"
+  },
+  {
+    "_section": "HOVĚZÍ ROŠTĚNÁ: krava=HD PNG, byk+starena=TINY",
+    "source": "hovězí roštěná.jpg",
+    "slug": "hovezi-rostena-byk-1kg",
+    "category": "maso",
+    "role": "main",
+    "_note": "primary used for byk (the TINY one); krava already HD"
+  },
+  {
+    "source": "stařena roštěná - hovězí.jpg",
+    "slug": "hovezi-rostena-starena-1kg",
+    "category": "maso",
+    "role": "main"
+  },
+  {
+    "_section": "HOVĚZÍ SVÍČKOVÁ pair",
+    "source": "hovězí svíčková kráva.jpg",
+    "slug": "hovezi-svickova-krava-1kg",
+    "category": "maso",
+    "role": "main"
+  },
+  {
+    "source": "hovězí svíčková býk.jpg",
+    "slug": "hovezi-svickova-byk-1kg",
+    "category": "maso",
+    "role": "main"
+  },
+  {
+    "_section": "HOVĚZÍ ZADNÍ + VÁLEČEK",
+    "source": "hovězí zadní - vrchní šál.jpg",
+    "slug": "hovezi-zadni-vrchni-sal-1kg",
+    "category": "maso",
+    "role": "main"
+  },
+  {
+    "source": "Hovězí zadní vrchní šál.jpg",
+    "slug": "hovezi-zadni-vrchni-sal-1kg",
+    "category": "maso",
+    "role": "gallery"
+  },
+  {
+    "source": "Hovězí váleček.jpg",
+    "slug": "hovezi-zadni-valecek-1kg",
+    "category": "maso",
+    "role": "main"
+  },
+  {
+    "_section": "KUŘECÍ + KRŮTÍ",
+    "source": "Kuřecí prsa.jpg",
+    "slug": "kureci-prsa-1kg",
+    "category": "maso",
+    "role": "main",
+    "_note": "kureci-prsa-1kg is TINY; b.k. and supreme variants stay on HD PNG"
+  },
+  {
+    "source": "Kuřecí prsa-2.jpg",
+    "slug": "kureci-prsa-1kg",
+    "category": "maso",
+    "role": "gallery"
+  },
+  {
+    "source": "Kuřecí křídla bez letek.jpg",
+    "slug": "kureci-kridla-bez-letek-1kg",
+    "category": "maso",
+    "role": "main"
+  },
+  {
+    "source": "Kuřecí křídla bez letek-2.jpg",
+    "slug": "kureci-kridla-bez-letek-1kg",
+    "category": "maso",
+    "role": "gallery"
+  },
+  {
+    "source": "Kuřecí čtvrtky.jpg",
+    "slug": "kureci-ctvrtky-chlazene-1kg",
+    "category": "maso",
+    "role": "main"
+  },
+  {
+    "source": "Kuřecí čtvrtka.jpg",
+    "slug": "kureci-ctvrtky-chlazene-1kg",
+    "category": "maso",
+    "role": "gallery"
+  },
+  {
+    "source": "Krůtí prsa.jpg",
+    "slug": "kruti-prsa-chlazena-1kg",
+    "category": "ostatni-maso",
+    "role": "main"
+  },
+  {
+    "source": "Krůtí prsa-2.jpg",
+    "slug": "kruti-prsa-chlazena-1kg",
+    "category": "ostatni-maso",
+    "role": "gallery"
+  },
+  {
+    "_section": "UZENINY",
+    "source": "Uzený bok.jpg",
+    "slug": "uzeny-bok-b-k-bal-cca-1kg",
+    "category": "uzene-maso",
+    "role": "main"
+  }
+]
