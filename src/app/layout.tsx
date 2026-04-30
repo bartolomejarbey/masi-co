@@ -8,6 +8,7 @@ import { CartProvider } from "@/components/shop/CartProvider";
 import { getCurrentUser, fetchCategoryTree } from "@/lib/shop";
 import { Toaster } from "sonner";
 import { ChatAssistant } from "@/components/shop/ChatAssistant";
+import { FloatingCartButton } from "@/components/shop/FloatingCartButton";
 
 const roboto = Roboto({
   subsets: ["latin", "latin-ext"],
@@ -84,6 +85,7 @@ export default function RootLayout({
           <Footer />
           <Toaster position="bottom-right" richColors closeButton />
           <ChatAssistant />
+          <FloatingCartButton />
         </CartProvider>
       </body>
     </html>
