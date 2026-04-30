@@ -26,6 +26,14 @@ function parseStockFields(formData: FormData) {
   return { stock_status };
 }
 
+function parseSeoFields(formData: FormData) {
+  const meta_title = formData.get("meta_title") ? String(formData.get("meta_title")) : null;
+  const meta_description = formData.get("meta_description") ? String(formData.get("meta_description")) : null;
+  const seo_description = formData.get("seo_description") ? String(formData.get("seo_description")) : null;
+  const keywords = formData.get("keywords") ? String(formData.get("keywords")) : null;
+  return { meta_title, meta_description, seo_description, keywords };
+}
+
 export async function createProduct(formData: FormData) {
   await requireAdminAction();
   const name = String(formData.get("name") || "");
@@ -44,10 +52,11 @@ export async function createProduct(formData: FormData) {
   const gallery = galleryRaw ? JSON.parse(galleryRaw) as string[] : null;
 
   const stockFields = parseStockFields(formData);
+  const seoFields = parseSeoFields(formData);
 
   const { error } = await admin().from("products").insert({
     name, slug, description, category_id, price, unit, weight_info,
-    ...stockFields, badge, is_featured, is_active, sort_order: 0,
+    ...stockFields, ...seoFields, badge, is_featured, is_active, sort_order: 0,
     image_url, gallery,
   });
 
@@ -75,10 +84,11 @@ export async function updateProduct(formData: FormData) {
   const gallery = galleryRaw ? JSON.parse(galleryRaw) as string[] : null;
 
   const stockFields = parseStockFields(formData);
+  const seoFields = parseSeoFields(formData);
 
   const { error } = await admin().from("products").update({
     name, slug, description, category_id, price, unit, weight_info,
-    ...stockFields, badge, is_featured, is_active,
+    ...stockFields, ...seoFields, badge, is_featured, is_active,
     image_url, gallery,
   }).eq("id", id);
 

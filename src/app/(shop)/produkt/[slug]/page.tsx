@@ -23,9 +23,34 @@ type ProductDetailPageProps = {
 
 export async function generateMetadata({ params }: ProductDetailPageProps): Promise<Metadata> {
   const product = await fetchProductBySlug(params.slug);
+  if (!product) {
+    return { title: "Detail produktu" };
+  }
+  const title = product.meta_title ?? `${product.name} | MASI-CO`;
+  const description =
+    product.meta_description ??
+    product.description ??
+    `${product.name} — kvalitní české maso z rodinného řeznictví MASI-CO.`;
+  const keywords = product.keywords ?? undefined;
+  const images = product.image_url ? [{ url: product.image_url }] : undefined;
   return {
-    title: product ? product.name : "Detail produktu",
-    description: product?.description ?? `Produkt ${product?.name} v e-shopu MASI-CO.`,
+    title,
+    description,
+    keywords,
+    openGraph: {
+      title,
+      description,
+      images,
+      type: "website",
+      locale: "cs_CZ",
+      siteName: "MASI-CO",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: product.image_url ? [product.image_url] : undefined,
+    },
   };
 }
 
@@ -49,12 +74,18 @@ export default async function ProduktDetailPage({ params }: ProductDetailPagePro
       ? "bg-red-100 text-red-700"
       : "bg-orange-100 text-orange-700";
 
+  const longDescription =
+    product.seo_description ?? product.description ?? null;
+  const shortDescription =
+    product.meta_description ?? product.description ?? null;
+
   const productJsonLd = {
     "@context": "https://schema.org",
     "@type": "Product",
     name: product.name,
-    description: product.description ?? `${product.name} — MASI-CO`,
+    description: longDescription ?? `${product.name} — MASI-CO`,
     image: product.image_url ?? undefined,
+    keywords: product.keywords ?? undefined,
     offers: {
       "@type": "Offer",
       price: product.price,
@@ -128,6 +159,12 @@ export default async function ProduktDetailPage({ params }: ProductDetailPagePro
             {product.name}
           </h1>
 
+          {shortDescription && (
+            <p className="mt-3 text-base leading-relaxed text-gray-700">
+              {shortDescription}
+            </p>
+          )}
+
           {product.badge && (
             <span className="mt-3 inline-flex w-fit rounded-full bg-primary px-3 py-1 text-xs font-semibold text-white">
               {product.badge}
@@ -170,8 +207,8 @@ export default async function ProduktDetailPage({ params }: ProductDetailPagePro
           <div className="mt-8 border-t border-gray-200">
             <ProductAccordion
               sections={[
-                ...(product.description
-                  ? [{ title: "Popis", content: product.description }]
+                ...(longDescription
+                  ? [{ title: "Popis", content: longDescription }]
                   : []),
                 {
                   title: "Doručení",

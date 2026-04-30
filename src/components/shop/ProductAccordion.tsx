@@ -34,11 +34,21 @@ export function ProductAccordion({ sections }: ProductAccordionProps) {
               />
             </button>
             <div
-              className={`overflow-hidden transition-all duration-200 ${
-                isOpen ? "max-h-96 pb-4" : "max-h-0"
+              className={`grid transition-all duration-200 ${
+                isOpen ? "grid-rows-[1fr] pb-4" : "grid-rows-[0fr]"
               }`}
             >
-              <p className="text-sm leading-relaxed text-gray-600">{section.content}</p>
+              <div className="overflow-hidden">
+                <div className="space-y-3 text-sm leading-relaxed text-gray-600">
+                  {section.content
+                    .split(/\n{2,}/)
+                    .map((paragraph, pIndex) => (
+                      <p key={pIndex} className="whitespace-pre-line">
+                        {paragraph.trim()}
+                      </p>
+                    ))}
+                </div>
+              </div>
             </div>
           </div>
         );

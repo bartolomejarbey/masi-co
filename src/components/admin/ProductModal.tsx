@@ -128,13 +128,75 @@ export function ProductModal({ product, categories, onClose, action }: Props) {
           </div>
 
           <div>
-            <label className="mb-1 block text-sm font-medium text-gray-700">Popis</label>
+            <label className="mb-1 block text-sm font-medium text-gray-700">Popis (legacy)</label>
             <textarea
               name="description"
               rows={2}
               defaultValue={product?.description ?? ""}
+              placeholder="Krátká poznámka — nahrazena SEO popisy níže, použij jen pro starší produkty bez SEO obsahu"
               className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-[#CC1939] focus:outline-none"
             />
+          </div>
+
+          {/* SEO sekce */}
+          <div className="rounded-lg border border-gray-200 bg-gray-50 p-4">
+            <p className="mb-3 text-sm font-semibold text-gray-700">SEO obsah</p>
+            <p className="mb-4 text-xs text-gray-500">
+              Meta title a meta description se zobrazí ve výsledcích Googlu. SEO popis je dlouhý
+              text v rozbalovací sekci „Popis“ na detailu produktu.
+            </p>
+
+            <div className="space-y-3">
+              <div>
+                <label className="mb-1 block text-xs font-medium text-gray-600">
+                  Meta title <span className="text-gray-400">(max ~70 znaků)</span>
+                </label>
+                <input
+                  name="meta_title"
+                  defaultValue={product?.meta_title ?? ""}
+                  placeholder="např. Vepřová kýta bez kosti 1kg | MASI-CO"
+                  className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-[#CC1939] focus:outline-none"
+                />
+              </div>
+
+              <div>
+                <label className="mb-1 block text-xs font-medium text-gray-600">
+                  Meta description / krátký popis <span className="text-gray-400">(max ~160 znaků)</span>
+                </label>
+                <textarea
+                  name="meta_description"
+                  rows={2}
+                  defaultValue={product?.meta_description ?? ""}
+                  placeholder="Krátký lákavý popis — zobrazí se pod nadpisem produktu i ve výsledcích Googlu"
+                  className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-[#CC1939] focus:outline-none"
+                />
+              </div>
+
+              <div>
+                <label className="mb-1 block text-xs font-medium text-gray-600">
+                  SEO popis (dlouhý) <span className="text-gray-400">(odstavce odděl prázdným řádkem)</span>
+                </label>
+                <textarea
+                  name="seo_description"
+                  rows={6}
+                  defaultValue={product?.seo_description ?? ""}
+                  placeholder="Detailní popis 200–300 slov — úvod, použití, pro koho, proč MASI-CO"
+                  className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-[#CC1939] focus:outline-none"
+                />
+              </div>
+
+              <div>
+                <label className="mb-1 block text-xs font-medium text-gray-600">
+                  Klíčová slova <span className="text-gray-400">(oddělená čárkou)</span>
+                </label>
+                <input
+                  name="keywords"
+                  defaultValue={product?.keywords ?? ""}
+                  placeholder="např. vepřová kýta koupit, čerstvé maso Praha, MASI-CO"
+                  className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-[#CC1939] focus:outline-none"
+                />
+              </div>
+            </div>
           </div>
 
           <div className="grid gap-4 sm:grid-cols-2">

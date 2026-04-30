@@ -70,6 +70,10 @@ export interface Product {
   is_featured: boolean;
   badge: string | null;
   sort_order: number;
+  meta_title: string | null;
+  meta_description: string | null;
+  seo_description: string | null;
+  keywords: string | null;
   created_at: string;
   updated_at: string;
 }
